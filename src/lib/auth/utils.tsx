@@ -1,12 +1,9 @@
 import { getItem, removeItem, setItem } from '@/lib/storage';
 
-const TOKEN = 'token';
+const SESSION = 'session';
 
-export type TokenType = {
-  access: string;
-  refresh: string;
-};
+export type Session = { userId: string };
 
-export const getToken = () => getItem<TokenType>(TOKEN);
-export const removeToken = () => removeItem(TOKEN);
-export const setToken = (value: TokenType) => setItem<TokenType>(TOKEN, value);
+export const getSession = () => getItem<Session>(SESSION);
+export const removeSession = () => removeItem(SESSION);
+export const setSession = (value: Session) => setItem<Session>(SESSION, value);

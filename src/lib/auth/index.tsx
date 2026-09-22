@@ -1,44 +1,23 @@
-import { create } from 'zustand';
+import { createAccount, verifyCredentials } from './accounts';
+import { signIn } from './store';
 
-import type { TokenType } from './utils';
-import { getToken, removeToken, setToken } from './utils';
-
-interface AuthState {
-  token: TokenType | null;
-  status: 'idle' | 'signOut' | 'signIn';
-  signIn: (data: TokenType) => void;
-  signOut: () => void;
-  hydrate: () => void;
+export async function loginWithEmail(values: {
+  email: string;
+  password: string;
+}): Promise<void> {
+  const account = await verifyCredentials(values);
+  signIn(account.id);
 }
 
-export const useAuth = create<AuthState>()((set, get) => ({
-  status: 'idle',
-  token: null,
-  signIn: (token) => {
-    setToken(token);
-    set({ status: 'signIn', token });
-  },
-  signOut: () => {
-    removeToken();
-    set({ status: 'signOut', token: null });
-  },
-  hydrate: () => {
-    try {
-      const userToken = getToken();
-      if (userToken !== null) {
-        get().signIn(userToken);
-      } else {
-        get().signOut();
-      }
-    } catch (e) {
-      // only to remove eslint error, handle the error properly
-      console.error(e);
-      // catch error here
-      // Maybe sign_out user!
-    }
-  },
-}));
+export async function signUpWithEmail(values: {
+  fullName: string;
+  email: string;
+  password: string;
+}): Promise<void> {
+  const account = await createAccount(values);
+  signIn(account.id);
+}
 
-export const signOut = () => useAuth.getState().signOut();
-export const signIn = (token: TokenType) => useAuth.getState().signIn(token);
-export const hydrateAuth = () => useAuth.getState().hydrate();
+export { AUTH_ERRORS } from './accounts';
+export * from './store';
+export * from './use-current-user';

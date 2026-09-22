@@ -77,7 +77,7 @@ settings.
      ```ts
      import { useQueryClient } from '@tanstack/react-query';
 
-     import { signOut } from './index';
+     import { signOut } from './store'; // not './index': index re-exports this file
 
      export function useSignOut(): () => void {
        const queryClient = useQueryClient();
