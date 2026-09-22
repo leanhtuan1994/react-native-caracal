@@ -97,7 +97,7 @@ settings.
   1. `HomeHeader`: `useCurrentUser()` from `@/lib/auth` for the name; HeroUI `Avatar` (`size="md"`, `color="accent"`) with `Avatar.Fallback` showing `user.initials` (no image — local accounts have none); greeting `t(getGreetingKey(new Date().getHours()))`; full name `user.fullName`; `Button isIconOnly testID="home-notifications" variant="secondary" background={<ButtonGlass />} accessibilityLabel={t('home.notifications')}` with `notifications-outline` → `useComingSoon()`.
   2. `PostSearch` (`{ value: string; onChange: (text: string) => void }`): `SearchField value onChange` → `SearchField.Group` → `SearchField.SearchIcon`, `SearchField.Input testID="home-search-input" placeholder={t('home.search_placeholder')} className="h-[52px] text-[17px]" background={<InputGlass />}`, `SearchField.ClearButton`; plus a trailing `Button isIconOnly size="sm" variant="ghost" testID="home-voice-search" accessibilityLabel={t('home.voice_search')}` with `mic-outline` → `useComingSoon()`. If `pnpm type-check` rejects `background` on `SearchField.Input`, remove that prop and wrap the whole `SearchField` in `<GlassSurface className="rounded-full">` instead (this fallback is part of the plan, not an improvisation).
   3. `TagFilter` (`{ value?: string; onChange: (tag?: string) => void }`): tags = `getPostTags(MOCK_POSTS)`; horizontal `ScrollView` (`showsHorizontalScrollIndicator={false}`, `contentContainerClassName="gap-2"`) of pressable HeroUI `Chip`s: "All" (`testID="home-tag-all"`) then the first 6 tags (`testID={\`home-tag-${tag}\`}`). Selected chip `variant="primary"`; others `variant="secondary" background={<ChipGlass />}`. If `Chip`is not pressable per its doc, wrap each in`Pressable`with`accessibilityRole="button"`and`accessibilityState={{ selected }}`.
-  4. `PostCard` (`{ post: Post }`): HeroUI `Card testID={\`post-card-${post.id}\`} className="rounded-3xl border border-white/70 bg-surface/60 dark:border-white/10"`; `Card.Body`with tags joined by` · `(uppercase 12px muted),`Card.Title`, `Card.Description numberOfLines={2}`; `Card.Footer` with two small pills (`heart-outline`+`post.reactions.likes.toLocaleString()`, `eye-outline`+`post.views.toLocaleString()`).
+  4. `PostCard` (`{ post: Post }`): HeroUI `Card testID={\`post-card-${post.id}\`} className="rounded-3xl border border-white/70 bg-surface/60 dark:border-white/10"`; `Card.Body`with tags joined by` · `(uppercase 12px muted),`Card.Title`, `Card.Description numberOfLines={2}`; `Card.Footer` with two small pills (`heart-outline`+`post.likes.toLocaleString()`, `eye-outline`+`post.views.toLocaleString()`).
   5. `PostEmptyState`: centred muted text `t('home.empty')` with `testID="home-empty"`.
 - Verify: `pnpm type-check` exits 0; `pnpm lint` exits 0; every file in `src/components/home/` is ≤ 80 lines: `wc -l src/components/home/*.tsx | awk '$2!="total" && $1>80' | wc -l` prints `0`.
 
@@ -166,3 +166,13 @@ Spawn the `kongming` subagent for next-step counsel and pass:
   Apply kongming's guidance, then re-run the Verify step.
   If `kongming` cannot be spawned in this environment, STOP and report the same
   failure evidence to the user. Never continue by self-reasoning.
+
+## Execution notes
+
+- `PostCard` uses `post.likes` (the Phase 4 `Post` type has flat `likes`/`views`; the earlier `post.reactions.likes` text was wrong).
+- The Home list header moved into `src/components/home/feed-header.tsx` to keep the screen small; Settings rows share `src/components/settings/settings-row.tsx`.
+- Walkthrough fixes (each verified on the simulator, kongming consulted where a Verify step failed):
+  - `PostCard` gets `accessible` so each post is one VoiceOver element and its `post-card-*` id reaches the iOS accessibility tree (needed by `describe`, `await-ui-element` and Maestro).
+  - `NativeTabs.Trigger` gets an explicit translated `accessibilityLabel`; without it the tab bar's visible labels switched language but VoiceOver kept the first language.
+  - The feed list and the tag row use `keyboardShouldPersistTaps="handled"`; before this, the first tap on the search clear button or a tag chip only dismissed the keyboard.
+- The dev-client "Tools" button overlaps the Home bell button in debug builds only.

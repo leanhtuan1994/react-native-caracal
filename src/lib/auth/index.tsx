@@ -21,3 +21,4 @@ export async function signUpWithEmail(values: {
 export { AUTH_ERRORS } from './accounts';
 export * from './store';
 export * from './use-current-user';
+export * from './use-sign-out';

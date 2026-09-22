@@ -24,7 +24,7 @@ import {
 import { APIProvider } from '@/api';
 import { hydrateAuth, useAuth } from '@/lib/auth';
 import { AppThemeProvider } from '@/lib/contexts/app-theme-context';
-import { useIsFirstTime } from '@/lib/hooks';
+import { loadSelectedTheme, useIsFirstTime } from '@/lib/hooks';
 import { getRouteGuards } from '@/lib/navigation/route-guards';
 
 export { ErrorBoundary } from 'expo-router';
@@ -39,6 +39,7 @@ configureReanimatedLogger({
 // };
 
 hydrateAuth();
+loadSelectedTheme();
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 //SplashScreen.preventAutoHideAsync();
