@@ -22,7 +22,10 @@ import {
 } from 'react-native-reanimated';
 
 import { APIProvider } from '@/api';
+import { hydrateAuth, useAuth } from '@/lib/auth';
 import { AppThemeProvider } from '@/lib/contexts/app-theme-context';
+import { useIsFirstTime } from '@/lib/hooks';
+import { getRouteGuards } from '@/lib/navigation/route-guards';
 
 export { ErrorBoundary } from 'expo-router';
 
@@ -35,7 +38,7 @@ configureReanimatedLogger({
 //   initialRouteName: '(home)',
 // };
 
-//hydrateAuth();
+hydrateAuth();
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 //SplashScreen.preventAutoHideAsync();
@@ -46,6 +49,9 @@ configureReanimatedLogger({
 // });
 
 export default function RootLayout() {
+  const status = useAuth((state) => state.status);
+  const [isFirstTime] = useIsFirstTime();
+  const guards = getRouteGuards({ isFirstTime, status });
   const [loaded] = useFonts({
     'SpaceGrotesk-Regular': SpaceGrotesk_400Regular,
     'SpaceGrotesk-Medium': SpaceGrotesk_500Medium,
@@ -60,7 +66,15 @@ export default function RootLayout() {
   return (
     <Providers>
       <Stack screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="(home)" options={{ headerShown: false }} />
+        <Stack.Protected guard={guards.canSeeOnboarding}>
+          <Stack.Screen name="onboarding" />
+        </Stack.Protected>
+        <Stack.Protected guard={guards.canSeeAuth}>
+          <Stack.Screen name="(auth)" />
+        </Stack.Protected>
+        <Stack.Protected guard={guards.canSeeApp}>
+          <Stack.Screen name="(home)" />
+        </Stack.Protected>
       </Stack>
     </Providers>
   );
