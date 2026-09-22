@@ -146,7 +146,8 @@ Canvas https://claude.ai/artifact/MKsEuGPtzMUcKDUcib3ThE, top row: "Onboarding",
 - Steps:
   1. Compose inside `AuthScreen testID="onboarding-screen"`: top row (`BrandMark` + "Caracal" text, `Button testID="onboarding-skip"` glass secondary `size="sm"` with `t('onboarding.skip')`); `FeatureGrid`; `PagerDots count={3} activeIndex={0}`; eyebrow (`text-accent-soft-foreground` or `text-accent` uppercase 13px), title (32px bold), description (muted); spacer `flex-1`; `Button testID="onboarding-get-started" variant="primary"` with `arrow-forward` icon; `Button testID="onboarding-have-account" variant="secondary" background={<ButtonGlass />}`.
   2. Handlers: Get started → `setIsFirstTime(false); router.replace('/sign-up')`. Skip and "I already have an account" → `setIsFirstTime(false); router.replace('/login')`.
-- Verify: `pnpm type-check` exits 0; `grep -c "testID=\"onboarding-" src/app/onboarding.tsx` prints `3`.
+- Verify: `pnpm type-check` exits 0; `grep -c "testID=\"onboarding-" src/app/onboarding.tsx` prints `4`.
+- Execution note: the plan first said `3`, counting only the buttons; step 1 also requires the `onboarding-screen` container testID, so the correct count is 4 (kongming confirmed). The intro text moved to `src/components/onboarding/onboarding-intro.tsx` to keep the screen under 80 lines.
 
 ### Task 5.6 — Login form + screen (test first)
 
@@ -208,3 +209,8 @@ Spawn the `kongming` subagent for next-step counsel and pass:
   Apply kongming's guidance, then re-run the Verify step.
   If `kongming` cannot be spawned in this environment, STOP and report the same
   failure evidence to the user. Never continue by self-reasoning.
+
+## Execution notes
+
+- Task 5.6 needed a global in-memory `__mocks__/react-native-mmkv.ts`: `src/lib/hooks` imports `react-native-mmkv` directly, and its native NitroModules do not exist in Jest (kongming's advice).
+- Task 5.8 passed on iPhone 17 Pro Max (iOS 26.5): onboarding → Create account errors → account created → Home within 0.6 s → `restart-app` kept the session. Two simulator quirks matter for the Maestro flows in Phase 7: the simulator keyboard has a Vietnamese (Telex) input that rewrites typed text (use paste or an English-only keyboard), and iOS shows a "Use Strong Password?" sheet on the sign-up password field; closing it clears that field.
