@@ -42,7 +42,7 @@
     "brand:assets": "node scripts/render-brand-assets.mjs"
   },
   "dependencies": {
-    "@expo-google-fonts/inter": "^0.4.2",
+    "@expo-google-fonts/space-grotesk": "^0.4.1",
     "@expo/dom-webview": "~57.0.1",
     "@expo/metro-runtime": "^57.0.14",
     "@expo/vector-icons": "^15.0.3",
@@ -68,7 +68,7 @@
     "expo-splash-screen": "~57.0.8",
     "expo-status-bar": "~57.0.1",
     "expo-system-ui": "~57.0.3",
-    "heroui-native": "1.0.5",
+    "heroui-native": "1.0.10",
     "i18next": "^23.14.0",
     "react": "19.2.3",
     "react-dom": "19.2.3",

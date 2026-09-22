@@ -6,7 +6,7 @@
       --font-semibold: "SpaceGrotesk-SemiBold";
       --font-bold: "SpaceGrotesk-Bold";
 
-      --radius: 0.1rem;
+      --radius: 1rem;
 
       /* Base Colors - Airy, serene sky blue */
       --background: oklch(97.02% 0.0048 225);
@@ -75,7 +75,7 @@
       --font-semibold: "SpaceGrotesk-SemiBold";
       --font-bold: "SpaceGrotesk-Bold";
 
-      --radius: 0.1rem;
+      --radius: 1rem;
 
       /* Base Colors - Deep twilight blue */
       --background: oklch(12% 0.0048 225);

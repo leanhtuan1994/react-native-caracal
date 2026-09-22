@@ -1,6 +1,91 @@
 {
+  "auth": {
+    "email": "Email",
+    "email_placeholder": "you@example.com",
+    "login": {
+      "create_account": "Create an account",
+      "error": "Email or password is incorrect.",
+      "forgot": "Forgot password?",
+      "no_account": "New to Caracal?",
+      "submit": "Sign in",
+      "subtitle": "Sign in to continue to Caracal.",
+      "title": "Welcome back"
+    },
+    "password": "Password",
+    "password_placeholder": "At least 6 characters",
+    "sign_up": {
+      "and": "and",
+      "confirm_password": "Confirm password",
+      "confirm_placeholder": "Repeat your password",
+      "email_taken": "An account with this email already exists.",
+      "error": "Could not create your account. Please try again.",
+      "full_name": "Full name",
+      "full_name_placeholder": "Emily Johnson",
+      "has_account": "Already have an account?",
+      "password_hint": "At least 6 characters.",
+      "password_placeholder": "Create a password",
+      "sign_in": "Sign in",
+      "submit": "Create account",
+      "subtitle": "It takes less than a minute.",
+      "terms_prefix": "I agree to the",
+      "title": "Create account"
+    },
+    "validation": {
+      "email_invalid": "Invalid email format",
+      "email_required": "Email is required",
+      "name_required": "Full name is required",
+      "password_min": "Password must be at least 6 characters",
+      "password_mismatch": "Passwords do not match",
+      "password_required": "Password is required",
+      "terms_required": "Please accept the terms to continue"
+    }
+  },
+  "common": {
+    "back": "Back",
+    "coming_soon": "Coming soon",
+    "language_short": "EN"
+  },
+  "home": {
+    "all": "All",
+    "empty": "No posts found.",
+    "greeting_afternoon": "Good afternoon",
+    "greeting_evening": "Good evening",
+    "greeting_morning": "Good morning",
+    "latest": "Latest posts",
+    "notifications": "Notifications",
+    "search_placeholder": "Search posts",
+    "see_all": "See all",
+    "voice_search": "Voice search"
+  },
   "onboarding": {
-    "message": "Welcome to Caracal"
+    "description": "Routing, theming, data fetching and secure storage are wired up — start building features instead of setup.",
+    "eyebrow": "Welcome to Caracal",
+    "features": {
+      "heroui_desc": "Styled with Uniwind",
+      "heroui_title": "HeroUI Native",
+      "query_desc": "Typed data fetching",
+      "query_title": "React Query",
+      "router_desc": "Typed, file-based routes",
+      "router_title": "Expo Router",
+      "storage_desc": "Fast, persisted state",
+      "storage_title": "Zustand + MMKV"
+    },
+    "get_started": "Get started",
+    "have_account": "I already have an account",
+    "message": "Welcome to Caracal",
+    "skip": "Skip",
+    "title": "Everything your app needs, from day one."
+  },
+  "profile": {
+    "account": "Account",
+    "change_password": "Change password",
+    "edit": "Edit profile",
+    "email": "Email",
+    "full_name": "Full name",
+    "security": "Security",
+    "sign_out": "Sign out",
+    "title": "Profile",
+    "username": "Username"
   },
   "settings": {
     "about": "About",
@@ -28,6 +113,11 @@
     "version": "Version",
     "vietnamese": "Vietnamese",
     "website": "Website"
+  },
+  "tabs": {
+    "home": "Home",
+    "profile": "Profile",
+    "settings": "Settings"
   },
   "welcome": "Welcome to Caracal"
 }
