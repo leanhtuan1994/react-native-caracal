@@ -18,6 +18,7 @@ This is a production-ready React Native starter kit built with Expo, TypeScript,
 - Zustand for global state management
 - React Native MMKV for secure storage
 - React Hook Form + Zod for form handling and validation
+- Space Grotesk fonts (`@expo-google-fonts/space-grotesk`, registered as `SpaceGrotesk-*` to match `src/themes/sky.css`)
 
 ## Canonical Documentation (SOURCE OF TRUTH)
 
@@ -123,20 +124,26 @@ When adding new environment variables:
 The app uses Expo Router with typed routes (enabled in app.config.ts):
 
 - **Routes are defined in `src/app/`** directory using file-system conventions
-- `(home)` folder contains main app routes
-- `(components)` folder contains component showcase/documentation routes
+- `onboarding.tsx` is the first-launch screen
+- `(auth)` folder holds the signed-out screens (`login`, `sign-up`)
+- `(home)` folder holds the signed-in `NativeTabs` (`index`, `profile`, `settings`)
+- The root `_layout.tsx` picks the visible group with `Stack.Protected` guards from `getRouteGuards` (`src/lib/navigation/route-guards.ts`); auth is hydrated synchronously at module scope
 - `_layout.tsx` files define layout hierarchies
 - Route parameters are type-safe via generated types
 - Use typed navigation: `import { router } from 'expo-router'` and `router.push('/(home)/settings')`
+
+### Liquid glass
+
+Glass building blocks live in `src/components/glass`: `GlassLayer` (native iOS 26 glass, blur on older iOS, translucent view on Android), `GlassSurface`, `AmbientBackground`, `ButtonGlass` / `InputGlass` / `ChipGlass` (for HeroUI `background` props) and `GlassListSection`. Do not put live glass inside list cells; feed cards use a flat translucent surface. See `docs/content/docs/ui-and-theme/liquid-glass.mdx`.
 
 ### State Management Architecture
 
 **Global State (Zustand):**
 
-- Auth state managed in `src/lib/auth/index.tsx`
+- Auth state managed in `src/lib/auth/store.ts` (re-exported from `@/lib/auth`); accounts are local, stored in MMKV with salted SHA-256 password hashes (`src/lib/auth/accounts.ts`)
 - Uses Zustand's native selector API for focused subscriptions
-- Token persistence via MMKV storage
-- Hydration happens on app launch
+- Session (`userId`) persistence via MMKV storage
+- Hydration happens synchronously at module scope in `src/app/_layout.tsx`
 
 **Zustand selector pattern:**
 
@@ -166,7 +173,7 @@ Uses react-native-mmkv for synchronous, secure key-value storage:
 
 - Wrapper utilities in `src/lib/storage.tsx`
 - `getItem<T>`, `setItem<T>`, `removeItem` provide type-safe JSON serialization
-- Used for persisting auth tokens, user preferences, etc.
+- Used for persisting local accounts, the session, user preferences, etc.
 
 ### Provider Hierarchy
 

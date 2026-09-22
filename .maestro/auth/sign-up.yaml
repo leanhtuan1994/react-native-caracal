@@ -2,15 +2,8 @@ appId: ${APP_ID}
 ---
 - runFlow: ../utils/launch-app.yaml
 - runFlow: ../utils/create-account.yaml
-- assertVisible:
-    id: 'home-search-input'
 - tapOn: 'Profile'
+- assertVisible: ${NAME}
 - assertVisible:
     id: 'profile-email'
     text: '.*${EMAIL}.*'
-- tapOn: 'Settings'
-- tapOn:
-    id: 'settings-theme-dark'
-- tapOn:
-    id: 'settings-theme-light'
-- runFlow: ../utils/logout.yaml

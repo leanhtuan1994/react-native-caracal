@@ -1,88 +1,60 @@
 ---
 title: Authentication
-description: How to manage authentication in your app.
+description: How the starter handles sign up, sign in and sessions.
 ---
 
-Most applications require some form of authentication. Caracal comes with a solid foundation for managing auth state so you can get started quickly without building it from scratch.
+Caracal ships a complete sign-up and sign-in flow that runs entirely on the device. Accounts and the session are stored in MMKV, and the global auth state lives in a **Zustand** store.
 
-Authentication is global to the application, so Caracal uses **Zustand** to manage the authentication state.
+<Callout type="warn">
+This is a **local demo**. Accounts never leave the device, and there is no password reset or server-side validation. A real app should replace `src/lib/auth/accounts.ts` with calls to its own auth API and keep the rest of the flow (store, route guards, screens) as it is.
+</Callout>
 
-[Zustand](https://github.com/pmndrs/zustand) is a lightweight, highly performant state management library that integrates cleanly with React. It outperforms a simple Context API by providing selectors that prevent unnecessary re-renders, and it works equally well inside and outside the React tree.
+## Local accounts
 
-## Authentication Store
+`src/lib/auth/accounts.ts` keeps a list of accounts under the MMKV key `accounts`:
 
-The authentication store lives at `src/lib/auth/index.tsx` and manages all auth state for the application.
+- `createAccount({ fullName, email, password })` normalises the email (trimmed, lower case), rejects a duplicate email with `AUTH_ERRORS.emailTaken`, and stores the account with a random salt and a SHA-256 hash of `salt + password` (via `expo-crypto`). The plain password is never stored.
+- `verifyCredentials({ email, password })` hashes the password with the stored salt and returns the account, or throws `AUTH_ERRORS.invalidCredentials`.
+- `getAccountById(id)` looks up an account for the session.
 
-The store is composed of 2 states and 3 actions:
+## Authentication store
 
-- `status` — The current authentication status. One of:
-  - `idle`: App is still determining if the user is authenticated (loading tokens from storage)
-  - `signOut`: The user is not authenticated
-  - `signIn`: The user is authenticated
+The store lives in `src/lib/auth/store.ts` and is re-exported from `@/lib/auth`:
 
-- `token` — The user's token object, used to authenticate requests to the API. It is persisted to device storage via MMKV and used to hydrate the auth status on app start.
+- `status`: `idle` before hydration, then `signOut` or `signIn`.
+- `userId`: the signed-in account id, persisted as the MMKV `session` key.
+- `signIn(userId)`, `signOut()`: update the store and the session.
+- `hydrate()`: reads the session synchronously and signs in only if the account still exists.
 
-  By default `token` contains `accessToken` and `refreshToken`. You can extend this by updating the `TokenType` type in `src/lib/auth/utils.ts`.
+Call `hydrateAuth()` once at module scope in `src/app/_layout.tsx`. Because MMKV reads are synchronous, the first render already has the right status, so no loading screen or redirect flash is needed.
 
-- `signIn` — Accepts a token, stores it in MMKV, updates `token` state, and sets `status` to `signIn`.
+## Signing in and creating accounts
 
-- `signOut` — Sets `token` to `null`, removes it from storage, and sets `status` to `signOut`.
-
-- `hydrate` — Called on app start to restore auth state. Reads the token from MMKV and calls `signIn` if a token exists, or sets `status` to `signOut` otherwise.
-
-## Using the Authentication Store
-
-Import the store from `@/lib` and use it in any component. Actions can also be called from outside the React tree.
+Forms call two async helpers from `@/lib/auth`:
 
 ```tsx
-import { hydrateAuth, useAuth } from '@/lib';
+import { AUTH_ERRORS, loginWithEmail, signUpWithEmail } from '@/lib/auth';
 
-hydrateAuth(); // Call when the app starts to restore the previous session
-
-const App = () => {
-  const status = useAuth((state) => state.status);
-  const signOut = useAuth((state) => state.signOut);
-
-  return (
-    <View>
-      <Text>{status}</Text>
-      <Button title="Sign Out" onPress={signOut} />
-    </View>
-  );
-};
+await loginWithEmail({ email, password }); // throws AUTH_ERRORS.invalidCredentials
+await signUpWithEmail({ fullName, email, password }); // throws AUTH_ERRORS.emailTaken
 ```
 
-## Use Case: Protecting Navigation
+Both sign the user in on success. The screens do not navigate afterwards: the `Stack.Protected` route guards in the root layout switch to the `(home)` tabs as soon as `status` becomes `signIn` (see the [Navigation guide](/docs/guides/navigation)).
 
-A common pattern is to gate navigation behind authentication status. In Caracal, the root layout (`src/app/_layout.tsx`) reads `status` from the auth store and redirects accordingly.
+## Reading the current user
+
+`useCurrentUser()` returns the signed-in profile, or `null`:
 
 ```tsx
-import { useAuth } from '@/lib/auth';
-import { Redirect, Stack } from 'expo-router';
+import { useCurrentUser } from '@/lib/auth';
 
-export default function RootLayout() {
-  const status = useAuth((state) => state.status);
-  const token = useAuth((state) => state.token);
-
-  // Show splash/loading screen while hydrating
-  if (status === 'idle') {
-    return <SplashScreen />;
-  }
-
-  // Redirect unauthenticated users to onboarding
-  if (status === 'signOut' && !token) {
-    return <Redirect href="/onboarding" />;
-  }
-
-  return <Stack />;
-}
+const user = useCurrentUser();
+// { id, fullName, email, username: 'emily', initials: 'EJ' }
 ```
 
-The `(home)` layout (`src/app/(home)/_layout.tsx`) follows the same pattern for tab-level protection.
+## Signing out
 
-## Calling Auth Outside React
-
-Because Zustand stores expose `getState()`, you can call sign-out from API interceptors or other non-component code:
+Use `useSignOut()` inside components. It signs out and clears the React Query cache. Outside React, call `signOut()` directly, for example from an API interceptor:
 
 ```tsx
 import { signOut } from '@/lib/auth';
@@ -101,5 +73,5 @@ axios.interceptors.response.use(
 ## Additional Resources
 
 - [State Management Guide](/docs/guides/state-management) — Zustand selectors pattern and store conventions
-- [Storage Guide](/docs/guides/storage) — MMKV usage for token persistence
+- [Storage Guide](/docs/guides/storage) — MMKV keys used by auth
 - [Zustand Documentation](https://github.com/pmndrs/zustand)

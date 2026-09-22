@@ -38,7 +38,7 @@
     "test:ci": "pnpm run test --coverage",
     "test:watch": "pnpm run test --watch",
     "install-maestro": "curl -Ls 'https://get.maestro.mobile.dev' | bash",
-    "e2e-test": "maestro test .maestro/ -e APP_ID=com.caracal.development",
+    "e2e-test": "maestro test .maestro/ -e APP_ID=com.caracal.development -e NAME='E2E User' -e EMAIL=e2e.user@example.com -e PASSWORD=secret1",
     "brand:assets": "node scripts/render-brand-assets.mjs"
   },
   "dependencies": {

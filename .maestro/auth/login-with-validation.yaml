@@ -1,35 +1,44 @@
 appId: ${APP_ID}
-env:
-  Name: 'User'
-  EMAIL: 'user@test.com'
-  PASSWORD: 'password'
 ---
-- launchApp
-- runFlow:
-    when:
-      visible: 'Caracal Starter'
-    file: ../utils/onboarding.yaml
-- assertVisible: 'Sign In'
-- assertVisible:
-    id: 'login-button'
+- runFlow: ../utils/launch-app.yaml
+- runFlow: ../utils/create-account.yaml
+- runFlow: ../utils/logout.yaml
 - tapOn:
-    id: 'login-button'
+    id: 'login-submit'
 - assertVisible: 'Email is required'
 - assertVisible: 'Password is required'
 - tapOn:
-    id: 'name'
-- inputText: ${Name}
+    id: 'login-email-input'
+- inputText: 'emily@'
+- tapOn:
+    id: 'login-password-input'
+- inputText: '123'
 - runFlow: ../utils/hide-keyboard.yaml
 - tapOn:
-    id: 'email-input'
-- inputText: 'email'
+    id: 'login-submit'
 - assertVisible: 'Invalid email format'
+- assertVisible: 'Password must be at least 6 characters'
+- tapOn:
+    id: 'login-email-input'
+- eraseText
 - inputText: ${EMAIL}
+- tapOn:
+    id: 'login-password-input'
+- eraseText
+- inputText: 'wrong12'
 - runFlow: ../utils/hide-keyboard.yaml
 - tapOn:
-    id: 'password-input'
+    id: 'login-submit'
+- assertVisible: 'Email or password is incorrect.'
+# The email field already holds ${EMAIL}; only the password changes.
+- tapOn:
+    id: 'login-password-input'
+- eraseText
 - inputText: ${PASSWORD}
 - runFlow: ../utils/hide-keyboard.yaml
 - tapOn:
-    id: 'login-button'
-- assertVisible: 'Feed'
+    id: 'login-submit'
+- runFlow: ../utils/dismiss-password-prompt.yaml
+- extendedWaitUntil:
+    visible: 'Home'
+    timeout: 10000

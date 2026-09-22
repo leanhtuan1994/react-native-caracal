@@ -3,6 +3,7 @@
   "pages": [
     "ui-theming",
     "heroui-native",
+    "liquid-glass",
     "fonts",
     "components",
     "custom-components",

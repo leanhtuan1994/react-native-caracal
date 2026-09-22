@@ -29,36 +29,31 @@ Caracal organizes routes using **route groups** — folders wrapped in parenthes
 
 ```
 src/app/
-├── _layout.tsx              # Root layout (providers, theme)
-├── +not-found.tsx           # 404 screen
-├── (home)/                  # Main app (tab navigation)
-│   ├── _layout.tsx          # Tab navigator
-│   ├── index.tsx            # Home tab (/)
-│   ├── settings.tsx         # Settings tab (/settings)
-│   ├── style.tsx            # Style tab (/style)
-│   └── onboarding.tsx       # Onboarding screen (/onboarding)
-└── (components)/            # Component showcases (30 screens)
-    ├── _layout.tsx          # Stack navigator
-    ├── index.tsx            # Showcase list (/components)
-    ├── button.tsx           # Button showcase (/components/button)
-    ├── text-field.tsx       # TextField showcase (/components/text-field)
-    └── [28 more...]         # Other component showcases
+├── _layout.tsx              # Root layout (providers, fonts, route guards)
+├── onboarding.tsx           # First-launch onboarding (/onboarding)
+├── (auth)/                  # Signed-out screens (stack)
+│   ├── _layout.tsx
+│   ├── login.tsx            # Sign in (/login)
+│   └── sign-up.tsx          # Create account (/sign-up)
+└── (home)/                  # Signed-in app (native tabs)
+    ├── _layout.tsx          # NativeTabs: Home, Profile, Settings
+    ├── index.tsx            # Home tab (/)
+    ├── profile.tsx          # Profile tab (/profile)
+    └── settings.tsx         # Settings tab (/settings)
 ```
 
 ### Route Groups Explained
 
-**`(home)` Group**: Main application with bottom tab navigation
-- Contains the core app experience
-- Uses `Tabs` layout for bottom navigation
-- URL path: `/` (no "home" in URL)
+The root layout shows exactly one of three areas, chosen by `Stack.Protected` guards:
 
-**`(components)` Group**: Component showcase and documentation
-- 30 interactive component examples
-- Uses `Stack` layout for hierarchical navigation
-- URL path: `/components/...`
+- **`onboarding`**: visible only on first launch (`useIsFirstTime()`).
+- **`(auth)` group**: visible while signed out. Holds Sign in and Create account.
+- **`(home)` group**: visible while signed in. Holds the three tabs.
+
+The guard values come from the pure function `getRouteGuards({ isFirstTime, status })` in `src/lib/navigation/route-guards.ts`, which has unit tests.
 
 <Callout type="info">
-Route groups (folders with parentheses) organize your code without affecting URLs. Both `(home)/index.tsx` and `(components)/index.tsx` are valid routes.
+Route groups (folders with parentheses) organize your code without affecting URLs, so `(home)/index.tsx` is served at `/` and `(auth)/login.tsx` at `/login`.
 </Callout>
 
 ## Root Layout
@@ -74,22 +69,18 @@ The root layout (`src/app/_layout.tsx`) wraps the entire app with providers and 
 
 ## Tab Navigation
 
-The `(home)` group uses tab navigation for the main app experience.
+The `(home)` group uses `NativeTabs` from `expo-router/unstable-native-tabs`, so iOS 26 renders the system liquid glass tab bar.
 
-**Tab Configuration:**
-- **Home Tab**: Main feed or dashboard (`index.tsx`)
-- **Settings Tab**: App settings and preferences (`settings.tsx`)
-- **Style Tab**: Theme and appearance settings (`style.tsx`)
+**Tabs:**
+- **Home** (`index.tsx`): posts feed with search and tag filters
+- **Profile** (`profile.tsx`): the signed-in account
+- **Settings** (`settings.tsx`): language, theme, links and logout
 
-Each tab can define:
-- `title`: Tab label
-- `headerShown`: Show/hide header
-- `tabBarIcon`: Custom icon component
-- `tabBarTestID`: Test identifier
+Each `NativeTabs.Trigger` sets a translated `NativeTabs.Trigger.Label`, an SF Symbol / Material icon, and a translated `accessibilityLabel`. Pass the label explicitly: without it, VoiceOver keeps the tab names from the first language after the user switches language.
 
 ## Stack Navigation
 
-The `(components)` group uses stack navigation for hierarchical screens.
+The `(auth)` group uses a plain `Stack` (headers hidden) so Sign in and Create account can push and go back.
 
 **Stack Features:**
 - Back navigation with native transitions
@@ -436,30 +427,34 @@ export function ModalScreen() {
 
 ## Navigation Guards
 
-Protect routes with authentication checks.
+Screens are protected with `Stack.Protected` in `src/app/_layout.tsx`. Auth is hydrated synchronously from MMKV at module scope, so the first render already knows the status and no redirect flashes.
 
 ```tsx
 // src/app/_layout.tsx
-import { useAuth } from '@/lib/auth';
-import { Redirect, Stack } from 'expo-router';
+hydrateAuth();
 
 export default function RootLayout() {
   const status = useAuth((state) => state.status);
-  const token = useAuth((state) => state.token);
+  const [isFirstTime] = useIsFirstTime();
+  const guards = getRouteGuards({ isFirstTime, status });
 
-  // Show splash while checking auth
-  if (status === 'idle') {
-    return <SplashScreen />;
-  }
-
-  // Redirect to onboarding if not authenticated
-  if (status === 'signOut' && !token) {
-    return <Redirect href="/onboarding" />;
-  }
-
-  return <Stack>...</Stack>;
+  return (
+    <Stack screenOptions={{ headerShown: false }}>
+      <Stack.Protected guard={guards.canSeeOnboarding}>
+        <Stack.Screen name="onboarding" />
+      </Stack.Protected>
+      <Stack.Protected guard={guards.canSeeAuth}>
+        <Stack.Screen name="(auth)" />
+      </Stack.Protected>
+      <Stack.Protected guard={guards.canSeeApp}>
+        <Stack.Screen name="(home)" />
+      </Stack.Protected>
+    </Stack>
+  );
 }
 ```
+
+Signing in or out only changes the auth store; the guards then move the user to the right group, so screens never call `router.replace` after authentication.
 
 ## Common Patterns
 

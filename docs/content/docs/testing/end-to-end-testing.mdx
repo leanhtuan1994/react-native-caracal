@@ -24,15 +24,44 @@ pnpm install-maestro
 
 ## Writing tests
 
-Go to the `maestro` directory and write your tests. Read more about how to write end-to-end tests with Maestro in the [official documentation](https://maestro.mobile.dev/).
+The flows live in `.maestro/`. Read more about writing them in the [official documentation](https://maestro.mobile.dev/).
 
-To run the tests, execute the following command:
+| Flow | What it covers |
+| --- | --- |
+| `auth/onboarding.yaml` | Fresh install shows onboarding; "I already have an account" opens Sign in |
+| `auth/sign-up.yaml` | Create an account, then Profile shows the name and email |
+| `auth/login-with-validation.yaml` | Required and format errors, wrong password error, then a successful sign in |
+| `app/tabs.yaml` | Home, Profile and Settings (theme switch), then logout |
+
+Shared steps live in `.maestro/utils/` (tagged `util`, so they never run on their own):
+
+- `launch-app.yaml`: clears state, launches the app, reconnects the Expo dev client to Metro and closes the developer menu.
+- `create-account.yaml`: fills in Create account and waits for the Home tab.
+- `logout.yaml`: opens Settings, scrolls to Logout and waits for Sign in.
+- `login.yaml`: signs in with `EMAIL` and `PASSWORD`.
+- `dismiss-password-prompt.yaml`: closes an iOS password sheet if one appears.
+
+Accounts are stored on the device, and every flow starts from a cleared state, so each flow creates its own throwaway account. `pnpm e2e-test` passes the test values:
 
 ```bash
-pnpm e2e-test
+maestro test .maestro/ -e APP_ID=com.caracal.development -e NAME='E2E User' -e EMAIL=e2e.user@example.com -e PASSWORD=secret1
 ```
 
-This will run the tests on the local emulator.
+## Running tests on iOS
+
+The flows run against the development build:
+
+1. Start the app with `pnpm ios --device <simulator UDID>`; this also starts Metro on port 8081.
+2. Run `pnpm e2e-test`. To target one simulator, add `--device <UDID>`.
+
+<Callout type="warn">
+Prepare the simulator once before running the suite:
+
+- Keep only an English keyboard (**Settings → General → Keyboard → Keyboards**). Input methods such as Vietnamese Telex rewrite the typed text.
+- Turn off **AutoFill Passwords and Passkeys** and **Suggest Strong Passwords** (**Settings → General → AutoFill & Passwords**). Otherwise iOS shows password sheets that cover the form.
+
+These settings live on the simulator, so `clearState` does not reset them.
+</Callout>
 
 ## Running tests on CI
 

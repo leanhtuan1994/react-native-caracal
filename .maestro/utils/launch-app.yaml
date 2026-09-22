@@ -1,0 +1,29 @@
+appId: ${APP_ID}
+tags:
+  - util
+---
+# clearState wipes the dev client's last server, so reconnect it to Metro.
+- clearState
+- launchApp
+- openLink: exp+caracalapp://expo-development-client/?url=http%3A%2F%2Flocalhost%3A8081
+# The dev client shows its developer menu once after a fresh connection.
+- extendedWaitUntil:
+    visible: 'Continue'
+    timeout: 30000
+    optional: true
+- runFlow:
+    when:
+      visible: 'Continue'
+    commands:
+      - tapOn: 'Continue'
+- runFlow:
+    when:
+      visible:
+        id: 'xmark'
+    commands:
+      - tapOn:
+          id: 'xmark'
+- extendedWaitUntil:
+    visible:
+      id: 'onboarding-get-started'
+    timeout: 15000

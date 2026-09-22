@@ -1,0 +1,12 @@
+appId: ${APP_ID}
+tags:
+  - util
+---
+- tapOn: 'Settings'
+- scrollUntilVisible:
+    element:
+      id: 'settings-logout'
+- tapOn:
+    id: 'settings-logout'
+- assertVisible:
+    id: 'login-email-input'

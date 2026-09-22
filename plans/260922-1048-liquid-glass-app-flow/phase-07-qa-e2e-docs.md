@@ -126,3 +126,10 @@ Spawn the `kongming` subagent for next-step counsel and pass:
   Apply kongming's guidance, then re-run the Verify step.
   If `kongming` cannot be spawned in this environment, STOP and report the same
   failure evidence to the user. Never continue by self-reasoning.
+
+## Execution notes
+
+- Task 7.4 passed (4/4 flows) on a spare iPhone 17 Pro simulator prepared with the user's approval (English-only keyboard, AutoFill Passwords off). Added `utils/launch-app.yaml` (dev-client reconnect after `clearState`) and `utils/dismiss-password-prompt.yaml`; Profile asserts use the new `profile-email` test id. `login-with-validation.yaml` finishes sign-in inline instead of calling `utils/login.yaml` (kongming's advice: `eraseText` cannot reliably clear a long email).
+- Task 7.5 passed: 32 commits, none at or above 16 ms. No per-commit breakdown exists because the profiler keeps detail only for hot commits.
+- Task 7.6 is **not green**: `pnpm check-all` passes, but `npx expo install --check` exits 1 on 16 upstream patch releases whose versions are identical on `main`. Following kongming's advice the bump is left for a separate `chore(deps)` change instead of widening this branch.
+- Task 7.7: `pnpm --dir docs build` exits 0 (one earlier run failed on a transient Google Fonts download).

@@ -5,9 +5,11 @@ import { GlassListSection } from '@/components/glass';
 import { Text } from '@/components/ui';
 import type { UserProfile } from '@/lib/auth';
 
-function AccountRow({ title, value }: { title: string; value: string }) {
+type AccountRowProps = { testID: string; title: string; value: string };
+
+function AccountRow({ testID, title, value }: AccountRowProps) {
   return (
-    <ListGroup.Item disabled>
+    <ListGroup.Item testID={testID} disabled>
       <ListGroup.ItemContent>
         <ListGroup.ItemTitle>{title}</ListGroup.ItemTitle>
       </ListGroup.ItemContent>
@@ -23,9 +25,21 @@ export function AccountSection({ user }: { user: UserProfile }) {
 
   return (
     <GlassListSection title={t('profile.account')}>
-      <AccountRow title={t('profile.full_name')} value={user.fullName} />
-      <AccountRow title={t('profile.username')} value={user.username} />
-      <AccountRow title={t('profile.email')} value={user.email} />
+      <AccountRow
+        testID="profile-full-name"
+        title={t('profile.full_name')}
+        value={user.fullName}
+      />
+      <AccountRow
+        testID="profile-username"
+        title={t('profile.username')}
+        value={user.username}
+      />
+      <AccountRow
+        testID="profile-email"
+        title={t('profile.email')}
+        value={user.email}
+      />
     </GlassListSection>
   );
 }
