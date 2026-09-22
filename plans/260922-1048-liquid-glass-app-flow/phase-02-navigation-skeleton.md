@@ -1,7 +1,7 @@
 ---
 phase: 2
 title: 'Navigation skeleton with auth guards'
-status: pending
+status: done
 priority: P1
 effort: '3h'
 dependencies: [1]

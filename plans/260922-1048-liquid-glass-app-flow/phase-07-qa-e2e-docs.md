@@ -1,7 +1,7 @@
 ---
 phase: 7
 title: 'QA, E2E flows and docs'
-status: pending
+status: in-progress
 priority: P2
 effort: '5h'
 dependencies: [5, 6]

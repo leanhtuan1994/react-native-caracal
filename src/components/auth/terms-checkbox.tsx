@@ -29,6 +29,7 @@ export function TermsCheckbox({ control, testID }: TermsCheckboxProps) {
               isSelected={field.value}
               onSelectedChange={field.onChange}
               isInvalid={!!fieldState.error}
+              accessibilityLabel={`${t('auth.sign_up.terms_prefix')} ${t('settings.terms')} ${t('auth.sign_up.and')} ${t('settings.privacy')}`}
             />
             <Text className="flex-1 text-sm text-muted">
               {t('auth.sign_up.terms_prefix')}{' '}

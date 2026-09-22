@@ -2,6 +2,7 @@ import * as z from 'zod';
 
 const email = z
   .string()
+  .trim()
   .min(1, 'auth.validation.email_required')
   .email('auth.validation.email_invalid');
 

@@ -1,7 +1,7 @@
 ---
 phase: 4
 title: 'Local auth and mock posts data'
-status: pending
+status: done
 priority: P1
 effort: '4h'
 dependencies: [1]

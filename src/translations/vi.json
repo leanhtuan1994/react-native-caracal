@@ -2,6 +2,7 @@
   "auth": {
     "email": "Email",
     "email_placeholder": "ban@vidu.com",
+    "hide_password": "Ẩn mật khẩu",
     "login": {
       "create_account": "Tạo tài khoản",
       "error": "Email hoặc mật khẩu không đúng.",
@@ -13,6 +14,7 @@
     },
     "password": "Mật khẩu",
     "password_placeholder": "Ít nhất 6 ký tự",
+    "show_password": "Hiện mật khẩu",
     "sign_up": {
       "and": "và",
       "confirm_password": "Xác nhận mật khẩu",

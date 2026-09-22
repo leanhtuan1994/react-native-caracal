@@ -1,7 +1,7 @@
 ---
 title: 'Liquid glass starter app flow'
 description: 'Implement the Onboarding → Sign in → Create account → Home/Profile/Settings flow from the Starter App Flow design, using HeroUI Native components and an iOS 26 liquid glass look.'
-status: pending
+status: in-progress
 priority: P1
 effort: '4-5d'
 branch: feat/liquid-glass-app-flow

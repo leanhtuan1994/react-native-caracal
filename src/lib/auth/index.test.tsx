@@ -1,6 +1,10 @@
 import { act, renderHook } from '@testing-library/react-native';
 
+import { getItem } from '@/lib/storage';
+
+import { getAccountById } from './accounts';
 import {
+  hydrateAuth,
   loginWithEmail,
   signIn,
   signUpWithEmail,
@@ -82,6 +86,32 @@ describe('useAuth', () => {
       email: 'emily@example.com',
       username: 'emily',
       initials: 'EJ',
+    });
+  });
+
+  describe('hydrate', () => {
+    it('restores a session whose account exists', () => {
+      jest.mocked(getItem).mockReturnValueOnce({ userId: 'user-1' });
+      hydrateAuth();
+      expect(useAuth.getState()).toMatchObject({
+        status: 'signIn',
+        userId: 'user-1',
+      });
+    });
+
+    it('signs out when the session points to a missing account', () => {
+      jest.mocked(getItem).mockReturnValueOnce({ userId: 'gone' });
+      jest.mocked(getAccountById).mockReturnValueOnce(undefined);
+      hydrateAuth();
+      expect(useAuth.getState()).toMatchObject({
+        status: 'signOut',
+        userId: null,
+      });
+    });
+
+    it('signs out when there is no session', () => {
+      hydrateAuth();
+      expect(useAuth.getState().status).toBe('signOut');
     });
   });
 });

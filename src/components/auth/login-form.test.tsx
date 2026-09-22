@@ -73,4 +73,20 @@ describe('LoginForm', () => {
     await user.press(screen.getByTestId('login-submit'));
     expect(await screen.findByText('auth.login.error')).toBeOnTheScreen();
   });
+
+  it('trims a trailing space from the email before signing in', async () => {
+    const { user } = setup(<LoginForm />);
+    await user.type(
+      screen.getByTestId('login-email-input'),
+      'emily@example.com '
+    );
+    await user.type(screen.getByTestId('login-password-input'), 'secret1');
+    await user.press(screen.getByTestId('login-submit'));
+    await waitFor(() =>
+      expect(mockLogin).toHaveBeenCalledWith({
+        email: 'emily@example.com',
+        password: 'secret1',
+      })
+    );
+  });
 });

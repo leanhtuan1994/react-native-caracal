@@ -1,7 +1,7 @@
 ---
 phase: 6
 title: 'App screens: home, profile, settings'
-status: pending
+status: done
 priority: P1
 effort: '1.5d'
 dependencies: [2, 3, 4]

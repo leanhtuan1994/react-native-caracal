@@ -23,7 +23,9 @@ export function PasswordToggle({
       testID={testID}
       onPress={onToggle}
       accessibilityRole="button"
-      accessibilityLabel={t('auth.password')}
+      accessibilityLabel={
+        isVisible ? t('auth.hide_password') : t('auth.show_password')
+      }
       className="size-11 items-center justify-center"
     >
       <StyledIonicons

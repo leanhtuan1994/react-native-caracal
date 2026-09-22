@@ -1,7 +1,7 @@
 ---
 phase: 5
 title: 'Auth screens: onboarding, sign in, create account'
-status: pending
+status: done
 priority: P1
 effort: '1d'
 dependencies: [2, 3, 4]
