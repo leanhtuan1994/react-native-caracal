@@ -23,16 +23,23 @@ export function SettingsRow({
   onPress,
 }: SettingsRowProps) {
   return (
-    <ListGroup.Item testID={testID} onPress={onPress} disabled={!onPress}>
+    <ListGroup.Item
+      testID={testID}
+      onPress={onPress}
+      disabled={!onPress}
+      className="min-h-[52px]"
+    >
       {icon ? (
         <ListGroup.ItemPrefix>
           <StyledIonicons name={icon} size={20} className="text-foreground" />
         </ListGroup.ItemPrefix>
       ) : null}
       <ListGroup.ItemContent>
-        <ListGroup.ItemTitle>{title}</ListGroup.ItemTitle>
+        <ListGroup.ItemTitle className="font-normal text-[15px]">
+          {title}
+        </ListGroup.ItemTitle>
       </ListGroup.ItemContent>
-      {value ? <Text className="text-muted">{value}</Text> : null}
+      {value ? <Text className="text-[15px] text-muted">{value}</Text> : null}
       {onPress ? <ListGroup.ItemSuffix /> : null}
     </ListGroup.Item>
   );

@@ -18,6 +18,7 @@ export function SignUpFields({ control }: SignUpFieldsProps) {
         label={t('auth.sign_up.full_name')}
         placeholder={t('auth.sign_up.full_name_placeholder')}
         testID="sign-up-name-input"
+        fieldClassName="h-12"
         autoComplete="name"
       />
       <ControlledInput
@@ -26,6 +27,7 @@ export function SignUpFields({ control }: SignUpFieldsProps) {
         label={t('auth.email')}
         placeholder={t('auth.email_placeholder')}
         testID="sign-up-email-input"
+        fieldClassName="h-12"
         keyboardType="email-address"
         autoCapitalize="none"
         autoComplete="email"
@@ -37,7 +39,9 @@ export function SignUpFields({ control }: SignUpFieldsProps) {
         placeholder={t('auth.sign_up.password_placeholder')}
         description={t('auth.sign_up.password_hint')}
         testID="sign-up-password-input"
+        fieldClassName="h-12"
         isPassword
+        showPasswordToggle={false}
       />
       <ControlledInput
         control={control}
@@ -45,7 +49,9 @@ export function SignUpFields({ control }: SignUpFieldsProps) {
         label={t('auth.sign_up.confirm_password')}
         placeholder={t('auth.sign_up.confirm_placeholder')}
         testID="sign-up-confirm-input"
+        fieldClassName="h-12"
         isPassword
+        showPasswordToggle={false}
       />
     </>
   );

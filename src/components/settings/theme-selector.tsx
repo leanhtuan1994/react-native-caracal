@@ -15,16 +15,21 @@ export function ThemeSelector() {
       value={selectedTheme}
       onValueChange={(value) => setSelectedTheme(value as ThemeName)}
     >
-      <Tabs.List>
-        <Tabs.Indicator />
+      <Tabs.List
+        className="rounded-[22px] bg-foreground/5 p-1"
+        background={null}
+      >
+        <Tabs.Indicator className="rounded-full bg-white/90 dark:bg-white/15" />
         {THEMES.map((theme) => (
           <Tabs.Trigger
             key={theme}
             value={theme}
             testID={`settings-theme-${theme}`}
-            className="flex-1"
+            className="h-[38px] flex-1"
           >
-            <Tabs.Label>{t(`settings.theme.${theme}`)}</Tabs.Label>
+            <Tabs.Label className="font-semibold text-sm">
+              {t(`settings.theme.${theme}`)}
+            </Tabs.Label>
           </Tabs.Trigger>
         ))}
       </Tabs.List>

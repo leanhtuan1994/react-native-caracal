@@ -1,11 +1,10 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { router } from 'expo-router';
-import { Button } from 'heroui-native';
 import { useTranslation } from 'react-i18next';
 import { withUniwind } from 'uniwind';
 
 import { AuthScreen, SignUpForm } from '@/components/auth';
-import { ButtonGlass } from '@/components/glass';
+import { GlassButton } from '@/components/glass';
 import { Text, View } from '@/components/ui';
 
 const StyledIonicons = withUniwind(Ionicons);
@@ -18,13 +17,11 @@ export default function SignUpScreen() {
 
   return (
     <AuthScreen testID="sign-up-screen">
-      <Button
+      <GlassButton
         testID="sign-up-back"
         isIconOnly
-        variant="secondary"
-        background={<ButtonGlass />}
         accessibilityLabel={t('common.back')}
-        className="self-start rounded-full"
+        className="size-11 self-start"
         onPress={goBack}
       >
         <StyledIonicons
@@ -32,9 +29,9 @@ export default function SignUpScreen() {
           size={20}
           className="text-foreground"
         />
-      </Button>
-      <View className="mt-6 mb-6 gap-2">
-        <Text className="font-bold text-[32px] text-foreground">
+      </GlassButton>
+      <View className="my-[22px] gap-2">
+        <Text className="font-bold text-[32px] tracking-tight text-foreground">
           {t('auth.sign_up.title')}
         </Text>
         <Text className="text-base text-muted">
@@ -43,11 +40,11 @@ export default function SignUpScreen() {
       </View>
       <SignUpForm />
       <View className="flex-1" />
-      <Text className="mt-8 text-center text-muted">
+      <Text className="mt-8 text-center text-[15px] text-muted">
         {t('auth.sign_up.has_account')}{' '}
         <Text
           testID="sign-up-sign-in"
-          className="font-semibold text-accent"
+          className="font-semibold text-link"
           onPress={() => router.replace('/login')}
         >
           {t('auth.sign_up.sign_in')}

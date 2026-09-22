@@ -9,12 +9,16 @@ type AccountRowProps = { testID: string; title: string; value: string };
 
 function AccountRow({ testID, title, value }: AccountRowProps) {
   return (
-    <ListGroup.Item testID={testID} disabled>
+    <ListGroup.Item testID={testID} disabled className="min-h-[52px]">
       <ListGroup.ItemContent>
-        <ListGroup.ItemTitle>{title}</ListGroup.ItemTitle>
+        <ListGroup.ItemTitle className="font-normal text-[15px]">
+          {title}
+        </ListGroup.ItemTitle>
       </ListGroup.ItemContent>
       <ListGroup.ItemSuffix>
-        <Text className="text-muted">{value}</Text>
+        <Text className="text-[15px] text-muted" numberOfLines={1}>
+          {value}
+        </Text>
       </ListGroup.ItemSuffix>
     </ListGroup.Item>
   );

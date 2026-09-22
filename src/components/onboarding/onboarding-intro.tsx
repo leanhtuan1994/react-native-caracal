@@ -10,10 +10,10 @@ export function OnboardingIntro() {
   return (
     <View className="mt-6 gap-3">
       <PagerDots count={3} activeIndex={0} />
-      <Text className="font-semibold text-[13px] text-accent uppercase">
+      <Text className="font-semibold text-[13px] tracking-[1px] text-link uppercase">
         {t('onboarding.eyebrow')}
       </Text>
-      <Text className="font-bold text-[32px] leading-[38px] text-foreground">
+      <Text className="font-bold text-[32px] leading-9 tracking-tight text-foreground">
         {t('onboarding.title')}
       </Text>
       <Text className="text-base text-muted">

@@ -4,7 +4,6 @@ import { useTranslation } from 'react-i18next';
 import { withUniwind } from 'uniwind';
 
 import { InputGlass } from '@/components/glass';
-import { View } from '@/components/ui';
 import { useComingSoon } from '@/lib/hooks';
 
 const StyledIonicons = withUniwind(Ionicons);
@@ -16,29 +15,28 @@ export function PostSearch({ value, onChange }: PostSearchProps) {
   const showComingSoon = useComingSoon();
 
   return (
-    <View className="flex-row items-center gap-2">
-      <SearchField value={value} onChange={onChange} className="flex-1">
-        <SearchField.Group>
-          <SearchField.SearchIcon />
-          <SearchField.Input
-            testID="home-search-input"
-            placeholder={t('home.search_placeholder')}
-            className="h-[52px] text-[17px]"
-            background={<InputGlass />}
-          />
-          <SearchField.ClearButton />
-        </SearchField.Group>
-      </SearchField>
-      <Button
-        testID="home-voice-search"
-        isIconOnly
-        size="sm"
-        variant="ghost"
-        accessibilityLabel={t('home.voice_search')}
-        onPress={showComingSoon}
-      >
-        <StyledIonicons name="mic-outline" size={20} className="text-muted" />
-      </Button>
-    </View>
+    <SearchField value={value} onChange={onChange}>
+      <SearchField.Group>
+        <SearchField.SearchIcon iconProps={{ size: 22 }} className="left-4" />
+        <SearchField.Input
+          testID="home-search-input"
+          placeholder={t('home.search_placeholder')}
+          className="h-[52px] rounded-full border border-white/80 pr-24 pl-12 text-[17px] dark:border-white/10"
+          background={<InputGlass />}
+        />
+        <SearchField.ClearButton className="right-12" />
+        <Button
+          testID="home-voice-search"
+          isIconOnly
+          size="sm"
+          variant="ghost"
+          className="absolute right-1.5 size-10 rounded-full"
+          accessibilityLabel={t('home.voice_search')}
+          onPress={showComingSoon}
+        >
+          <StyledIonicons name="mic-outline" size={20} className="text-muted" />
+        </Button>
+      </SearchField.Group>
+    </SearchField>
   );
 }

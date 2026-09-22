@@ -23,6 +23,7 @@ The `NativeTabs` tab bar is not built from these parts; iOS 26 draws it with sys
 - **`GlassLayer`**: the platform-aware layer above. Pass `isInteractive` for pressable surfaces.
 - **`GlassSurface`**: a rounded, bordered HeroUI `Surface` with a `GlassLayer` inside. Use it for containers without a `background` prop, such as forms and cards.
 - **`ButtonGlass`, `InputGlass`, `ChipGlass`**: ready-made nodes for HeroUI's `background` prop.
+- **`GlassButton`**: a HeroUI `secondary` button with `ButtonGlass` and dark `text-foreground` label, used for Skip, Back, Edit profile, Logout and the other glass pills. Primary actions use `PrimaryButton` (`@/components/ui`): 54 px, accent fill and a soft blue glow.
 - **`GlassListSection`**: an uppercase section title plus a `GlassSurface` wrapping `ListGroup variant="transparent"`, used by Profile and Settings.
 
 ## Glass in a HeroUI `background` prop

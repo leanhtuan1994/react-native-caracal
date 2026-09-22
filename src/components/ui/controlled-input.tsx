@@ -1,11 +1,4 @@
-import {
-  Description,
-  FieldError,
-  Input,
-  InputGroup,
-  Label,
-  TextField,
-} from 'heroui-native';
+import { cn, Description, InputGroup, Label, TextField } from 'heroui-native';
 import { useState } from 'react';
 import type { Control, FieldValues, Path } from 'react-hook-form';
 import { useController } from 'react-hook-form';
@@ -13,6 +6,9 @@ import { useTranslation } from 'react-i18next';
 import type { TextInputProps } from 'react-native';
 import { View } from 'react-native';
 
+import { FieldErrorMessage } from './field-error-message';
+import type { InputIconName } from './input-prefix-icon';
+import { InputPrefixIcon } from './input-prefix-icon';
 import { PasswordToggle } from './password-toggle';
 
 type ControlledInputProps<T extends FieldValues> = {
@@ -23,6 +19,9 @@ type ControlledInputProps<T extends FieldValues> = {
   placeholder?: string;
   description?: string;
   isPassword?: boolean;
+  showPasswordToggle?: boolean;
+  icon?: InputIconName;
+  fieldClassName?: string;
   labelAccessory?: React.ReactNode;
 } & Pick<
   TextInputProps,
@@ -32,46 +31,49 @@ type ControlledInputProps<T extends FieldValues> = {
 export function ControlledInput<T extends FieldValues>(
   props: ControlledInputProps<T>
 ) {
-  const { control, name, label, description, isPassword, labelAccessory } =
-    props;
   const { t } = useTranslation();
-  const { field, fieldState } = useController({ control, name });
+  const { field, fieldState } = useController(props);
   const [isVisible, setIsVisible] = useState(false);
   const error = fieldState.error?.message;
-  const inputProps = {
-    testID: props.testID,
-    value: field.value ?? '',
-    onChangeText: field.onChange,
-    onBlur: field.onBlur,
-    placeholder: props.placeholder,
-    keyboardType: props.keyboardType,
-    autoComplete: props.autoComplete,
-    autoCapitalize: props.autoCapitalize,
-    textContentType: props.textContentType,
-  };
+  const { isPassword, showPasswordToggle = true, icon } = props;
 
   return (
     <TextField isInvalid={!!error}>
-      <View className="flex-row items-center justify-between">
-        <Label>{label}</Label>
-        {labelAccessory}
+      <View className="flex-row items-center justify-between px-1">
+        <Label isInvalid={false}>{props.label}</Label>
+        {props.labelAccessory}
       </View>
-      {isPassword ? (
-        <InputGroup>
-          <InputGroup.Input {...inputProps} secureTextEntry={!isVisible} />
-          <InputGroup.Suffix>
-            <PasswordToggle
-              testID={`${props.testID}-toggle`}
-              isVisible={isVisible}
-              onToggle={() => setIsVisible((value) => !value)}
-            />
-          </InputGroup.Suffix>
-        </InputGroup>
-      ) : (
-        <Input {...inputProps} />
-      )}
-      {description && !error ? <Description>{description}</Description> : null}
-      {error ? <FieldError>{t(error as never)}</FieldError> : null}
+      <InputGroup>
+        {icon ? <InputPrefixIcon name={icon} isInvalid={!!error} /> : null}
+        <InputGroup.Input
+          testID={props.testID}
+          value={field.value ?? ''}
+          onChangeText={field.onChange}
+          onBlur={field.onBlur}
+          placeholder={props.placeholder}
+          keyboardType={props.keyboardType}
+          autoComplete={props.autoComplete}
+          autoCapitalize={props.autoCapitalize}
+          textContentType={props.textContentType}
+          secureTextEntry={isPassword && !isVisible}
+          className={cn(
+            'h-[52px] rounded-2xl text-base',
+            error && 'border-2 border-danger bg-danger/5',
+            props.fieldClassName
+          )}
+        />
+        {isPassword && showPasswordToggle ? (
+          <PasswordToggle
+            testID={`${props.testID}-toggle`}
+            isVisible={isVisible}
+            onToggle={() => setIsVisible((value) => !value)}
+          />
+        ) : null}
+      </InputGroup>
+      {props.description && !error ? (
+        <Description className="px-1">{props.description}</Description>
+      ) : null}
+      {error ? <FieldErrorMessage message={t(error as never)} /> : null}
     </TextField>
   );
 }

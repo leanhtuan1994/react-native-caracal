@@ -134,7 +134,7 @@ The app uses Expo Router with typed routes (enabled in app.config.ts):
 
 ### Liquid glass
 
-Glass building blocks live in `src/components/glass`: `GlassLayer` (native iOS 26 glass, blur on older iOS, translucent view on Android), `GlassSurface`, `AmbientBackground`, `ButtonGlass` / `InputGlass` / `ChipGlass` (for HeroUI `background` props) and `GlassListSection`. Do not put live glass inside list cells; feed cards use a flat translucent surface. See `docs/content/docs/ui-and-theme/liquid-glass.mdx`.
+Glass building blocks live in `src/components/glass`: `GlassLayer` (native iOS 26 glass, blur on older iOS, translucent view on Android), `GlassSurface`, `AmbientBackground`, `ButtonGlass` / `InputGlass` / `ChipGlass` (for HeroUI `background` props), `GlassButton` and `GlassListSection`. Colors follow the Starter App Flow design: link text uses the `text-link` utility (`--link`), primary actions use `PrimaryButton`. Do not put live glass inside list cells; feed cards use a flat translucent surface. See `docs/content/docs/ui-and-theme/liquid-glass.mdx`.
 
 ### State Management Architecture
 

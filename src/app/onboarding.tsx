@@ -5,9 +5,9 @@ import { useTranslation } from 'react-i18next';
 import { withUniwind } from 'uniwind';
 
 import { AuthScreen, BrandMark } from '@/components/auth';
-import { ButtonGlass } from '@/components/glass';
+import { GlassButton } from '@/components/glass';
 import { FeatureGrid, OnboardingIntro } from '@/components/onboarding';
-import { Text, View } from '@/components/ui';
+import { PrimaryButton, Text, View } from '@/components/ui';
 import { useIsFirstTime } from '@/lib/hooks';
 
 const StyledIonicons = withUniwind(Ionicons);
@@ -26,17 +26,19 @@ export default function OnboardingScreen() {
       <View className="flex-row items-center justify-between">
         <View className="flex-row items-center gap-2.5">
           <BrandMark />
-          <Text className="font-bold text-lg text-foreground">Caracal</Text>
+          <Text className="font-bold text-xl tracking-tight text-foreground">
+            Caracal
+          </Text>
         </View>
-        <Button
+        <GlassButton
           testID="onboarding-skip"
           size="sm"
-          variant="secondary"
-          background={<ButtonGlass />}
+          className="h-10 px-4"
+          labelClassName="text-[15px]"
           onPress={() => finish('/login')}
         >
           {t('onboarding.skip')}
-        </Button>
+        </GlassButton>
       </View>
       <View className="mt-6">
         <FeatureGrid />
@@ -44,26 +46,27 @@ export default function OnboardingScreen() {
       <OnboardingIntro />
       <View className="flex-1" />
       <View className="mt-8 gap-3">
-        <Button
+        <PrimaryButton
           testID="onboarding-get-started"
-          variant="primary"
           onPress={() => finish('/sign-up')}
         >
-          <Button.Label>{t('onboarding.get_started')}</Button.Label>
+          <Button.Label className="font-semibold text-accent-foreground">
+            {t('onboarding.get_started')}
+          </Button.Label>
           <StyledIonicons
             name="arrow-forward"
             size={18}
             className="text-accent-foreground"
           />
-        </Button>
-        <Button
+        </PrimaryButton>
+        <GlassButton
           testID="onboarding-have-account"
-          variant="secondary"
-          background={<ButtonGlass />}
+          className="h-[54px]"
+          labelClassName="font-semibold"
           onPress={() => finish('/login')}
         >
           {t('onboarding.have_account')}
-        </Button>
+        </GlassButton>
       </View>
     </AuthScreen>
   );

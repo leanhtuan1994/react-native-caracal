@@ -3,11 +3,14 @@ import Svg from 'react-native-svg';
 import { withUniwind } from 'uniwind';
 
 export * from './controlled-input';
+export * from './field-error-message';
 export * from './focus-aware-status-bar';
+export * from './gradient-avatar';
 export * from './image';
 export * from './list';
 export * from './modal';
 export * from './password-toggle';
+export * from './primary-button';
 export * from './text';
 export * from './utils';
 

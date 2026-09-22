@@ -29,7 +29,7 @@ export default function ProfileScreen() {
         contentInsetAdjustmentBehavior="automatic"
         contentContainerClassName="gap-5 px-5 pb-32"
       >
-        <Text className="font-bold text-[34px] text-foreground">
+        <Text className="h-11 px-1 font-bold text-[30px] leading-[44px] tracking-tight text-foreground">
           {t('profile.title')}
         </Text>
         <ProfileIdentity user={user} />

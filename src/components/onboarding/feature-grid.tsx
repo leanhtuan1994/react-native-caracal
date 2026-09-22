@@ -5,6 +5,8 @@ import { withUniwind } from 'uniwind';
 import { GlassSurface } from '@/components/glass';
 import { Text, View } from '@/components/ui';
 
+import { PanelGlow } from './panel-glow';
+
 const StyledIonicons = withUniwind(Ionicons);
 
 const FEATURES = [
@@ -18,18 +20,19 @@ export function FeatureGrid() {
   const { t } = useTranslation();
 
   return (
-    <View className="flex-row flex-wrap justify-between gap-y-2.5 rounded-[30px] bg-foreground p-3.5 dark:bg-surface">
+    <View className="h-[280px] flex-row flex-wrap justify-between gap-y-2.5 overflow-hidden rounded-[30px] bg-[#0e1316] p-3.5">
+      <PanelGlow />
       {FEATURES.map(({ key, icon }) => (
         <GlassSurface
           key={key}
-          className="h-[118px] w-[48%] justify-between border-white/15 p-3.5"
+          className="h-[121px] w-[48.4%] justify-between rounded-[20px] border-white/15 bg-white/10 p-3.5"
         >
-          <StyledIonicons name={icon} size={22} className="text-accent" />
+          <StyledIonicons name={icon} size={24} className="text-[#5fd0f7]" />
           <View className="gap-0.5">
-            <Text className="font-semibold text-[15px] text-white">
+            <Text className="font-semibold text-[15px] text-[#fcfcfc]">
               {t(`onboarding.features.${key}_title`)}
             </Text>
-            <Text className="text-xs text-white/70">
+            <Text className="text-xs text-[#b3bcc1]">
               {t(`onboarding.features.${key}_desc`)}
             </Text>
           </View>

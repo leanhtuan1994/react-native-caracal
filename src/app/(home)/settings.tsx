@@ -3,7 +3,7 @@ import { Button } from 'heroui-native';
 import { useTranslation } from 'react-i18next';
 import { withUniwind } from 'uniwind';
 
-import { AmbientBackground } from '@/components/glass';
+import { AmbientBackground, GlassButton } from '@/components/glass';
 import {
   AboutSection,
   GeneralSection,
@@ -26,16 +26,16 @@ export default function SettingsScreen() {
         contentInsetAdjustmentBehavior="automatic"
         contentContainerClassName="gap-6 px-5 pb-32"
       >
-        <Text className="font-bold text-[34px] text-foreground">
+        <Text className="h-11 px-1 font-bold text-[30px] leading-[44px] tracking-tight text-foreground">
           {t('settings.title')}
         </Text>
         <GeneralSection />
         <SupportSection />
         <LinksSection />
         <AboutSection />
-        <Button
+        <GlassButton
           testID="settings-logout"
-          variant="danger-soft"
+          className="h-[54px]"
           onPress={signOut}
         >
           <StyledIonicons
@@ -43,8 +43,10 @@ export default function SettingsScreen() {
             size={18}
             className="text-danger"
           />
-          <Button.Label>{t('settings.logout')}</Button.Label>
-        </Button>
+          <Button.Label className="font-semibold text-danger">
+            {t('settings.logout')}
+          </Button.Label>
+        </GlassButton>
       </ScrollView>
     </View>
   );

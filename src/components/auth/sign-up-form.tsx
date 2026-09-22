@@ -1,9 +1,9 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Button, FieldError } from 'heroui-native';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 
 import { GlassSurface } from '@/components/glass';
+import { FieldErrorMessage, PrimaryButton } from '@/components/ui';
 import { AUTH_ERRORS, signUpWithEmail } from '@/lib/auth';
 
 import type { SignUpFormValues } from './schemas';
@@ -40,20 +40,17 @@ export function SignUpForm() {
   const rootError = formState.errors.root?.message;
 
   return (
-    <GlassSurface className="gap-4 p-5">
+    <GlassSurface className="gap-3.5 rounded-[28px] p-[18px]">
       <SignUpFields control={control} />
       <TermsCheckbox control={control} testID="sign-up-terms" />
-      {rootError ? (
-        <FieldError isInvalid>{t(rootError as never)}</FieldError>
-      ) : null}
-      <Button
+      {rootError ? <FieldErrorMessage message={t(rootError as never)} /> : null}
+      <PrimaryButton
         testID="sign-up-submit"
-        variant="primary"
         isDisabled={formState.isSubmitting}
         onPress={handleSubmit(onSubmit)}
       >
         {t('auth.sign_up.submit')}
-      </Button>
+      </PrimaryButton>
     </GlassSurface>
   );
 }

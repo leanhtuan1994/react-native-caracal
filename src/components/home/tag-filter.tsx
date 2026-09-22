@@ -1,4 +1,4 @@
-import { Chip } from 'heroui-native';
+import { Chip, cn } from 'heroui-native';
 import { useTranslation } from 'react-i18next';
 
 import { ChipGlass } from '@/components/glass';
@@ -32,10 +32,23 @@ export function TagFilter({ value, onChange }: TagFilterProps) {
             accessibilityRole="button"
             accessibilityState={{ selected: isSelected }}
             variant={isSelected ? 'primary' : 'secondary'}
-            background={isSelected ? undefined : <ChipGlass />}
+            background={isSelected ? null : <ChipGlass />}
+            className={cn(
+              'h-9 rounded-full px-4',
+              isSelected && 'bg-foreground'
+            )}
             onPress={() => onChange(tag)}
           >
-            {label}
+            <Chip.Label
+              className={cn(
+                'text-sm',
+                isSelected
+                  ? 'font-semibold text-background'
+                  : 'font-medium text-foreground'
+              )}
+            >
+              {label}
+            </Chip.Label>
           </Chip>
         );
       })}

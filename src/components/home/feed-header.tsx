@@ -23,13 +23,13 @@ export function FeedHeader(props: FeedHeaderProps) {
       <HomeHeader />
       <PostSearch value={props.search} onChange={props.onSearchChange} />
       <TagFilter value={props.tag} onChange={props.onTagChange} />
-      <View className="flex-row items-center justify-between pt-1">
+      <View className="flex-row items-center justify-between px-1 pt-1">
         <Text className="font-bold text-lg text-foreground">
           {t('home.latest')}
         </Text>
         <Text
           testID="home-see-all"
-          className="text-sm text-accent"
+          className="font-semibold text-sm text-link"
           onPress={showComingSoon}
         >
           {t('home.see_all')}
