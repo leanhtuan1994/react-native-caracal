@@ -5,7 +5,7 @@ tags:
 # clearState wipes the dev client's last server, so reconnect it to Metro.
 - clearState
 - launchApp
-- openLink: exp+caracalapp://expo-development-client/?url=http%3A%2F%2Flocalhost%3A8081
+- openLink: exp+caracalapp://expo-development-client/?url=${METRO_URL}
 # The dev client shows its developer menu once after a fresh connection.
 - extendedWaitUntil:
     visible: 'Continue'

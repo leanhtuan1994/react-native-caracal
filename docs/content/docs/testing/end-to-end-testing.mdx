@@ -54,6 +54,15 @@ The flows run against the development build:
 1. Start the app with `pnpm ios --device <simulator UDID>`; this also starts Metro on port 8081.
 2. Run `pnpm e2e-test`. To target one simulator, add `--device <UDID>`.
 
+If port 8081 is taken (another project's Metro, for example), start this app on another port and tell the flows about it:
+
+```bash
+pnpm ios --device <UDID> --port 8082
+pnpm e2e-test --device <UDID> -e METRO_URL=http%3A%2F%2Flocalhost%3A8082
+```
+
+`METRO_URL` is the URL-encoded Metro address that `utils/launch-app.yaml` uses to reconnect the development build after `clearState`.
+
 <Callout type="warn">
 Prepare the simulator once before running the suite:
 
