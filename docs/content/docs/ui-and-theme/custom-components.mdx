@@ -137,7 +137,7 @@ A react-hook-form field built from HeroUI Native's `TextField`, `Label`, `Input`
 ### Why a custom ControlledInput?
 
 - **Form Integration:** Pre-wired with react-hook-form's `useController`
-- **Translated errors:** Zod messages are translation keys; the field renders `t(message)`
+- **Translated errors:** Zod messages are translation keys; the field renders `t(message)` in a `FieldErrorMessage` with an alert icon, and the field turns to the red error state while the label stays in the normal color
 - **Password toggle:** `isPassword` adds a show/hide eye button (`PasswordToggle`)
 - **Label accessory:** Room for an action next to the label, such as "Forgot password?"
 
@@ -147,6 +147,9 @@ A react-hook-form field built from HeroUI Native's `TextField`, `Label`, `Input`
 - `testID` — test id of the input (required); the password toggle gets `${testID}-toggle`
 - `placeholder`, `description` — optional hint text; the description hides while an error shows
 - `isPassword` — secure entry with a show/hide toggle
+- `showPasswordToggle` — set to `false` to hide that toggle (Create account does)
+- `icon` — an Ionicons name rendered at the start of the field, such as `mail-outline`
+- `fieldClassName` — extra classes for the field, for example `h-12` for a shorter input
 - `labelAccessory` — a node rendered at the end of the label row
 - `keyboardType`, `autoComplete`, `autoCapitalize`, `textContentType` — passed to the input
 

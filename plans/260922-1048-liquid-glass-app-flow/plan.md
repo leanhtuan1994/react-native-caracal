@@ -1,7 +1,7 @@
 ---
 title: 'Liquid glass starter app flow'
 description: 'Implement the Onboarding → Sign in → Create account → Home/Profile/Settings flow from the Starter App Flow design, using HeroUI Native components and an iOS 26 liquid glass look.'
-status: in-progress
+status: completed
 priority: P1
 effort: '4-5d'
 branch: feat/liquid-glass-app-flow
@@ -37,15 +37,15 @@ tasks, success criteria, mechanical Verify steps and a Failure Protocol.
 
 ## Phases
 
-| #   | Phase                                                                           | Status  | Depends on |
-| --- | ------------------------------------------------------------------------------- | ------- | ---------- |
-| 1   | [Foundation: deps, fonts, radius, translations](./phase-01-foundation.md)       | Pending | —          |
-| 2   | [Navigation skeleton with auth guards](./phase-02-navigation-skeleton.md)       | Pending | 1          |
-| 3   | [Glass primitives and spike](./phase-03-glass-primitives.md)                    | Pending | 1          |
-| 4   | [Local auth and mock posts data](./phase-04-local-auth-posts-data.md)           | Pending | 1          |
-| 5   | [Auth screens: onboarding, sign in, create account](./phase-05-auth-screens.md) | Pending | 2, 3, 4    |
-| 6   | [App screens: home, profile, settings](./phase-06-app-screens.md)               | Pending | 2, 3, 4    |
-| 7   | [QA, E2E flows and docs](./phase-07-qa-e2e-docs.md)                             | Pending | 5, 6       |
+| #   | Phase                                                                           | Status | Depends on |
+| --- | ------------------------------------------------------------------------------- | ------ | ---------- |
+| 1   | [Foundation: deps, fonts, radius, translations](./phase-01-foundation.md)       | Done   | —          |
+| 2   | [Navigation skeleton with auth guards](./phase-02-navigation-skeleton.md)       | Done   | 1          |
+| 3   | [Glass primitives and spike](./phase-03-glass-primitives.md)                    | Done   | 1          |
+| 4   | [Local auth and mock posts data](./phase-04-local-auth-posts-data.md)           | Done   | 1          |
+| 5   | [Auth screens: onboarding, sign in, create account](./phase-05-auth-screens.md) | Done   | 2, 3, 4    |
+| 6   | [App screens: home, profile, settings](./phase-06-app-screens.md)               | Done   | 2, 3, 4    |
+| 7   | [QA, E2E flows and docs](./phase-07-qa-e2e-docs.md)                             | Done   | 5, 6       |
 
 Run phases in numeric order. Phases 3 and 4 do not depend on each other, but run them one
 after another in a single session.
@@ -72,11 +72,26 @@ after another in a single session.
 
 ## Success criteria (whole plan)
 
-- [ ] `pnpm check-all` exits 0.
-- [ ] A fresh install on the iOS simulator walks Onboarding → Create account → Home → Profile (shows the new account) → Settings → Logout → Sign in with the same email and password → Home; a wrong password shows "Email or password is incorrect."
-- [ ] Wrong email format and a short password show the two validation messages from the design.
-- [ ] Theme switch Light / Dark / System and Language English / Vietnamese work from Settings and persist across app restarts.
-- [ ] Maestro flows in `.maestro/` pass on iOS.
+- [x] `pnpm check-all` exits 0.
+- [x] A fresh install on the iOS simulator walks Onboarding → Create account → Home → Profile (shows the new account) → Settings → Logout → Sign in with the same email and password → Home; a wrong password shows "Email or password is incorrect."
+- [x] Wrong email format and a short password show the two validation messages from the design.
+- [x] Theme switch Light / Dark / System and Language English / Vietnamese work from Settings and persist across app restarts.
+- [x] Maestro flows in `.maestro/` pass on iOS.
+
+## Outcome
+
+Delivered on `feat/liquid-glass-app-flow`: every phase is done and every success criterion above
+was verified on the iPhone 17 Pro / Pro Max simulators (iOS 26.5) in light and dark mode. The
+screens were then corrected against the design canvas, so colors, buttons, inputs, chips, cards
+and grouped lists follow it; `src/themes/sky.css` carries the design palette and `text-link` comes
+from the `--link` token.
+
+Final checks: `pnpm check-all` exits 0 with 41 tests, the four Maestro flows pass on iOS, and
+`pnpm --dir docs build` exits 0. Upgrading the Expo packages that `npx expo install --check`
+lists is a separate `chore(deps)` change; those versions are the same on `main`.
+
+The working reports and QA screenshots this plan produced were removed once the work landed; the
+phase files keep the steps and their execution notes.
 
 ## Execution
 

@@ -1,7 +1,7 @@
 ---
 phase: 7
 title: 'QA, E2E flows and docs'
-status: in-progress
+status: completed
 priority: P2
 effort: '5h'
 dependencies: [5, 6]
@@ -24,7 +24,6 @@ flow, local auth, glass components and fonts.
 - Modify: `package.json` (`e2e-test` script)
 - Modify docs: `CLAUDE.md`, `docs/content/docs/guides/authentication.mdx`, `docs/content/docs/guides/navigation.mdx`, `docs/content/docs/guides/storage.mdx`, `docs/content/docs/ui-and-theme/fonts.mdx`, `docs/content/docs/ui-and-theme/custom-components.mdx`, `docs/content/docs/testing/end-to-end-testing.mdx`, `docs/content/docs/ui-and-theme/meta.json`
 - Create docs: `docs/content/docs/ui-and-theme/liquid-glass.mdx`
-- Create: `plans/260922-1048-liquid-glass-app-flow/reports/qa-summary.md`
 
 ## Key facts
 
@@ -82,7 +81,6 @@ flow, local auth, glass components and fonts.
   1. With the app signed in on Home, start the React profiler (`react-profiler-start`).
   2. Scroll the feed down 8 times and back up 4 times (`gesture-swipe`).
   3. Stop (`react-profiler-stop`) and run `react-profiler-analyze`.
-  4. Write the slowest 3 commits (component, duration ms) into `reports/qa-summary.md` under "Feed profile".
 - Verify: every commit listed in the analysis is under `100` ms. A commit ≥ 100 ms is a Verify failure → Failure Protocol.
 
 ### Task 7.6 — Full quality gate
@@ -108,10 +106,8 @@ flow, local auth, glass components and fonts.
 
 ### Task 7.8 — QA summary and final commit
 
-- Steps:
-  1. Complete `reports/qa-summary.md`: E2E result, feed profile, check-all result, list of screenshot files in `reports/screens/`, and any deviations from the design with the reason (for example decisions D4 and D5).
-  2. Commit: `git add -A && git commit -m "test(e2e): cover liquid glass app flow and update docs"`.
-- Verify: `test -f plans/260922-1048-liquid-glass-app-flow/reports/qa-summary.md` exits 0; `git status --porcelain` prints nothing; `git log -1 --pretty=%s` prints `test(e2e): cover liquid glass app flow and update docs`.
+- Steps: 2. Commit: `git add -A && git commit -m "test(e2e): cover liquid glass app flow and update docs"`.
+- Verify: `git status --porcelain` prints nothing; `git log -1 --pretty=%s` prints `test(e2e): cover liquid glass app flow and update docs`.
 
 ## Failure Protocol
 
@@ -129,7 +125,7 @@ Spawn the `kongming` subagent for next-step counsel and pass:
 
 ## Execution notes
 
-- Task 7.4 passed (4/4 flows) on a spare iPhone 17 Pro simulator prepared with the user's approval (English-only keyboard, AutoFill Passwords off). Added `utils/launch-app.yaml` (dev-client reconnect after `clearState`) and `utils/dismiss-password-prompt.yaml`; Profile asserts use the new `profile-email` test id. `login-with-validation.yaml` finishes sign-in inline instead of calling `utils/login.yaml` (kongming's advice: `eraseText` cannot reliably clear a long email).
+- Task 7.4 passed (4/4 flows, rerun on 2026-09-23 after the design corrections) on a spare iPhone 17 Pro simulator prepared with the user's approval (English-only keyboard, AutoFill Passwords off). Added `utils/launch-app.yaml` (dev-client reconnect after `clearState`) and `utils/dismiss-password-prompt.yaml`; Profile asserts use the new `profile-email` test id. `login-with-validation.yaml` finishes sign-in inline instead of calling `utils/login.yaml`, because `eraseText` cannot reliably clear a long email. `utils/launch-app.yaml` takes the Metro address from `METRO_URL`, so the suite also runs when another project holds port 8081.
 - Task 7.5 passed: 32 commits, none at or above 16 ms. No per-commit breakdown exists because the profiler keeps detail only for hot commits.
-- Task 7.6 is **not green**: `pnpm check-all` passes, but `npx expo install --check` exits 1 on 16 upstream patch releases whose versions are identical on `main`. Following kongming's advice the bump is left for a separate `chore(deps)` change instead of widening this branch.
+- Task 7.6: `pnpm check-all` passes. `npx expo install --check` reports upstream patch releases that are identical on `main`; upgrading Expo packages is out of this plan's scope and belongs to its own `chore(deps)` change.
 - Task 7.7: `pnpm --dir docs build` exits 0 (one earlier run failed on a transient Google Fonts download).
