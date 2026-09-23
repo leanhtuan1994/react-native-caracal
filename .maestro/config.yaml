@@ -6,7 +6,9 @@ excludeTags:
   - util
 
 executionOrder:
-    continueOnFailure: false # default is true
-    flowsOrder:
-        - onboarding
-        - login-with-validation
+  continueOnFailure: false # default is true
+  flowsOrder:
+    - onboarding
+    - sign-up
+    - login-with-validation
+    - tabs

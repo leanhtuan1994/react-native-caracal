@@ -34,6 +34,18 @@ export function removeItem(key: string): void {
 }
 ```
 
+## Keys used by the starter
+
+| Key | Written by | Contents |
+| --- | --- | --- |
+| `accounts` | `src/lib/auth/accounts.ts` | Local accounts: id, full name, email, salt and password hash |
+| `session` | `src/lib/auth/utils.tsx` | `{ userId }` of the signed-in account |
+| `IS_FIRST_TIME` | `useIsFirstTime()` | Whether onboarding was completed |
+| `SELECTED_THEME` | `useSelectedTheme()` | `light`, `dark` or `system` |
+| `local` | `useSelectedLanguage()` | `en` or `vi` |
+
+Passwords are only ever stored as a salted SHA-256 hash, never in plain text.
+
 ## Why MMKV?
 
 - **Synchronous**: No `async`/`await` needed — reads and writes are instant

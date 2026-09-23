@@ -1,10 +1,20 @@
 import React from 'react';
 import { useMMKVString } from 'react-native-mmkv';
+import { Uniwind } from 'uniwind';
 
 import { type ThemeName, useAppTheme } from '../contexts/app-theme-context';
 import { storage } from '../storage';
 
 const SELECTED_THEME = 'SELECTED_THEME';
+
+const THEME_NAMES: ThemeName[] = ['light', 'dark', 'system'];
+
+export function loadSelectedTheme(): void {
+  const value = storage.getString(SELECTED_THEME);
+  if (value && THEME_NAMES.includes(value as ThemeName)) {
+    Uniwind.setTheme(value as ThemeName);
+  }
+}
 
 /**
  * this hooks should only be used while selecting the theme

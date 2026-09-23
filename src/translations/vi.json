@@ -1,6 +1,93 @@
 {
+  "auth": {
+    "email": "Email",
+    "email_placeholder": "ban@vidu.com",
+    "hide_password": "Ẩn mật khẩu",
+    "login": {
+      "create_account": "Tạo tài khoản",
+      "error": "Email hoặc mật khẩu không đúng.",
+      "forgot": "Quên mật khẩu?",
+      "no_account": "Mới dùng Caracal?",
+      "submit": "Đăng nhập",
+      "subtitle": "Đăng nhập để tiếp tục với Caracal.",
+      "title": "Chào mừng trở lại"
+    },
+    "password": "Mật khẩu",
+    "password_placeholder": "Ít nhất 6 ký tự",
+    "show_password": "Hiện mật khẩu",
+    "sign_up": {
+      "and": "và",
+      "confirm_password": "Xác nhận mật khẩu",
+      "confirm_placeholder": "Nhập lại mật khẩu",
+      "email_taken": "Email này đã có tài khoản.",
+      "error": "Không thể tạo tài khoản. Vui lòng thử lại.",
+      "full_name": "Họ và tên",
+      "full_name_placeholder": "Nguyễn Văn A",
+      "has_account": "Đã có tài khoản?",
+      "password_hint": "Ít nhất 6 ký tự.",
+      "password_placeholder": "Tạo mật khẩu",
+      "sign_in": "Đăng nhập",
+      "submit": "Tạo tài khoản",
+      "subtitle": "Chỉ mất chưa đến một phút.",
+      "terms_prefix": "Tôi đồng ý với",
+      "title": "Tạo tài khoản"
+    },
+    "validation": {
+      "email_invalid": "Email không hợp lệ",
+      "email_required": "Vui lòng nhập email",
+      "name_required": "Vui lòng nhập họ và tên",
+      "password_min": "Mật khẩu phải có ít nhất 6 ký tự",
+      "password_mismatch": "Mật khẩu không khớp",
+      "password_required": "Vui lòng nhập mật khẩu",
+      "terms_required": "Vui lòng đồng ý điều khoản để tiếp tục"
+    }
+  },
+  "common": {
+    "back": "Quay lại",
+    "coming_soon": "Sắp ra mắt",
+    "language_short": "VI"
+  },
+  "home": {
+    "all": "Tất cả",
+    "empty": "Không có bài viết nào.",
+    "greeting_afternoon": "Chào buổi chiều",
+    "greeting_evening": "Chào buổi tối",
+    "greeting_morning": "Chào buổi sáng",
+    "latest": "Bài viết mới nhất",
+    "notifications": "Thông báo",
+    "search_placeholder": "Tìm bài viết",
+    "see_all": "Xem tất cả",
+    "voice_search": "Tìm bằng giọng nói"
+  },
   "onboarding": {
-    "message": "Chào mừng đến với Caracal"
+    "description": "Điều hướng, giao diện, tải dữ liệu và lưu trữ an toàn đã được cài sẵn — hãy tập trung xây tính năng.",
+    "eyebrow": "Chào mừng đến với Caracal",
+    "features": {
+      "heroui_desc": "Tạo kiểu bằng Uniwind",
+      "heroui_title": "HeroUI Native",
+      "query_desc": "Tải dữ liệu có kiểu",
+      "query_title": "React Query",
+      "router_desc": "Điều hướng theo file, có kiểu",
+      "router_title": "Expo Router",
+      "storage_desc": "Trạng thái nhanh, được lưu lại",
+      "storage_title": "Zustand + MMKV"
+    },
+    "get_started": "Bắt đầu",
+    "have_account": "Tôi đã có tài khoản",
+    "message": "Chào mừng đến với Caracal",
+    "skip": "Bỏ qua",
+    "title": "Mọi thứ ứng dụng cần, ngay từ ngày đầu."
+  },
+  "profile": {
+    "account": "Tài khoản",
+    "change_password": "Đổi mật khẩu",
+    "edit": "Sửa hồ sơ",
+    "email": "Email",
+    "full_name": "Họ và tên",
+    "security": "Bảo mật",
+    "sign_out": "Đăng xuất",
+    "title": "Hồ sơ",
+    "username": "Tên đăng nhập"
   },
   "settings": {
     "about": "Giới thiệu",
@@ -28,6 +115,11 @@
     "version": "Phiên bản",
     "vietnamese": "Tiếng Việt",
     "website": "Trang web"
+  },
+  "tabs": {
+    "home": "Trang chủ",
+    "profile": "Hồ sơ",
+    "settings": "Cài đặt"
   },
   "welcome": "Chào mừng đến với Caracal"
 }

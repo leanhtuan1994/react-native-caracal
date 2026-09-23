@@ -3,21 +3,21 @@ title: Fonts
 description: How to add custom fonts to your app.
 ---
 
-Caracal ships with the [Inter](https://fonts.google.com/specimen/Inter) family from `@expo-google-fonts/inter`, loaded at runtime in `src/app/_layout.tsx`:
+Caracal ships with the [Space Grotesk](https://fonts.google.com/specimen/Space+Grotesk) family from `@expo-google-fonts/space-grotesk`, loaded at runtime in `src/app/_layout.tsx`. Each weight is registered under the family name that the `--font-*` variables in `src/themes/sky.css` use:
 
 ```tsx title="src/app/_layout.tsx"
-import { Inter_400Regular } from '@expo-google-fonts/inter/400Regular';
-import { Inter_500Medium } from '@expo-google-fonts/inter/500Medium';
-import { Inter_600SemiBold } from '@expo-google-fonts/inter/600SemiBold';
-import { Inter_700Bold } from '@expo-google-fonts/inter/700Bold';
+import { SpaceGrotesk_400Regular } from '@expo-google-fonts/space-grotesk/400Regular';
+import { SpaceGrotesk_500Medium } from '@expo-google-fonts/space-grotesk/500Medium';
+import { SpaceGrotesk_600SemiBold } from '@expo-google-fonts/space-grotesk/600SemiBold';
+import { SpaceGrotesk_700Bold } from '@expo-google-fonts/space-grotesk/700Bold';
 import { useFonts } from 'expo-font';
 
 export default function RootLayout() {
   const [loaded] = useFonts({
-    Inter_400Regular,
-    Inter_500Medium,
-    Inter_600SemiBold,
-    Inter_700Bold,
+    'SpaceGrotesk-Regular': SpaceGrotesk_400Regular,
+    'SpaceGrotesk-Medium': SpaceGrotesk_500Medium,
+    'SpaceGrotesk-SemiBold': SpaceGrotesk_600SemiBold,
+    'SpaceGrotesk-Bold': SpaceGrotesk_700Bold,
   });
 
   if (!loaded) {
@@ -33,7 +33,7 @@ The app renders nothing until `loaded` is true, which keeps text from flashing i
 <Callout type="warn">
 Import each weight by its **subpath**, and take `useFonts` from `expo-font` rather
 than from the font package. The package barrel re-exports every weight and italic
-the family ships — 18 files for Inter — and all of them are linked into the native
+the family ships — for Inter that was 18 files — and all of them are linked into the native
 build, because React Native resolves fonts by name at runtime and no bundler or
 shrinker can prove the unused ones dead. An ESLint rule enforces this.
 </Callout>
@@ -54,7 +54,7 @@ No prebuild is needed — these packages ship the font files as JS assets.
 
 ## Adding a local font file
 
-For a font that is not on Google Fonts, create an `assets/fonts` folder (the starter has none, since Inter ships as a package), put the file in it, and register it with the `expo-font` config plugin. Caracal already lists the plugin in `app.config.ts`; add a `fonts` array to it:
+For a font that is not on Google Fonts, create an `assets/fonts` folder (the starter has none, since Space Grotesk ships as a package), put the file in it, and register it with the `expo-font` config plugin. Caracal already lists the plugin in `app.config.ts`; add a `fonts` array to it:
 
 ```ts title="app.config.ts"
 import type { ConfigContext, ExpoConfig } from '@expo/config';
@@ -84,17 +84,17 @@ Font families are theme tokens, set in `src/themes/sky.css` — not in a `tailwi
 @layer theme {
   :root {
     @variant light {
-      --font-normal: "Inter_400Regular";
-      --font-medium: "Inter_500Medium";
-      --font-semibold: "Inter_600SemiBold";
-      --font-bold: "Inter_700Bold";
+      --font-normal: "SpaceGrotesk-Regular";
+      --font-medium: "SpaceGrotesk-Medium";
+      --font-semibold: "SpaceGrotesk-SemiBold";
+      --font-bold: "SpaceGrotesk-Bold";
       /* ... */
     }
   }
 }
 ```
 
-The value must match the name the font is registered under — the export name for `@expo-google-fonts` packages, or the file's PostScript name for a local file. These tokens back the `font-normal`, `font-medium`, `font-semibold`, and `font-bold` class names, and HeroUI Native components read them too:
+The value must match the name the font is registered under — the key you pass to `useFonts` (Caracal remaps the `@expo-google-fonts` exports to `SpaceGrotesk-*` names), or the file's PostScript name for a local file. These tokens back the `font-normal`, `font-medium`, `font-semibold`, and `font-bold` class names, and HeroUI Native components read them too:
 
 ```tsx
 <Text className="font-bold text-lg">Hello</Text>

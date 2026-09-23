@@ -1,0 +1,59 @@
+---
+title: Liquid Glass
+description: The glass building blocks in src/components/glass and when to use each one.
+---
+
+Caracal's screens use an iOS 26 "liquid glass" look: translucent controls and cards floating over soft color blobs. The building blocks live in `src/components/glass` and pick the right effect per platform.
+
+## What each platform gets
+
+`GlassLayer` is an absolute-fill layer that chooses one of three effects:
+
+| Platform | Effect |
+| --- | --- |
+| iOS 26+ (`isLiquidGlassAvailable()`) | Native liquid glass from `expo-glass-effect` `GlassView` |
+| Older iOS | HeroUI Native `GlassView` (an `expo-blur` blur, `intensity={60}`) |
+| Android | A translucent `bg-surface/70` view, no live blur |
+
+The `NativeTabs` tab bar is not built from these parts; iOS 26 draws it with system glass on its own.
+
+## Building blocks
+
+- **`AmbientBackground`**: three radial SVG gradients over `bg-background`, with lighter opacity in dark mode. Put it first on every screen so glass has something to refract.
+- **`GlassLayer`**: the platform-aware layer above. Pass `isInteractive` for pressable surfaces.
+- **`GlassSurface`**: a rounded, bordered HeroUI `Surface` with a `GlassLayer` inside. Use it for containers without a `background` prop, such as forms and cards.
+- **`ButtonGlass`, `InputGlass`, `ChipGlass`**: ready-made nodes for HeroUI's `background` prop.
+- **`GlassButton`**: a HeroUI `secondary` button with `ButtonGlass` and dark `text-foreground` label, used for Skip, Back, Edit profile, Logout and the other glass pills. Primary actions use `PrimaryButton` (`@/components/ui`): 54 px, accent fill and a soft blue glow.
+- **`GlassListSection`**: an uppercase section title plus a `GlassSurface` wrapping `ListGroup variant="transparent"`, used by Profile and Settings.
+
+## Glass in a HeroUI `background` prop
+
+`Button`, `Input` (including `SearchField.Input`), `Chip`, `Avatar` and `Checkbox` accept a `background` node that replaces their default surface layer:
+
+```tsx
+import { Button } from 'heroui-native';
+
+import { ButtonGlass } from '@/components/glass';
+
+<Button variant="secondary" background={<ButtonGlass />}>
+  I already have an account
+</Button>;
+```
+
+Do not also add a `bg-*` class to a component that gets a glass `background`; the two layers fight.
+
+## When to use `GlassSurface`
+
+`Card`, `Surface` and `ListGroup` have no `background` prop. Wrap their content in `GlassSurface` instead:
+
+```tsx
+<GlassSurface className="gap-5 p-5">
+  <ControlledInput ... />
+</GlassSurface>
+```
+
+Do not stack glass on glass: inputs inside a `GlassSurface` keep their default field background.
+
+## No live glass in list cells
+
+Live blur in every row of a scrolling list is expensive. Feed cards (`PostCard`) use a flat translucent surface (`bg-surface/60` with a light border) instead of `GlassLayer`. Keep live glass for non-scrolling chrome: header buttons, the search field, forms, grouped lists and buttons.

@@ -83,9 +83,10 @@ Our design tokens live in `src/themes/sky.css`, declared as CSS custom propertie
 @layer theme {
   :root {
     @variant light {
-      --background: oklch(97.02% 0.0048 225);
-      --foreground: oklch(21.03% 0.0059 225);
-      --accent: oklch(78% 0.16 225);
+      --background: #eef3f6;
+      --foreground: #16191b;
+      --accent: #25b9ee;
+      --link: #00709c;
       /* ... */
     }
 
@@ -96,7 +97,7 @@ Our design tokens live in `src/themes/sky.css`, declared as CSS custom propertie
 }
 ```
 
-To use your own palette, edit the token values in `src/themes/sky.css` (or add another theme file and import it from `global.css`). The tokens back Tailwind class names such as `bg-background`, `text-foreground`, and `bg-accent`, and HeroUI Native components read the same tokens, so both stay in sync.
+To use your own palette, edit the token values in `src/themes/sky.css` (or add another theme file and import it from `global.css`). The tokens back Tailwind class names such as `bg-background`, `text-foreground`, and `bg-accent`, and HeroUI Native components read the same tokens, so both stay in sync. `global.css` also maps `--link` to a `text-link` utility, which the app uses for inline links.
 
 You can read more in the [Uniwind documentation](https://docs.uniwind.dev/) and the [TailwindCSS v4 theme docs](https://tailwindcss.com/docs/theme).
 

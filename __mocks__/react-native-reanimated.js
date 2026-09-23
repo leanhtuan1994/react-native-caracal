@@ -1,6 +1,21 @@
 const React = require('react');
 const { View, Text, Image, ScrollView, Pressable } = require('react-native');
 
+const mockSharedValue = (initial) => {
+  const sharedValue = {
+    value: initial,
+    get: () => sharedValue.value,
+    set: (next) => {
+      sharedValue.value =
+        typeof next === 'function' ? next(sharedValue.value) : next;
+    },
+    modify: (modifier) => {
+      sharedValue.value = modifier(sharedValue.value);
+    },
+  };
+  return sharedValue;
+};
+
 const Reanimated = {
   default: {
     Value: jest.fn(),
@@ -23,12 +38,12 @@ const Reanimated = {
     ScrollView,
     Pressable,
     createAnimatedComponent: (Component) => Component,
-    useSharedValue: jest.fn((value) => ({ value })),
+    useSharedValue: jest.fn((value) => mockSharedValue(value)),
     useAnimatedStyle: jest.fn((callback) => callback()),
     useAnimatedGestureHandler: jest.fn(() => ({})),
     useAnimatedScrollHandler: jest.fn(() => ({})),
     useAnimatedRef: jest.fn(() => ({ current: null })),
-    useDerivedValue: jest.fn((callback) => ({ value: callback() })),
+    useDerivedValue: jest.fn((callback) => mockSharedValue(callback())),
     useAnimatedReaction: jest.fn(),
     useAnimatedProps: jest.fn(() => ({})),
     useReducedMotion: jest.fn(() => false),

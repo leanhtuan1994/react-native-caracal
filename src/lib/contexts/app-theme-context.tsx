@@ -1,7 +1,7 @@
 import React, { createContext, useCallback, useContext, useMemo } from 'react';
 import { Uniwind, useUniwind } from 'uniwind';
 
-export type ThemeName = 'light' | 'dark';
+export type ThemeName = 'light' | 'dark' | 'system';
 
 interface AppThemeContextType {
   currentTheme: string;

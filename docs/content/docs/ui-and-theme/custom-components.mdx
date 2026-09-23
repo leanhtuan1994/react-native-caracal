@@ -132,72 +132,71 @@ Use the `t` snippet in VSCode to quickly create a Text component with a default 
 
 ## ControlledInput Component
 
-A wrapper around HeroUI Native's `TextField` integrated with `react-hook-form` for seamless form handling.
+A react-hook-form field built from HeroUI Native's `TextField`, `Label`, `Input` / `InputGroup`, `Description` and `FieldError` (`src/components/ui/controlled-input.tsx`).
 
 ### Why a custom ControlledInput?
 
 - **Form Integration:** Pre-wired with react-hook-form's `useController`
-- **Validation Support:** Automatically displays validation errors
-- **Type Safety:** Full TypeScript support with form schemas
-- **Consistent API:** Same props as TextField but controlled
+- **Translated errors:** Zod messages are translation keys; the field renders `t(message)` in a `FieldErrorMessage` with an alert icon, and the field turns to the red error state while the label stays in the normal color
+- **Password toggle:** `isPassword` adds a show/hide eye button (`PasswordToggle`)
+- **Label accessory:** Room for an action next to the label, such as "Forgot password?"
 
 **Props:**
-- All HeroUI Native `TextField` props
-- `control` - react-hook-form control object (required)
-- `name` - Field name in form (required)
-- Additional react-hook-form controller props
+- `control`, `name` — react-hook-form control and field name (required)
+- `label` — visible label (required)
+- `testID` — test id of the input (required); the password toggle gets `${testID}-toggle`
+- `placeholder`, `description` — optional hint text; the description hides while an error shows
+- `isPassword` — secure entry with a show/hide toggle
+- `showPasswordToggle` — set to `false` to hide that toggle (Create account does)
+- `icon` — an Ionicons name rendered at the start of the field, such as `mail-outline`
+- `fieldClassName` — extra classes for the field, for example `h-12` for a shorter input
+- `labelAccessory` — a node rendered at the end of the label row
+- `keyboardType`, `autoComplete`, `autoCapitalize`, `textContentType` — passed to the input
 
 **Example:**
 
 ```tsx
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm } from 'react-hook-form';
-import { KeyboardAvoidingView } from 'react-native-keyboard-controller';
-import * as z from 'zod';
 import { Button } from 'heroui-native';
+import { useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
+import * as z from 'zod';
+
 import { ControlledInput, View } from '@/components/ui';
 
 const schema = z.object({
-  email: z.string().email('Invalid email format'),
-  password: z.string().min(6, 'Password must be at least 6 characters'),
+  email: z.string().email('auth.validation.email_invalid'),
+  password: z.string().min(6, 'auth.validation.password_min'),
 });
 
 type FormData = z.infer<typeof schema>;
 
-export function LoginForm() {
+export function LoginForm({ onSubmit }: { onSubmit: (data: FormData) => void }) {
+  const { t } = useTranslation();
   const { control, handleSubmit } = useForm<FormData>({
     resolver: zodResolver(schema),
+    defaultValues: { email: '', password: '' },
   });
 
-  const onSubmit = (data: FormData) => {
-    console.log(data);
-  };
-
   return (
-    <KeyboardAvoidingView behavior="padding" className="flex-1 p-4">
-      <View className="gap-4">
-        <ControlledInput
-          control={control}
-          name="email"
-          label="Email"
-          placeholder="Enter your email"
-          keyboardType="email-address"
-          autoCapitalize="none"
-        />
-
-        <ControlledInput
-          control={control}
-          name="password"
-          label="Password"
-          placeholder="Enter your password"
-          secureTextEntry
-        />
-
-        <Button onPress={handleSubmit(onSubmit)}>
-          Sign In
-        </Button>
-      </View>
-    </KeyboardAvoidingView>
+    <View className="gap-4">
+      <ControlledInput
+        control={control}
+        name="email"
+        label={t('auth.email')}
+        testID="login-email-input"
+        keyboardType="email-address"
+        autoCapitalize="none"
+      />
+      <ControlledInput
+        control={control}
+        name="password"
+        label={t('auth.password')}
+        testID="login-password-input"
+        isPassword
+      />
+      <Button onPress={handleSubmit(onSubmit)}>{t('auth.login.submit')}</Button>
+    </View>
   );
 }
 ```

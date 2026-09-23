@@ -1,0 +1,9 @@
+appId: ${APP_ID}
+---
+- runFlow: ../utils/launch-app.yaml
+- runFlow: ../utils/create-account.yaml
+- tapOn: 'Profile'
+- assertVisible: ${NAME}
+- assertVisible:
+    id: 'profile-email'
+    text: '.*${EMAIL}.*'

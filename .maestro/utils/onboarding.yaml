@@ -2,7 +2,9 @@ appId: ${APP_ID}
 tags:
   - util
 ---
-- assertVisible: 'Caracal Starter'
-- assertVisible: "Let's Get Started "
-- tapOn: "Let's Get Started "
-- assertVisible: 'Sign In'
+- assertVisible:
+    id: 'onboarding-get-started'
+- tapOn:
+    id: 'onboarding-have-account'
+- assertVisible:
+    id: 'login-email-input'

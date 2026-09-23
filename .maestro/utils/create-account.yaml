@@ -1,0 +1,30 @@
+appId: ${APP_ID}
+tags:
+  - util
+---
+- tapOn:
+    id: 'onboarding-get-started'
+- tapOn:
+    id: 'sign-up-name-input'
+- inputText: ${NAME}
+- runFlow: hide-keyboard.yaml
+- tapOn:
+    id: 'sign-up-email-input'
+- inputText: ${EMAIL}
+- runFlow: hide-keyboard.yaml
+- tapOn:
+    id: 'sign-up-password-input'
+- inputText: ${PASSWORD}
+- runFlow: hide-keyboard.yaml
+- tapOn:
+    id: 'sign-up-confirm-input'
+- inputText: ${PASSWORD}
+- runFlow: hide-keyboard.yaml
+- tapOn:
+    id: 'sign-up-terms'
+- tapOn:
+    id: 'sign-up-submit'
+- runFlow: dismiss-password-prompt.yaml
+- extendedWaitUntil:
+    visible: 'Home'
+    timeout: 10000
