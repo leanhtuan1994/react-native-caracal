@@ -1,3 +1,4 @@
+import type * as ReactNative from 'react-native';
 import { Platform } from 'react-native';
 
 import { render, screen } from '@/lib/test-utils';
@@ -6,7 +7,7 @@ import { GlassLayer } from './glass-layer';
 
 const mockLiquid = jest.fn(() => false);
 jest.mock('expo-glass-effect', () => {
-  const { View } = require('react-native');
+  const { View } = jest.requireActual<typeof ReactNative>('react-native');
   return {
     isLiquidGlassAvailable: () => mockLiquid(),
     GlassView: (props: object) => <View testID="native-glass" {...props} />,
