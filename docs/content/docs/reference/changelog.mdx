@@ -9,6 +9,19 @@ For published template versions, see the [Git tags](https://github.com/leanhtuan
 
 ### Dependencies
 
+- Updated Expo from `57.0.24` to `57.0.28` and Expo Router from `57.0.22` to `57.0.26`, the latest stable SDK 57 release.
+- Aligned Expo-managed packages (`expo-build-properties`, `expo-constants`, `expo-crypto`, `expo-dev-client`, `expo-glass-effect`, `expo-linking`, `expo-splash-screen`, `jest-expo`) with the versions required by Expo SDK 57.
+- Pinned `@react-native/jest-preset` and `@react-native/metro-config` to `0.86.3` as dev dependencies so they match React Native `0.86.3` and clear the unmet peer dependency warnings.
+
+### Validation
+
+- Passed Expo dependency validation, Expo Doctor, type checking, translation lint, and all unit tests.
+- Completed a clean iOS prebuild and build, then smoke-tested sign-up, the Home feed, Profile, and Settings on an iPhone 17 Pro simulator (iOS 26.5).
+
+## 10.0.2
+
+### Dependencies
+
 - Updated Expo from `57.0.17` to `57.0.24` and Expo Router from `57.0.17` to `57.0.22`.
 - Aligned Expo-managed packages with the versions required by Expo SDK 57. The root `package.json` remains the source of truth for the full dependency set.
 
