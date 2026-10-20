@@ -69,7 +69,7 @@ The root layout (`src/app/_layout.tsx`) wraps the entire app with providers and 
 
 ## Tab Navigation
 
-The `(home)` group uses `NativeTabs` from `expo-router/unstable-native-tabs`, so iOS 26 renders the system liquid glass tab bar.
+The `(home)` group uses `NativeTabs` from `expo-router/native-tabs`, so iOS 26 renders the system liquid glass tab bar.
 
 **Tabs:**
 - **Home** (`index.tsx`): posts feed with search and tag filters
@@ -440,13 +440,16 @@ export default function RootLayout() {
 
   return (
     <Stack screenOptions={{ headerShown: false }}>
-      <Stack.Protected guard={guards.canSeeOnboarding}>
+      <Stack.Protected
+        guard={guards.canSeeOnboarding}
+        redirectTo={guards.redirectTo}
+      >
         <Stack.Screen name="onboarding" />
       </Stack.Protected>
-      <Stack.Protected guard={guards.canSeeAuth}>
+      <Stack.Protected guard={guards.canSeeAuth} redirectTo={guards.redirectTo}>
         <Stack.Screen name="(auth)" />
       </Stack.Protected>
-      <Stack.Protected guard={guards.canSeeApp}>
+      <Stack.Protected guard={guards.canSeeApp} redirectTo={guards.redirectTo}>
         <Stack.Screen name="(home)" />
       </Stack.Protected>
     </Stack>
@@ -455,6 +458,8 @@ export default function RootLayout() {
 ```
 
 Signing in or out only changes the auth store; the guards then move the user to the right group, so screens never call `router.replace` after authentication.
+
+Each guard sets `redirectTo` to the entry screen for the current state: `/onboarding` on first launch, `/` when signed in, and `/login` otherwise. Without it, Expo Router 58 sends a guarded route to the first unguarded route in file order. In this app that route is not a real screen, so the user lands on the not-found screen.
 
 ## Common Patterns
 

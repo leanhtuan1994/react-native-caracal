@@ -5,6 +5,24 @@ description: New features, improvements, and bug fixes for the Caracal React Nat
 
 For published template versions, see the [Git tags](https://github.com/leanhtuan1994/react-native-caracal/tags).
 
+## Unreleased
+
+### Dependencies
+
+- Upgraded to Expo SDK 58: Expo `58.0.16`, Expo Router `58.0.24`, React Native `0.88.0`, and React `19.3.0`. All Expo-managed packages now use the versions required by SDK 58, including `react-native-gesture-handler` 3, Reanimated `4.7`, Worklets `0.13`, and FlashList `2.3`.
+- Upgraded Jest to 30 and React Native Testing Library to 14, which replaces `react-test-renderer` with `test-renderer`. Also updated `@react-native/jest-preset` and `@react-native/metro-config` to `0.88.0`.
+- Updated Uniwind to `1.13.0`, which supports the React Native 0.87+ types. Also updated `react-native-mmkv` to `4.3.2` and `react-native-nitro-modules` to `0.37.1`. Nitro `0.36.2` or later is required for React Native 0.87+, because older versions fail with `installJSIBindingsWithRuntime: was not called`.
+
+### Fixes
+
+- Route guards now pass an explicit `redirectTo` from `getRouteGuards`. Expo Router 58 otherwise sends a guarded route to the first unguarded route in file order, so a fresh install opened on the not-found screen instead of onboarding.
+- `NativeTabs` is now imported from `expo-router/native-tabs`. The `expo-router/unstable-native-tabs` entry point is deprecated.
+
+### Breaking changes
+
+- The `render` and `setup` helpers in `@/lib/test-utils` are now async because React Native Testing Library 14 made rendering async. Use `await setup(...)` and `await render(...)` in tests. The wrapper no longer adds a `NavigationContainer`, because Expo Router 58 no longer exports it.
+- `tsconfig.json` now extends `expo/tsconfig.base.json`. Expo 58 added package `exports`, so the old path without an extension no longer resolves for the ESLint import resolver.
+
 ## 10.0.3
 
 ### Dependencies

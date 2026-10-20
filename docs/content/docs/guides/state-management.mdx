@@ -665,33 +665,33 @@ describe('Preferences Store', () => {
     resetPreferences(); // Reset to initial state
   });
 
-  it('should set theme', () => {
-    const { result } = renderHook(() =>
+  it('should set theme', async () => {
+    const { result } = await renderHook(() =>
       usePreferences((state) => state.setTheme)
     );
 
-    act(() => {
+    await act(() => {
       result.current('dark');
     });
 
-    const { result: themeResult } = renderHook(() =>
+    const { result: themeResult } = await renderHook(() =>
       usePreferences((state) => state.theme)
     );
 
     expect(themeResult.current).toBe('dark');
   });
 
-  it('should toggle notifications', () => {
-    const { result: toggle } = renderHook(() =>
+  it('should toggle notifications', async () => {
+    const { result: toggle } = await renderHook(() =>
       usePreferences((state) => state.toggleNotifications)
     );
-    const { result: notifications } = renderHook(() =>
+    const { result: notifications } = await renderHook(() =>
       usePreferences((state) => state.notifications)
     );
 
     expect(notifications.current).toBe(true); // initial
 
-    act(() => {
+    await act(() => {
       toggle.current();
     });
 
