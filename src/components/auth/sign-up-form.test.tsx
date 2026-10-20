@@ -38,7 +38,7 @@ const valid: Values = {
 };
 
 async function fillForm(
-  user: ReturnType<typeof setup>['user'],
+  user: Awaited<ReturnType<typeof setup>>['user'],
   values: Values
 ) {
   await user.type(screen.getByTestId('sign-up-name-input'), values.name);
@@ -52,7 +52,7 @@ async function fillForm(
 
 describe('SignUpForm', () => {
   it('shows a mismatch error when passwords differ', async () => {
-    const { user } = setup(<SignUpForm />);
+    const { user } = await setup(<SignUpForm />);
     await fillForm(user, { ...valid, confirm: 'other12' });
     await user.press(screen.getByTestId('sign-up-terms'));
     await user.press(screen.getByTestId('sign-up-submit'));
@@ -62,7 +62,7 @@ describe('SignUpForm', () => {
   });
 
   it('requires the terms to be accepted', async () => {
-    const { user } = setup(<SignUpForm />);
+    const { user } = await setup(<SignUpForm />);
     await fillForm(user, valid);
     await user.press(screen.getByTestId('sign-up-submit'));
     expect(
@@ -71,7 +71,7 @@ describe('SignUpForm', () => {
   });
 
   it('creates the account with the entered values', async () => {
-    const { user } = setup(<SignUpForm />);
+    const { user } = await setup(<SignUpForm />);
     await fillForm(user, valid);
     await user.press(screen.getByTestId('sign-up-terms'));
     await user.press(screen.getByTestId('sign-up-submit'));
@@ -86,7 +86,7 @@ describe('SignUpForm', () => {
 
   it('shows the email-taken error on the email field', async () => {
     mockSignUp.mockRejectedValue(new Error('email_taken'));
-    const { user } = setup(<SignUpForm />);
+    const { user } = await setup(<SignUpForm />);
     await fillForm(user, valid);
     await user.press(screen.getByTestId('sign-up-terms'));
     await user.press(screen.getByTestId('sign-up-submit'));

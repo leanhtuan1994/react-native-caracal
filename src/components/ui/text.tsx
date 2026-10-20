@@ -1,13 +1,9 @@
 import { cn } from 'heroui-native';
 import React from 'react';
-import { Text as RNText, type TextProps as RNTextProps } from 'react-native';
+import { Text as RNText } from 'react-native';
 
-export const Text = React.forwardRef<RNText, RNTextProps>((props, ref) => {
-  const { className, ...restProps } = props;
+type TextProps = React.ComponentProps<typeof RNText>;
 
-  return (
-    <RNText ref={ref} className={cn('font-normal', className)} {...restProps} />
-  );
-});
-
-Text.displayName = 'Text';
+export function Text({ className, ...props }: TextProps) {
+  return <RNText className={cn('font-normal', className)} {...props} />;
+}

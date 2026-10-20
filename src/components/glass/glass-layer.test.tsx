@@ -19,17 +19,17 @@ describe('GlassLayer', () => {
     Platform.OS = 'ios';
   });
 
-  it('uses native glass when liquid glass is available on iOS', () => {
+  it('uses native glass when liquid glass is available on iOS', async () => {
     Platform.OS = 'ios';
     mockLiquid.mockReturnValue(true);
-    render(<GlassLayer />);
+    await render(<GlassLayer />);
     expect(screen.getByTestId('native-glass')).toBeTruthy();
   });
 
-  it('uses the translucent fallback on Android', () => {
+  it('uses the translucent fallback on Android', async () => {
     Platform.OS = 'android';
     mockLiquid.mockReturnValue(false);
-    render(<GlassLayer />);
+    await render(<GlassLayer />);
     expect(screen.getByTestId('glass-fallback')).toBeTruthy();
   });
 });

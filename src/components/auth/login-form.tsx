@@ -64,7 +64,7 @@ export function LoginForm() {
       <PrimaryButton
         testID="login-submit"
         isDisabled={formState.isSubmitting}
-        onPress={handleSubmit(onSubmit)}
+        onPress={() => handleSubmit(onSubmit)()}
       >
         {t('auth.login.submit')}
       </PrimaryButton>

@@ -3,7 +3,6 @@ import '@shopify/flash-list/jestSetup';
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import type { RenderOptions } from '@testing-library/react-native';
 import { render, userEvent } from '@testing-library/react-native';
-import { NavigationContainer } from 'expo-router/react-navigation';
 import { HeroUINativeProvider } from 'heroui-native';
 import type { ReactElement } from 'react';
 import React from 'react';
@@ -14,15 +13,13 @@ const createAppWrapper = () => {
   return ({ children }: { children: React.ReactNode }) => (
     <AppThemeProvider>
       <HeroUINativeProvider>
-        <BottomSheetModalProvider>
-          <NavigationContainer>{children}</NavigationContainer>
-        </BottomSheetModalProvider>
+        <BottomSheetModalProvider>{children}</BottomSheetModalProvider>
       </HeroUINativeProvider>
     </AppThemeProvider>
   );
 };
 
-const customRender = (
+const customRender = async (
   ui: ReactElement,
   options?: Omit<RenderOptions, 'wrapper'>
 ) => {
@@ -31,14 +28,14 @@ const customRender = (
 };
 
 // use this if you want to test user events
-export const setup = (
+export const setup = async (
   ui: ReactElement,
   options?: Omit<RenderOptions, 'wrapper'>
 ) => {
   const Wrapper = createAppWrapper();
   return {
     user: userEvent.setup(),
-    ...render(ui, { wrapper: Wrapper, ...options }),
+    ...(await render(ui, { wrapper: Wrapper, ...options })),
   };
 };
 
