@@ -87,8 +87,8 @@ importers:
         specifier: ~58.0.6
         version: 58.0.6(expo@58.0.16)(react-native-web@0.21.4(react-dom@19.3.0(react@19.3.0))(react@19.3.0))(react-native@0.88.0(@babel/core@7.29.7)(@react-native/metro-config@0.88.0(@babel/core@7.29.7))(@types/react@19.3.0)(react@19.3.0))
       heroui-native:
-        specifier: 1.0.10
-        version: 1.0.10(1e663f0f4768db9553f0f0c188671659)
+        specifier: 1.0.11
+        version: 1.0.11(1e663f0f4768db9553f0f0c188671659)
       i18next:
         specifier: ^23.14.0
         version: 23.16.8
@@ -4391,14 +4391,14 @@ packages:
   hermes-parser@0.36.1:
     resolution: {integrity: sha512-GApNk4zLHi2UWoWZZkx7LNCOSzLSc5lB55pZ/PhK7ycFeg7u5LcF88p/WbpIi1XUDtE0MpHE3uRR3u3KB7TjSQ==}
 
-  heroui-native@1.0.10:
-    resolution: {integrity: sha512-Cj5YAl0jN2nuy8Ac3lxGUPvYQsI7a9l63EYs9vXzatbyQVeWTl01fqsYC0+at9/KSWzH941o4Ujq6h3SrK3RXw==}
+  heroui-native@1.0.11:
+    resolution: {integrity: sha512-JC7aLZPQKqyaqlkzYx/VzAygj7pNr6mBO8/8QtbUwD6lgR5KjlMSs7ImHjDIIr0H/9nF5hixxq/sqrXM5sW63A==}
     peerDependencies:
       '@gorhom/bottom-sheet': ^5.2.9
       expo-blur: '>=14.0.0'
       react: '>=19.0.0'
       react-native: '>=0.81.0'
-      react-native-gesture-handler: ^2.28.0
+      react-native-gesture-handler: ^2.28.0 || ^3.0.0
       react-native-reanimated: ^4.1.1
       react-native-safe-area-context: ^5.6.0
       react-native-screens: '>=4'
@@ -12262,7 +12262,7 @@ snapshots:
     dependencies:
       hermes-estree: 0.36.1
 
-  heroui-native@1.0.10(1e663f0f4768db9553f0f0c188671659):
+  heroui-native@1.0.11(1e663f0f4768db9553f0f0c188671659):
     dependencies:
       react: 19.3.0
       react-native: 0.88.0(@babel/core@7.29.7)(@react-native/metro-config@0.88.0(@babel/core@7.29.7))(@types/react@19.3.0)(react@19.3.0)

@@ -12,6 +12,7 @@ For published template versions, see the [Git tags](https://github.com/leanhtuan
 - Upgraded to Expo SDK 58: Expo `58.0.16`, Expo Router `58.0.24`, React Native `0.88.0`, and React `19.3.0`. All Expo-managed packages now use the versions required by SDK 58, including `react-native-gesture-handler` 3, Reanimated `4.7`, Worklets `0.13`, and FlashList `2.3`.
 - Upgraded Jest to 30 and React Native Testing Library to 14, which replaces `react-test-renderer` with `test-renderer`. Also updated `@react-native/jest-preset` and `@react-native/metro-config` to `0.88.0`.
 - Updated Uniwind to `1.13.0`, which supports the React Native 0.87+ types. Also updated `react-native-mmkv` to `4.3.2` and `react-native-nitro-modules` to `0.37.1`. Nitro `0.36.2` or later is required for React Native 0.87+, because older versions fail with `installJSIBindingsWithRuntime: was not called`.
+- Updated HeroUI Native to `1.0.11`, which accepts `react-native-gesture-handler` 3 and clears the unmet peer dependency warning. This release also applies `className` colors that `1.0.10` ignored, so selected tag chips now render with the dark `bg-foreground` fill and glass button labels use `text-foreground`, as the components specify.
 
 ### Fixes
 
