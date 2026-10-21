@@ -1,7 +1,7 @@
 import { useIsFocused } from 'expo-router/react-navigation';
+import { StatusBar } from 'expo-status-bar';
 import * as React from 'react';
 import { Platform } from 'react-native';
-import { SystemBars } from 'react-native-edge-to-edge';
 
 import { useAppTheme } from '@/lib/contexts/app-theme-context';
 
@@ -14,7 +14,7 @@ export const FocusAwareStatusBar = ({ hidden = false }: Props) => {
   if (Platform.OS === 'web') return null;
 
   return isFocused ? (
-    <SystemBars
+    <StatusBar
       style={currentTheme === 'light' ? 'dark' : 'light'}
       hidden={hidden}
     />

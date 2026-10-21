@@ -58,7 +58,6 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     ['expo-font'],
     'expo-localization',
     'expo-router',
-    ['react-native-edge-to-edge'],
     ['expo-image'],
     'expo-status-bar',
   ],
