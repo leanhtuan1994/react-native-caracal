@@ -21,7 +21,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
 ```
 
 <Callout type="warn">
-**Experimental Status**: The New Architecture is mandatory and always enabled from Expo SDK 55 onward. React Compiler is stable enough for production use in Expo SDK 57 but is still marked as experimental, and its APIs may evolve.
+**Experimental Status**: The New Architecture is mandatory and always enabled from Expo SDK 55 onward. React Compiler is stable enough for production use in Expo SDK 58 but is still marked as experimental, and its APIs may evolve.
 </Callout>
 
 ---
@@ -394,7 +394,7 @@ pnpm prebuild
 
 ### You Cannot Disable the New Architecture
 
-The legacy architecture was removed in Expo SDK 55, and the `newArchEnabled` option no longer exists. Caracal runs on Expo SDK 57 / React Native 0.86, so the New Architecture is always active. If a library does not support it, replace the library rather than trying to opt out — see [Library Compatibility](#library-compatibility).
+The legacy architecture was removed in Expo SDK 55, and the `newArchEnabled` option no longer exists. Caracal runs on Expo SDK 58 / React Native 0.88, so the New Architecture is always active. If a library does not support it, replace the library rather than trying to opt out — see [Library Compatibility](#library-compatibility).
 
 ### Disabling React Compiler
 
@@ -557,7 +557,7 @@ If you're upgrading from an older starter version without these features:
 
 ### Q: Can I use New Architecture with Expo Go?
 
-**A:** Partially. Expo Go in Expo SDK 57 runs on the New Architecture, but you need a custom dev client for full support with native modules. Use `pnpm prebuild` and `pnpm ios`/`pnpm android`.
+**A:** Partially. Expo Go in Expo SDK 58 runs on the New Architecture, but you need a custom dev client for full support with native modules. Use `pnpm prebuild` and `pnpm ios`/`pnpm android`.
 
 ### Q: What if a critical library doesn't support New Architecture?
 

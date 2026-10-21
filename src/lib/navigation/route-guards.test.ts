@@ -6,6 +6,7 @@ describe('getRouteGuards', () => {
       canSeeOnboarding: true,
       canSeeAuth: true,
       canSeeApp: false,
+      redirectTo: '/onboarding',
     });
   });
   it('shows auth when signed out after onboarding', () => {
@@ -13,6 +14,7 @@ describe('getRouteGuards', () => {
       canSeeOnboarding: false,
       canSeeAuth: true,
       canSeeApp: false,
+      redirectTo: '/login',
     });
   });
   it('shows the app when signed in', () => {
@@ -20,6 +22,7 @@ describe('getRouteGuards', () => {
       canSeeOnboarding: false,
       canSeeAuth: false,
       canSeeApp: true,
+      redirectTo: '/',
     });
   });
   it('treats idle as signed out', () => {

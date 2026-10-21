@@ -39,8 +39,8 @@ describe('useAuth', () => {
     useAuth.setState({ status: 'idle', userId: null });
   });
 
-  it('uses Zustand selectors without a custom use namespace', () => {
-    const { result } = renderHook(() => ({
+  it('uses Zustand selectors without a custom use namespace', async () => {
+    const { result } = await renderHook(() => ({
       status: useAuth((state) => state.status),
       userId: useAuth((state) => state.userId),
     }));
@@ -48,7 +48,7 @@ describe('useAuth', () => {
     expect('use' in useAuth).toBe(false);
     expect(result.current).toEqual({ status: 'idle', userId: null });
 
-    act(() => {
+    await act(() => {
       signIn('user-1');
     });
 
@@ -75,11 +75,11 @@ describe('useAuth', () => {
     });
   });
 
-  it('returns the signed-in user profile', () => {
-    act(() => {
+  it('returns the signed-in user profile', async () => {
+    await act(() => {
       signIn('user-1');
     });
-    const { result } = renderHook(() => useCurrentUser());
+    const { result } = await renderHook(() => useCurrentUser());
     expect(result.current).toEqual({
       id: 'user-1',
       fullName: 'Emily Johnson',

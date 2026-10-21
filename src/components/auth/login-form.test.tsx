@@ -25,7 +25,7 @@ beforeEach(() => {
 
 describe('LoginForm', () => {
   it('shows required errors when submitting empty fields', async () => {
-    const { user } = setup(<LoginForm />);
+    const { user } = await setup(<LoginForm />);
     await user.press(screen.getByTestId('login-submit'));
     expect(
       await screen.findByText('auth.validation.email_required')
@@ -36,7 +36,7 @@ describe('LoginForm', () => {
   });
 
   it('shows format errors for an invalid email and short password', async () => {
-    const { user } = setup(<LoginForm />);
+    const { user } = await setup(<LoginForm />);
     await user.type(screen.getByTestId('login-email-input'), 'emily@');
     await user.type(screen.getByTestId('login-password-input'), '123');
     await user.press(screen.getByTestId('login-submit'));
@@ -47,7 +47,7 @@ describe('LoginForm', () => {
   });
 
   it('signs in with valid credentials', async () => {
-    const { user } = setup(<LoginForm />);
+    const { user } = await setup(<LoginForm />);
     await user.type(
       screen.getByTestId('login-email-input'),
       'emily@example.com'
@@ -64,7 +64,7 @@ describe('LoginForm', () => {
 
   it('shows the login error when credentials are rejected', async () => {
     mockLogin.mockRejectedValue(new Error('invalid_credentials'));
-    const { user } = setup(<LoginForm />);
+    const { user } = await setup(<LoginForm />);
     await user.type(
       screen.getByTestId('login-email-input'),
       'emily@example.com'
@@ -75,7 +75,7 @@ describe('LoginForm', () => {
   });
 
   it('trims a trailing space from the email before signing in', async () => {
-    const { user } = setup(<LoginForm />);
+    const { user } = await setup(<LoginForm />);
     await user.type(
       screen.getByTestId('login-email-input'),
       'emily@example.com '

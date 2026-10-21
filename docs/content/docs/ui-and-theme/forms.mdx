@@ -737,13 +737,13 @@ import { LoginForm } from './login-form';
 
 describe('LoginForm', () => {
   it('validates email format', async () => {
-    const { getByTestId, getByText } = render(<LoginForm />);
+    const { getByTestId, getByText } = await render(<LoginForm />);
 
     const emailInput = getByTestId('email-input');
     const submitButton = getByTestId('login-button');
 
-    fireEvent.changeText(emailInput, 'invalid-email');
-    fireEvent.press(submitButton);
+    await fireEvent.changeText(emailInput, 'invalid-email');
+    await fireEvent.press(submitButton);
 
     await waitFor(() => {
       expect(getByText('Invalid email')).toBeTruthy();
@@ -752,11 +752,11 @@ describe('LoginForm', () => {
 
   it('submits valid form', async () => {
     const mockSignIn = jest.fn();
-    const { getByTestId } = render(<LoginForm onSignIn={mockSignIn} />);
+    const { getByTestId } = await render(<LoginForm onSignIn={mockSignIn} />);
 
-    fireEvent.changeText(getByTestId('email-input'), 'test@example.com');
-    fireEvent.changeText(getByTestId('password-input'), 'password123');
-    fireEvent.press(getByTestId('login-button'));
+    await fireEvent.changeText(getByTestId('email-input'), 'test@example.com');
+    await fireEvent.changeText(getByTestId('password-input'), 'password123');
+    await fireEvent.press(getByTestId('login-button'));
 
     await waitFor(() => {
       expect(mockSignIn).toHaveBeenCalled();

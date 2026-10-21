@@ -67,13 +67,22 @@ export default function RootLayout() {
   return (
     <Providers>
       <Stack screenOptions={{ headerShown: false }}>
-        <Stack.Protected guard={guards.canSeeOnboarding}>
+        <Stack.Protected
+          guard={guards.canSeeOnboarding}
+          redirectTo={guards.redirectTo}
+        >
           <Stack.Screen name="onboarding" />
         </Stack.Protected>
-        <Stack.Protected guard={guards.canSeeAuth}>
+        <Stack.Protected
+          guard={guards.canSeeAuth}
+          redirectTo={guards.redirectTo}
+        >
           <Stack.Screen name="(auth)" />
         </Stack.Protected>
-        <Stack.Protected guard={guards.canSeeApp}>
+        <Stack.Protected
+          guard={guards.canSeeApp}
+          redirectTo={guards.redirectTo}
+        >
           <Stack.Screen name="(home)" />
         </Stack.Protected>
       </Stack>

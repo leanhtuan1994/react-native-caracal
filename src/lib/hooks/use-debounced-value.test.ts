@@ -6,15 +6,15 @@ describe('useDebouncedValue', () => {
   beforeEach(() => jest.useFakeTimers());
   afterEach(() => jest.useRealTimers());
 
-  it('updates only after the delay', () => {
-    const { result, rerender } = renderHook(
+  it('updates only after the delay', async () => {
+    const { result, rerender } = await renderHook(
       ({ value }: { value: string }) => useDebouncedValue(value),
       { initialProps: { value: 'a' } }
     );
-    rerender({ value: 'ab' });
-    act(() => jest.advanceTimersByTime(299));
+    await rerender({ value: 'ab' });
+    await act(() => jest.advanceTimersByTime(299));
     expect(result.current).toBe('a');
-    act(() => jest.advanceTimersByTime(1));
+    await act(() => jest.advanceTimersByTime(1));
     expect(result.current).toBe('ab');
   });
 });

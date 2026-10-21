@@ -37,6 +37,8 @@ The starter provides a `@/lib/test-utils` module that exports everything from `@
 You can update `src/lib/test-utils.tsx` to add any other providers your tests need, as well as any shared utility functions.
 
 Use the `setup` function when you need to test interactions with a component. It returns a `userEvent` object that you can use to fire events against the component.
+
+React Native Testing Library 14 makes `render`, `renderHook`, `fireEvent`, and `act` async, so the starter's `render` and `setup` helpers are async too. Always `await` them, for example `const { user } = await setup(<LoginForm />);`.
 </Callout>
 
 To run the tests:
