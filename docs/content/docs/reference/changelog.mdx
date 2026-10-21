@@ -17,6 +17,8 @@ For published template versions, see the [Git tags](https://github.com/leanhtuan
 ### Fixes
 
 - Route guards now pass an explicit `redirectTo` from `getRouteGuards`. Expo Router 58 otherwise sends a guarded route to the first unguarded route in file order, so a fresh install opened on the not-found screen instead of onboarding.
+- CI now uses Node.js 22, because Expo SDK 58 tooling requires Node.js 22.13 or newer.
+- Expo Doctor skips the React Native Directory check for `react-native-edge-to-edge`, which the directory now marks as unmaintained. The package still provides `SystemBars`; replacing it is tracked separately.
 - `NativeTabs` is now imported from `expo-router/native-tabs`. The `expo-router/unstable-native-tabs` entry point is deprecated.
 
 ### Breaking changes

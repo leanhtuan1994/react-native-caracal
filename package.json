@@ -156,7 +156,10 @@
   "expo": {
     "doctor": {
       "reactNativeDirectoryCheck": {
-        "listUnknownPackages": false
+        "listUnknownPackages": false,
+        "exclude": [
+          "react-native-edge-to-edge"
+        ]
       }
     },
     "install": {
