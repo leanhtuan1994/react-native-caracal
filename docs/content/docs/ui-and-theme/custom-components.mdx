@@ -333,51 +333,27 @@ modal.ref;        // Ref for the Modal component
 
 ## FocusAwareStatusBar Component
 
-A StatusBar wrapper that updates based on the currently focused screen in Expo Router.
+A status bar for the currently focused Expo Router screen, built on `StatusBar` from `expo-status-bar`.
 
 ### Why FocusAwareStatusBar?
 
-- **Route-Aware:** Different screens can have different status bar styles
-- **Automatic:** Updates when navigating between screens
-- **Expo Router Integration:** Works seamlessly with file-based routing
+- **Theme-aware:** The status bar text is dark in the light theme and light in the dark theme, following the app theme rather than the system setting.
+- **Route-aware:** Only the focused screen renders it, so a screen can hide the status bar without affecting the others.
+- **Edge-to-edge ready:** Expo SDK 58 always draws Android apps edge-to-edge with transparent system bars. Use safe area insets to keep content clear of them.
 
 **Props:**
-- All React Native `StatusBar` props are supported
+- `hidden` (optional, default `false`): hides the status bar while the screen is focused.
 
 **Example:**
 
 ```tsx
 import { FocusAwareStatusBar, View, Text } from '@/components/ui';
 
-export default function HomeScreen() {
+export default function FullscreenScreen() {
   return (
-    <View className="flex-1 bg-white">
-      <FocusAwareStatusBar barStyle="dark-content" />
-      <Text className="text-2xl">Home Screen</Text>
-    </View>
-  );
-}
-```
-
-**Different Styles per Screen:**
-
-```tsx
-// Light content on dark background
-export default function DarkScreen() {
-  return (
-    <View className="flex-1 bg-black">
-      <FocusAwareStatusBar barStyle="light-content" />
-      <Text className="text-white">Dark Screen</Text>
-    </View>
-  );
-}
-
-// Dark content on light background
-export default function LightScreen() {
-  return (
-    <View className="flex-1 bg-white">
-      <FocusAwareStatusBar barStyle="dark-content" />
-      <Text className="text-black">Light Screen</Text>
+    <View className="flex-1">
+      <FocusAwareStatusBar hidden />
+      <Text className="text-2xl">Fullscreen content</Text>
     </View>
   );
 }

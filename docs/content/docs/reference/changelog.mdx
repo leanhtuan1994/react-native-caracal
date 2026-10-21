@@ -16,9 +16,11 @@ For published template versions, see the [Git tags](https://github.com/leanhtuan
 
 ### Fixes
 
+- Installed `expo-symbols`, which Expo Router 58 requires for the Android `md` icons on `NativeTabs.Trigger.Icon`. Without it, Android crashed with a render error when opening the signed-in tabs.
+- The Home, Profile, and Settings tabs now pad their content below the status bar on Android. They relied on `contentInsetAdjustmentBehavior`, which only works on iOS, so with edge-to-edge the headers were drawn under the Android status bar. The root layout now passes safe area insets to Uniwind through `SafeAreaListener`, and the tab screens use `android:pt-safe`.
+- Replaced `react-native-edge-to-edge` with `expo-status-bar`. Expo SDK 58 enables edge-to-edge on Android by default with transparent system bars, so the package, its config plugin, and the Expo Doctor exclusion are no longer needed. `FocusAwareStatusBar` now renders `StatusBar` from `expo-status-bar`.
 - Route guards now pass an explicit `redirectTo` from `getRouteGuards`. Expo Router 58 otherwise sends a guarded route to the first unguarded route in file order, so a fresh install opened on the not-found screen instead of onboarding.
 - CI now uses Node.js 22, because Expo SDK 58 tooling requires Node.js 22.13 or newer.
-- Expo Doctor skips the React Native Directory check for `react-native-edge-to-edge`, which the directory now marks as unmaintained. The package still provides `SystemBars`; replacing it is tracked separately.
 - `NativeTabs` is now imported from `expo-router/native-tabs`. The `expo-router/unstable-native-tabs` entry point is deprecated.
 
 ### Breaking changes
