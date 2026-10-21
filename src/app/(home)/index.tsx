@@ -25,7 +25,7 @@ export default function HomeScreen() {
         keyExtractor={(post) => String(post.id)}
         contentInsetAdjustmentBehavior="automatic"
         keyboardShouldPersistTaps="handled"
-        contentContainerClassName="px-5 pb-32"
+        contentContainerClassName="px-5 pb-32 android:pt-safe"
         ItemSeparatorComponent={Separator}
         ListHeaderComponent={
           <FeedHeader

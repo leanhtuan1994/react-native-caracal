@@ -27,7 +27,7 @@ export default function ProfileScreen() {
       <AmbientBackground />
       <ScrollView
         contentInsetAdjustmentBehavior="automatic"
-        contentContainerClassName="gap-5 px-5 pb-32"
+        contentContainerClassName="gap-5 px-5 pb-32 android:pt-safe"
       >
         <Text className="h-11 px-1 font-bold text-[30px] leading-[44px] tracking-tight text-foreground">
           {t('profile.title')}
