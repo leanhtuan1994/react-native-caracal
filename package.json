@@ -67,6 +67,7 @@
     "expo-router": "58.0.24",
     "expo-splash-screen": "~58.0.10",
     "expo-status-bar": "~58.0.3",
+    "expo-symbols": "~58.0.4",
     "expo-system-ui": "~58.0.6",
     "heroui-native": "1.0.11",
     "i18next": "^23.14.0",
@@ -76,7 +77,6 @@
     "react-hook-form": "^7.53.0",
     "react-i18next": "^15.0.1",
     "react-native": "0.88.0",
-    "react-native-edge-to-edge": "^1.8.1",
     "react-native-gesture-handler": "~3.3.0",
     "react-native-keyboard-controller": "1.22.7",
     "react-native-mmkv": "4.3.2",
@@ -156,10 +156,7 @@
   "expo": {
     "doctor": {
       "reactNativeDirectoryCheck": {
-        "listUnknownPackages": false,
-        "exclude": [
-          "react-native-edge-to-edge"
-        ]
+        "listUnknownPackages": false
       }
     },
     "install": {

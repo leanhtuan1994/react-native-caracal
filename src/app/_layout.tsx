@@ -20,6 +20,8 @@ import {
   configureReanimatedLogger,
   ReanimatedLogLevel,
 } from 'react-native-reanimated';
+import { SafeAreaListener } from 'react-native-safe-area-context';
+import { Uniwind } from 'uniwind';
 
 import { APIProvider } from '@/api';
 import { hydrateAuth, useAuth } from '@/lib/auth';
@@ -107,21 +109,24 @@ const Providers: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 
   return (
     <GestureHandlerRootView style={styles.container}>
-      <KeyboardProvider>
-        <AppThemeProvider>
-          <HeroUINativeProvider
-            config={{
-              toast: {
-                contentWrapper,
-              },
-            }}
-          >
-            <APIProvider>
-              <BottomSheetModalProvider>{children}</BottomSheetModalProvider>
-            </APIProvider>
-          </HeroUINativeProvider>
-        </AppThemeProvider>
-      </KeyboardProvider>
+      {/* Feeds safe area insets to Uniwind's `*-safe` classes. */}
+      <SafeAreaListener onChange={({ insets }) => Uniwind.updateInsets(insets)}>
+        <KeyboardProvider>
+          <AppThemeProvider>
+            <HeroUINativeProvider
+              config={{
+                toast: {
+                  contentWrapper,
+                },
+              }}
+            >
+              <APIProvider>
+                <BottomSheetModalProvider>{children}</BottomSheetModalProvider>
+              </APIProvider>
+            </HeroUINativeProvider>
+          </AppThemeProvider>
+        </KeyboardProvider>
+      </SafeAreaListener>
     </GestureHandlerRootView>
   );
 };
