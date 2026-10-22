@@ -34,6 +34,8 @@ When creating this starter kit, we had several guiding principles in mind::
 - ✅ Latest Expo SDK with Custom Dev Client: Leverage the best of the Expo ecosystem while maintaining full control over your app.
 - 🎉 [TypeScript](https://www.typescriptlang.org/) for enhanced code quality and bug prevention through static type checking.
 - 💅 Minimal UI kit built with [TailwindCSS](https://docs.uniwind.dev/), featuring common components essential for your app.
+- 🪟 iOS 26 liquid glass UI with light and dark themes.
+- 📱 Adaptive layouts for iPhone Duo, iPad and Android foldables: safe-area aware, with a two-column feed on wide windows.
 - ⚙️ Multi-environment build support (Production, Staging, Development) using Expo configuration.
 - 🦊 Husky for Git Hooks: Automate your git hooks and enforce code standards.
 - 💡 Clean project structure with Absolute Imports for easier code navigation and management.
@@ -86,7 +88,34 @@ If you want to stay up to date with the latest developments, you can either watc
 
 Feedback and suggestions are always welcome. Feel free to open an issue or discussion to share your thoughts.
 
-<!-- add a gif image here  -->
+## 📸 Screenshots
+
+<p align="center">
+  <img alt="Caracal home screen on iPhone 18 Pro, iPhone Duo closed and iPhone Duo open" src="./docs/public/screenshots/devices-home.webp" />
+  <br />
+  <sub>iPhone 18 Pro · iPhone Duo (closed) · iPhone Duo (open)</sub>
+</p>
+
+<table align="center">
+  <tr>
+    <td><img alt="Onboarding" src="./docs/public/screenshots/iphone/01-onboarding.webp" width="200" /></td>
+    <td><img alt="Home" src="./docs/public/screenshots/iphone/03-home.webp" width="200" /></td>
+    <td><img alt="Profile" src="./docs/public/screenshots/iphone/04-profile.webp" width="200" /></td>
+    <td><img alt="Home in dark mode" src="./docs/public/screenshots/iphone/07-home-dark.webp" width="200" /></td>
+  </tr>
+</table>
+
+<p align="center">
+  <img alt="Scrolling the feed, filtering by tag, switching tabs and themes" src="./docs/public/screenshots/iphone/demo.gif" width="270" />
+</p>
+
+### Ready for iPhone Duo
+
+Layouts follow the safe area on the cover display, where the tab bar sits on the side, and use the extra width on the inner display with a two-column feed. See the [iPhone Duo guide](https://react-native-template-atlas.vercel.app/docs/ui-and-theme/iphone-duo).
+
+<p align="center">
+  <img alt="Two-column feed on the iPhone Duo inner display, folding to half open and back" src="./docs/public/screenshots/iphone-duo/inner.gif" width="480" />
+</p>
 
 ## 💎 Libraries used
 

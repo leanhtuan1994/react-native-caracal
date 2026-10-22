@@ -15,6 +15,8 @@ Apple's guidance is in [Designing for iPhone Duo](https://developer.apple.com/de
 
 `NativeTabs` and `Stack` use the system bars, so they move to the side on their own. Your content has to respect the insets.
 
+![Home on the iPhone Duo cover display, with the tab bar on the side, and on the inner display with a two-column feed](/screenshots/iphone-duo/compare-home.webp)
+
 ## Rules for screens
 
 **Pad scroll content with the left and right insets.** `contentInsetAdjustmentBehavior="automatic"` does not keep the content clear of the side bars. Use Uniwind's safe area offsets instead of `px-*`:
@@ -58,6 +60,10 @@ Uniwind's `pt-safe-or-4` does not work here: iOS already adds the top inset to t
 
 An even number of columns splits cleanly around the hinge when the Duo is half open.
 
+![Settings centered in a readable column on the inner display](/screenshots/iphone-duo/inner-03-settings.webp)
+
+![Two-column Home feed on the inner display in dark mode](/screenshots/iphone-duo/inner-04-home-dark.webp)
+
 ## Testing
 
 Xcode 27.1 ships an **iPhone Duo** simulator on the iOS 27.1 runtime:
@@ -72,5 +78,10 @@ Fold and unfold it from Device Hub, then walk this list on every screen you chan
 - Open (inner display, landscape): content is centered or uses the extra width; nothing is stretched edge to edge.
 - Half open: grids split around the hinge.
 - Folding keeps state (scroll position, form input) and needs no relaunch.
+
+<div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1fr) minmax(0, 2.6fr)', gap: '1rem', alignItems: 'start' }}>
+  <video src="/screenshots/iphone-duo/cover.mp4" autoPlay loop muted playsInline style={{ width: '100%', margin: 0 }} />
+  <video src="/screenshots/iphone-duo/inner.mp4" autoPlay loop muted playsInline style={{ width: '100%', margin: 0 }} />
+</div>
 
 `expo-hinge` (hinge angle and posture) and Expo UI's `ArrangementView` are available in SDK 58 but are not installed here. Apple recommends hinge state for interactions such as a tabletop camera shutter, not for layout.

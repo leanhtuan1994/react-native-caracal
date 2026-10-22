@@ -36,7 +36,7 @@ jobs:
         with:
           githubToken: ${{ secrets.GITHUB_TOKEN }}
           compressOnly: true
-          ignorePaths: 'node_modules/**,ios/**,android/**'
+          ignorePaths: 'node_modules/**,ios/**,android/**,docs/public/screenshots/**'
 
       - name: Create Pull Request
         if: steps.calibre.outputs.markdown != ''
