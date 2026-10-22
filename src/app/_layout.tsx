@@ -1,5 +1,8 @@
 // Import  global CSS file
 import '../../global.css';
+// Initialize i18next before any screen renders. Release builds evaluate
+// modules lazily, so relying on a screen to import it leaves raw keys.
+import '@/lib/i18n';
 
 // Import each weight by subpath, and take useFonts from expo-font directly.
 // The package barrel pulls in every weight and italic it ships (18 files),
