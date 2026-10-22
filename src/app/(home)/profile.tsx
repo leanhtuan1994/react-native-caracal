@@ -9,11 +9,13 @@ import {
 } from '@/components/profile';
 import { ScrollView, Text, View } from '@/components/ui';
 import { useCurrentUser, useSignOut } from '@/lib/auth';
+import { useScrollTopPadding } from '@/lib/hooks';
 
 export default function ProfileScreen() {
   const { t } = useTranslation();
   const user = useCurrentUser();
   const signOut = useSignOut();
+  const topPadding = useScrollTopPadding();
   const isMissingUser = !user;
 
   useEffect(() => {
@@ -27,7 +29,8 @@ export default function ProfileScreen() {
       <AmbientBackground />
       <ScrollView
         contentInsetAdjustmentBehavior="automatic"
-        contentContainerClassName="gap-5 px-5 pb-32 android:pt-safe"
+        contentContainerStyle={{ paddingTop: topPadding }}
+        contentContainerClassName="w-full max-w-2xl gap-5 self-center pr-safe-offset-5 pb-32 pl-safe-offset-5"
       >
         <Text className="h-11 px-1 font-bold text-[30px] leading-[44px] tracking-tight text-foreground">
           {t('profile.title')}

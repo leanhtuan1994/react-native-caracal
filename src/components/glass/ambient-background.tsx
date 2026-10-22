@@ -1,4 +1,4 @@
-import { View } from 'react-native';
+import { useWindowDimensions, View } from 'react-native';
 import Svg, { Defs, RadialGradient, Rect, Stop } from 'react-native-svg';
 
 import { useAppTheme } from '@/lib/contexts/app-theme-context';
@@ -26,10 +26,13 @@ function renderStops(name: keyof typeof BLOBS, isDark: boolean) {
 
 export function AmbientBackground() {
   const { isDark } = useAppTheme();
+  // SVG gradients keep the bounds they were first drawn with, so remount
+  // when the window resizes (folding, Split View, rotation).
+  const { width, height } = useWindowDimensions();
 
   return (
     <View pointerEvents="none" className="absolute inset-0 bg-background">
-      <Svg width="100%" height="100%">
+      <Svg key={`${width}x${height}`} width="100%" height="100%">
         <Defs>
           <RadialGradient id="ambient-azure" {...AREA.azure}>
             {renderStops('azure', isDark)}

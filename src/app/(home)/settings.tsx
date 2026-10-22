@@ -12,19 +12,22 @@ import {
 } from '@/components/settings';
 import { ScrollView, Text, View } from '@/components/ui';
 import { useSignOut } from '@/lib/auth';
+import { useScrollTopPadding } from '@/lib/hooks';
 
 const StyledIonicons = withUniwind(Ionicons);
 
 export default function SettingsScreen() {
   const { t } = useTranslation();
   const signOut = useSignOut();
+  const topPadding = useScrollTopPadding();
 
   return (
     <View className="flex-1">
       <AmbientBackground />
       <ScrollView
         contentInsetAdjustmentBehavior="automatic"
-        contentContainerClassName="gap-6 px-5 pb-32 android:pt-safe"
+        contentContainerStyle={{ paddingTop: topPadding }}
+        contentContainerClassName="w-full max-w-2xl gap-6 self-center pr-safe-offset-5 pb-32 pl-safe-offset-5"
       >
         <Text className="h-11 px-1 font-bold text-[30px] leading-[44px] tracking-tight text-foreground">
           {t('settings.title')}

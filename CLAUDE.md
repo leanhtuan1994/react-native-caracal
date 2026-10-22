@@ -136,6 +136,17 @@ The app uses Expo Router with typed routes (enabled in app.config.ts):
 
 Glass building blocks live in `src/components/glass`: `GlassLayer` (native iOS 26 glass, blur on older iOS, translucent view on Android), `GlassSurface`, `AmbientBackground`, `ButtonGlass` / `InputGlass` / `ChipGlass` (for HeroUI `background` props), `GlassButton` and `GlassListSection`. Colors follow the Starter App Flow design: link text uses the `text-link` utility (`--link`), primary actions use `PrimaryButton`. Do not put live glass inside list cells; feed cards use a flat translucent surface. See `docs/content/docs/ui-and-theme/liquid-glass.mdx`.
 
+### iPhone Duo and resizable windows
+
+The app is resizable on iOS 27 (iPhone Duo, iPad, Split View) and on Android foldables. The Duo puts the status bar, camera and tab bar in a vertical strip, reported as a left or right safe area inset. In screens:
+
+- Pad scroll content with `pl-safe-offset-*` / `pr-safe-offset-*` (or the insets from `useSafeAreaInsets()`), not `px-*`; `contentInsetAdjustmentBehavior="automatic"` does not cover the side bars.
+- Give tab screens a top gap with `useScrollTopPadding()` (`@/lib/hooks`); it is `0` below a notch or Dynamic Island and only adds space where the top inset is short.
+- Read sizes with `useWindowDimensions()` or Uniwind breakpoints; never `Dimensions.get()` at module scope.
+- On wide windows, center a readable column (`max-w-xl` / `max-w-2xl`) or add columns instead of stretching.
+
+See `docs/content/docs/ui-and-theme/iphone-duo.mdx`. Test on the `iPhone Duo` simulator (Xcode 27.1).
+
 ### State Management Architecture
 
 **Global State (Zustand):**

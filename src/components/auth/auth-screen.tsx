@@ -18,10 +18,14 @@ export function AuthScreen({ children, testID }: AuthScreenProps) {
       <AmbientBackground />
       <StyledScrollView
         keyboardShouldPersistTaps="handled"
-        contentContainerClassName="grow px-6 pb-10"
-        contentContainerStyle={{ paddingTop: insets.top + 16 }}
+        contentContainerClassName="grow pb-10"
+        contentContainerStyle={{
+          paddingTop: insets.top + 16,
+          paddingLeft: insets.left + 24,
+          paddingRight: insets.right + 24,
+        }}
       >
-        {children}
+        <View className="w-full max-w-xl grow self-center">{children}</View>
       </StyledScrollView>
     </View>
   );

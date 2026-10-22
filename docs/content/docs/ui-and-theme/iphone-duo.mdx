@@ -1,0 +1,76 @@
+---
+title: iPhone Duo & Foldables
+description: How Caracal adapts to the iPhone Duo's two displays, and the layout rules to follow in new screens.
+---
+
+Expo SDK 58 builds with the iOS 27 SDK, so the app is resizable and runs on the iPhone Duo as soon as it is installed. The Duo has a cover display (closed) and a larger inner display (open), and the window changes size every time someone folds the device or uses Split View. The same rules apply to Android foldables and iPad windows.
+
+Apple's guidance is in [Designing for iPhone Duo](https://developer.apple.com/design/human-interface-guidelines/designing-for-iphone-duo). Expo's notes are in the [SDK 58 changelog](https://expo.dev/changelog/sdk-58).
+
+## What the Duo changes
+
+- **Bars move to the side.** On the cover display, and on the inner display in landscape, the status bar, camera, tab bar and toolbars sit in a vertical strip on one edge. That strip is reported as a **horizontal** safe area inset (84 pt on the right of the cover display), and the top inset can be `0`.
+- **The window resizes at runtime.** Folding swaps between a ~466 × 678 pt cover window and a ~950 pt wide inner window without relaunching the app.
+- **Orientation locks are a preference.** `orientation: 'portrait'` in `app.config.ts` still applies on regular iPhones and Android, but the Duo's inner display shows the app in landscape anyway. See [Orientation locks on iOS 27](https://docs.expo.dev/versions/v58.0.0/sdk/screen-orientation/#orientation-locks-on-ios-27-and-later).
+
+`NativeTabs` and `Stack` use the system bars, so they move to the side on their own. Your content has to respect the insets.
+
+## Rules for screens
+
+**Pad scroll content with the left and right insets.** `contentInsetAdjustmentBehavior="automatic"` does not keep the content clear of the side bars. Use Uniwind's safe area offsets instead of `px-*`:
+
+```tsx
+<ScrollView
+  contentInsetAdjustmentBehavior="automatic"
+  contentContainerClassName="pr-safe-offset-5 pb-32 pl-safe-offset-5"
+/>
+```
+
+When a component already reads `useSafeAreaInsets()`, add the insets in `contentContainerStyle` (as `AuthScreen` does). Use the physical `pl`/`pr` edges, not `ps`/`pe`: the bars stay on the same hardware edge in right-to-left languages.
+
+**Keep a top gap when the top inset is 0.** With the status bar on the side, a tab screen's title would touch the top edge. `useScrollTopPadding()` (`@/lib/hooks`) returns `max(0, 16 - insets.top)` on iOS, so only windows with a short top inset (the Duo) get extra space; iPhones with a notch or Dynamic Island get `0`. On Android it returns the full top inset, which replaces `android:pt-safe`.
+
+```tsx
+const topPadding = useScrollTopPadding();
+
+<ScrollView
+  contentInsetAdjustmentBehavior="automatic"
+  contentContainerStyle={{ paddingTop: topPadding }}
+  contentContainerClassName="pr-safe-offset-5 pb-32 pl-safe-offset-5"
+/>
+```
+
+Uniwind's `pt-safe-or-4` does not work here: iOS already adds the top inset to the scroll view, so it would double the gap on regular iPhones. For a `List` (FlashList), put the padding on `ListHeaderComponent` instead: FlashList drops the `contentContainerClassName` padding when `contentContainerStyle` is also set.
+
+**Read the window size from hooks, never once at import.** `Dimensions.get()` at module scope goes stale after the first fold. Use `useWindowDimensions()` or Uniwind breakpoints (`md:`), which update on every resize.
+
+**Remount SVG gradients on resize.** `react-native-svg` gradients keep the bounds they were first drawn with. `AmbientBackground` keys its `Svg` on the window size so the blobs cover the new window.
+
+**Avoid fixed heights for text containers.** The cover display is narrow, so text wraps more. Use `min-h-*` instead of `h-*` on cards that hold text.
+
+**Let wide windows use the space, without stretching.**
+
+| Screen | Wide window (inner display, iPad) |
+| --- | --- |
+| Onboarding, login, sign-up | `AuthScreen` centers a `max-w-xl` column |
+| Profile, Settings | Content container is `w-full max-w-2xl self-center` |
+| Home feed | Two columns from 768 pt (Uniwind's `md` breakpoint) |
+
+An even number of columns splits cleanly around the hinge when the Duo is half open.
+
+## Testing
+
+Xcode 27.1 ships an **iPhone Duo** simulator on the iOS 27.1 runtime:
+
+```bash
+pnpm ios --device "iPhone Duo"
+```
+
+Fold and unfold it from Device Hub, then walk this list on every screen you change:
+
+- Closed (cover display): nothing sits under the camera or the side tab bar.
+- Open (inner display, landscape): content is centered or uses the extra width; nothing is stretched edge to edge.
+- Half open: grids split around the hinge.
+- Folding keeps state (scroll position, form input) and needs no relaunch.
+
+`expo-hinge` (hinge angle and posture) and Expo UI's `ArrangementView` are available in SDK 58 but are not installed here. Apple recommends hinge state for interactions such as a tabletop camera shutter, not for layout.
