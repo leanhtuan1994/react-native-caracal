@@ -1,6 +1,6 @@
 {
   "name": "caracalapp",
-  "version": "10.1.0",
+  "version": "10.2.0",
   "private": true,
   "main": "expo-router/entry",
   "scripts": {

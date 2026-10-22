@@ -5,6 +5,28 @@ description: New features, improvements, and bug fixes for the Caracal React Nat
 
 For published template versions, see the [Git tags](https://github.com/leanhtuan1994/react-native-caracal/tags).
 
+## 10.2.0
+
+### Features
+
+- Layouts adapt to the iPhone Duo, iPad and other resizable windows. Scroll content is padded with the left and right safe area insets, so the side status bar, camera and tab bar on the Duo cover display no longer cover it. On wide windows, the auth screens, Profile and Settings center a readable column, and the Home feed shows two columns from 768 pt. See the [iPhone Duo & Foldables](/docs/ui-and-theme/iphone-duo) guide.
+- Added `useScrollTopPadding()` (`@/lib/hooks`). It keeps a top gap on tab screens when the top safe area inset is 0, as on the Duo cover display, and adds nothing below a notch or Dynamic Island. On Android it returns the status bar inset and replaces `android:pt-safe`.
+- Added screenshots, GIFs and videos of the app on iPhone 18 Pro and the iPhone Duo to the README and the docs (`docs/public/screenshots/`).
+
+### Fixes
+
+- Release builds showed raw translation keys such as `home.all`. The root layout now imports `@/lib/i18n`, so i18next is initialized before any screen renders.
+- `AmbientBackground` and the onboarding `PanelGlow` now redraw their SVG gradients when the window resizes. They kept the size of their first draw, so after unfolding the Duo the background covered only part of the screen.
+- Onboarding feature cards use a minimum height instead of a fixed one, so text no longer clips on narrow windows.
+
+### Dependencies
+
+- Updated to the latest Expo SDK 58 patch releases: Expo `58.0.17`, Expo Router `58.0.25`, and matching `expo-constants`, `expo-linking`, `expo-splash-screen`, `expo-status-bar`, `@expo/metro-runtime` and `jest-expo`.
+
+### Breaking changes
+
+- Removed the `WIDTH` and `HEIGHT` exports from `@/components/ui`. They read the screen size once at startup, which is wrong after the window resizes. Use `useWindowDimensions()` or Uniwind breakpoints instead.
+
 ## 10.1.0
 
 ### Dependencies
