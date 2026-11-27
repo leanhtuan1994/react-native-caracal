@@ -9,7 +9,7 @@ This is a production-ready React Native starter kit built with Expo, TypeScript,
 **Key Technologies:**
 
 - Expo SDK 58 with Custom Dev Client and New Architecture (always on from SDK 55+)
-- React Native 0.88.0 with React 19
+- React Native 0.88.1 with React 19
 - Expo Router (file-based routing with typed routes enabled)
 - React Compiler (experimental) - enabled in app.config.ts
 - Uniwind (TailwindCSS for React Native)
