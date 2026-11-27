@@ -48,7 +48,7 @@ HeroUI Native provides 30+ components. Here are the most commonly used:
 - **Dialog** - Modal dialogs with customizable actions
 - **Toast** - Notification messages with auto-dismiss
 - **Popover** - Contextual popovers attached to elements
-- **BottomSheet** - Native sheets require the optional `@lodev09/react-native-true-sheet` package. Install it with `pnpm exec expo install @lodev09/react-native-true-sheet` and rebuild the development client before using this component. Use the sheet’s `dimBlur` and `dimOpacity` props for a blurred backdrop.
+- **BottomSheet** - The template includes `@lodev09/react-native-true-sheet`. Rebuild the native client when adopting this version. The [template Modal](/docs/ui-and-theme/custom-components#modal-component) wraps this component. Use the sheet’s `dimBlur` and `dimOpacity` props for a blurred backdrop.
 - **Spinner** - Loading spinners with various sizes
 - **Skeleton** - Loading placeholders for content
 
@@ -272,16 +272,15 @@ pnpm start
 19. ToastNativeModal - `src/app/(components)/toast-native-modal.tsx`
 20. Popover - `src/app/(components)/popover.tsx`
 21. PopoverNativeModal - `src/app/(components)/popover-native-modal.tsx`
-22. BottomSheet - `src/app/(components)/bottom-sheet.tsx`
-23. BottomSheetNativeModal - `src/app/(components)/bottom-sheet-native-modal.tsx`
-24. Spinner - `src/app/(components)/spinner.tsx`
-25. Skeleton - `src/app/(components)/skeleton.tsx`
+22. BottomSheet - [Template modal and usage](/docs/ui-and-theme/custom-components#modal-component)
+23. Spinner - `src/app/(components)/spinner.tsx`
+24. Skeleton - `src/app/(components)/skeleton.tsx`
 
 **Other Components (5):**
-26. Avatar - `src/app/(components)/avatar.tsx`
-27. Chip - `src/app/(components)/chip.tsx`
-28. ErrorView - `src/app/(components)/error-view.tsx`
-29. ComponentList - `src/app/(components)/component-list.tsx` (navigation)
+25. Avatar - `src/app/(components)/avatar.tsx`
+26. Chip - `src/app/(components)/chip.tsx`
+27. ErrorView - `src/app/(components)/error-view.tsx`
+28. ComponentList - `src/app/(components)/component-list.tsx` (navigation)
 
 See [Component Showcase Guide](/docs/ui-and-theme/component-showcase) for detailed documentation on using showcases as learning resources.
 

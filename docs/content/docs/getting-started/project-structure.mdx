@@ -122,13 +122,12 @@ The `(components)` route group serves as a **living documentation** system. Run 
 The root layout establishes the **provider hierarchy** critical for the app to function:
 
 ```tsx
-// Provider order (inside to outside):
+// Provider order (outside to inside):
 // 1. GestureHandlerRootView - Gesture support
 // 2. KeyboardProvider - Keyboard handling
 // 3. AppThemeProvider - Theme management (light/dark)
 // 4. HeroUINativeProvider - UI component context
 // 5. APIProvider - React Query setup
-// 6. BottomSheetModalProvider - Bottom sheet support
 ```
 
 ### `src/components/` - Reusable Components
@@ -143,7 +142,7 @@ Contains **6 custom components** designed for specific needs:
 | **Text** | i18n-enabled with RTL support | `text.tsx` |
 | **ControlledInput** | Form input with react-hook-form | `input.tsx` |
 | **List** | FlashList wrapper with EmptyList | `list.tsx` |
-| **Modal** | Bottom sheet modal wrapper | `modal.tsx` |
+| **Modal** | HeroUI Native BottomSheet wrapper | `modal.tsx` |
 | **FocusAwareStatusBar** | Route-aware StatusBar | `focus-aware-status-bar.tsx` |
 
 **Important:** For buttons, cards, dialogs, and other standard UI, use [HeroUI Native components](https://v3.heroui.com/native/llms-full.txt) instead.
@@ -405,8 +404,7 @@ GestureHandlerRootView
       └─ AppThemeProvider
           └─ HeroUINativeProvider
               └─ APIProvider (React Query)
-                  └─ BottomSheetModalProvider
-                      └─ App Content
+                  └─ App Content
 ```
 
 **Why this order?**
@@ -414,7 +412,6 @@ GestureHandlerRootView
 - Keyboard handling before UI
 - Theme before styled components
 - API provider before data-fetching components
-- Bottom sheet last for modals to overlay everything
 
 ### 4. Component Showcase System
 

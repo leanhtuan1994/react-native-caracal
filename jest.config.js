@@ -13,7 +13,7 @@ module.exports = {
   ],
   moduleFileExtensions: ['js', 'ts', 'tsx'],
   transformIgnorePatterns: [
-    `node_modules/(?!(?:.pnpm/)?((jest-)?react-native|@react-native(-community)?|expo(nent)?|@expo(nent)?/.*|@expo-google-fonts/.*|react-navigation|@react-navigation/.*|@unimodules/.*|unimodules|@sentry/.*|native-base|react-native-svg|uniwind|heroui-native|@shopify/flash-list))`,
+    `node_modules/(?!(?:.pnpm/)?((jest-)?react-native|@react-native(-community)?|expo(nent)?|@expo(nent)?/.*|@expo-google-fonts/.*|react-navigation|@react-navigation/.*|@unimodules/.*|unimodules|@sentry/.*|native-base|react-native-svg|uniwind|heroui-native|@lodev09/react-native-true-sheet|@shopify/flash-list))`,
   ],
   coverageReporters: ['json-summary', ['text', { file: 'coverage.txt' }]],
   reporters: [
@@ -35,6 +35,10 @@ module.exports = {
   ],
   coverageDirectory: '<rootDir>/coverage/',
   moduleNameMapper: {
+    '^@lodev09/react-native-true-sheet$':
+      '@lodev09/react-native-true-sheet/mock',
+    '^@lodev09/react-native-true-sheet/reanimated$':
+      '@lodev09/react-native-true-sheet/reanimated/mock',
     '^@/(.*)$': '<rootDir>/src/$1',
   },
 };

@@ -195,7 +195,6 @@ The app wraps components in this provider order (see `src/app/_layout.tsx`):
 3. AppThemeProvider (theme management with system/light/dark modes)
 4. HeroUINativeProvider (UI component context)
 5. APIProvider (React Query setup)
-6. BottomSheetModalProvider (bottom sheet modals)
 
 ### Form Handling Pattern
 

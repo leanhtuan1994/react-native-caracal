@@ -263,71 +263,28 @@ import { EmptyList } from '@/components/ui';
 
 ## Modal Component
 
-A bottom sheet modal implementation using `@gorhom/bottom-sheet`. The default backdrop fades as the sheet moves, reaches 40% opacity at the first snap point, and closes the sheet when tapped.
-
-### Why a custom Modal?
-
-- **Mobile-First:** Bottom sheets provide better mobile UX than center modals
-- **Flexible:** Supports dynamic content height with snap points
-- **Gesture-Driven:** Swipe to dismiss with smooth animations
-- **Full Control:** Complete control over UI and behavior
-
-**Props:**
-- All `@gorhom/bottom-sheet` props are supported
-- `title` (string) - Modal title displayed at the top
-- `children` - Modal content
-
-**Example:**
+The template’s `Modal` wraps HeroUI Native’s `BottomSheet` (TrueSheet). It provides an optional title, a close button, and a backdrop with 40% dimming. The sheet fits its content by default.
 
 ```tsx
 import { Button } from 'heroui-native';
-import { Modal, useModal, View, Text } from '@/components/ui';
+import { Modal, Text, useModal, View } from '@/components/ui';
 
-export function SettingsScreen() {
+export function SettingsExample() {
   const modal = useModal();
 
   return (
-    <View className="flex-1 p-4">
-      <Button onPress={modal.present}>
-        Open Settings
-      </Button>
-
-      <Modal
-        ref={modal.ref}
-        title="Settings"
-        snapPoints={['60%', '90%']}
-      >
-        <View className="p-4">
-          <Text className="text-lg">Settings content here</Text>
-          <Button onPress={modal.dismiss}>
-            Close
-          </Button>
-        </View>
+    <View>
+      <Button onPress={modal.present}>Open settings</Button>
+      <Modal ref={modal.ref} title="Settings">
+        <Text>Choose your preferences.</Text>
+        <Button onPress={modal.dismiss}>Done</Button>
       </Modal>
     </View>
   );
 }
 ```
 
-**useModal Hook:**
-
-```tsx
-const modal = useModal();
-
-modal.present();  // Open the modal
-modal.dismiss();  // Close the modal
-modal.ref;        // Ref for the Modal component
-```
-
-**Snap Points:**
-
-```tsx
-// Percentage-based
-<Modal snapPoints={['25%', '50%', '90%']} />
-
-// Pixel-based
-<Modal snapPoints={[200, 400, 600]} />
-```
+For multiple heights, pass up to three `detents` in ascending order, such as `detents={[0.6, 0.9]}`. Fractions refer to the available height. Call `modal.ref.current?.present(1)` to open at the second height or `modal.ref.current?.resize(1)` on an open sheet. For scrollable content, use a bounded detent and pass the inner React Native `ScrollView` ref to `scrollableRef`. Use HeroUI’s compound `BottomSheet` directly for a custom header or sticky footer. [HeroUI BottomSheet API](https://heroui.com/en/docs/native/components/bottom-sheet)
 
 ---
 

@@ -1,6 +1,5 @@
 import '@shopify/flash-list/jestSetup';
 
-import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import type { RenderOptions } from '@testing-library/react-native';
 import { render, userEvent } from '@testing-library/react-native';
 import { HeroUINativeProvider } from 'heroui-native';
@@ -12,9 +11,7 @@ import { AppThemeProvider } from '@/lib/contexts/app-theme-context';
 const createAppWrapper = () => {
   return ({ children }: { children: React.ReactNode }) => (
     <AppThemeProvider>
-      <HeroUINativeProvider>
-        <BottomSheetModalProvider>{children}</BottomSheetModalProvider>
-      </HeroUINativeProvider>
+      <HeroUINativeProvider>{children}</HeroUINativeProvider>
     </AppThemeProvider>
   );
 };
