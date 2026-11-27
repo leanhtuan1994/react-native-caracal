@@ -2,8 +2,8 @@ import { router } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 
 import {
+  AuthBrandMark,
   AuthScreen,
-  BrandMark,
   LanguagePill,
   LoginForm,
 } from '@/components/auth';
@@ -15,7 +15,7 @@ export default function LoginScreen() {
   return (
     <AuthScreen testID="login-screen">
       <View className="flex-row items-center justify-between">
-        <BrandMark />
+        <AuthBrandMark />
         <LanguagePill testID="login-language" />
       </View>
       <View className="mt-8 mb-8 gap-2">

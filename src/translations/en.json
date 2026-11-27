@@ -55,6 +55,7 @@
     "greeting_morning": "Good morning",
     "latest": "Latest posts",
     "notifications": "Notifications",
+    "post_not_found": "Post not found.",
     "search_placeholder": "Search posts",
     "see_all": "See all",
     "voice_search": "Voice search"

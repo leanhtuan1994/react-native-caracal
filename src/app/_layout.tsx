@@ -89,6 +89,7 @@ export default function RootLayout() {
           redirectTo={guards.redirectTo}
         >
           <Stack.Screen name="(home)" />
+          <Stack.Screen name="posts/[id]" />
         </Stack.Protected>
       </Stack>
     </Providers>
