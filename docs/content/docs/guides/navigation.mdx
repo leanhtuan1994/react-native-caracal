@@ -31,6 +31,7 @@ Caracal organizes routes using **route groups** — folders wrapped in parenthes
 src/app/
 ├── _layout.tsx              # Root layout (providers, fonts, route guards)
 ├── onboarding.tsx           # First-launch onboarding (/onboarding)
+├── posts/[id].tsx           # Signed-in post detail (/posts/1)
 ├── (auth)/                  # Signed-out screens (stack)
 │   ├── _layout.tsx
 │   ├── login.tsx            # Sign in (/login)
@@ -49,6 +50,7 @@ The root layout shows exactly one of three areas, chosen by `Stack.Protected` gu
 - **`onboarding`**: visible only on first launch (`useIsFirstTime()`).
 - **`(auth)` group**: visible while signed out. Holds Sign in and Create account.
 - **`(home)` group**: visible while signed in. Holds the three tabs.
+- **`posts/[id]`**: shares the signed-in guard with the tabs. Tapping a Home feed card pushes its detail onto the root stack. The header and article scroll together. During iOS pull-down, the gradient stretches from the top edge to follow the header content, then springs back with the scroll view. On native, the title, tags, likes and views each move to their own position using tags scoped to the post ID. The title keeps the same typography in both layouts. The two-line preview has its own shared tag and fades into the full article text as it moves. Going back returns to the same feed, including its filters and scroll position.
 
 The guard values come from the pure function `getRouteGuards({ isFirstTime, status })` in `src/lib/navigation/route-guards.ts`, which has unit tests.
 
@@ -81,6 +83,8 @@ Each `NativeTabs.Trigger` sets a translated `NativeTabs.Trigger.Label`, an SF Sy
 ## Stack Navigation
 
 The `(auth)` group uses a plain `Stack` (headers hidden) so Sign in and Create account can push and go back.
+
+To try the Reanimated shared element transition, open **Sign in**, tap **Create an account**, then use the back button. On iOS and Android the Caracal icon moves from the left header into the wider badge on the right. The auth stack activates a shared transition boundary for the focused screen. Both headers render `AuthBrandMark` with the same `sharedTransitionTag`. The badge changes width during the 450 ms transition, keeping the Caracal icon visible in both directions. Web renders the two headers with ordinary navigation.
 
 **Stack Features:**
 - Back navigation with native transitions
