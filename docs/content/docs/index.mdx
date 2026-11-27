@@ -33,7 +33,7 @@ When creating this starter kit, we had several guiding principles in mind:
 
 ### Core Framework & Performance
 
-- **Latest Expo SDK 58** with Custom Dev Client: Leverage the best of the Expo ecosystem while maintaining full control over your app.
+- **Expo SDK** with Custom Dev Client: Leverage the best of the Expo ecosystem while maintaining full control over your app.
 - **React 19** with [React Compiler](https://react.dev/learn/react-compiler) enabled: Automatic optimization without manual memoization.
 - **New Architecture** enabled: Fabric renderer, TurboModules, and JSI for superior performance.
 - [TypeScript](https://www.typescriptlang.org/) for enhanced code quality and bug prevention through static type checking.
@@ -41,19 +41,19 @@ When creating this starter kit, we had several guiding principles in mind:
 ### Navigation & Routing
 
 - [Expo Router](https://docs.expo.dev/router/introduction/) with **typed routes** and route groups for type-safe, file-based navigation.
-- **30 interactive component showcases** organized in route groups for learning and reference.
+- Protected onboarding, authentication and tab routes, plus a post detail screen.
 
 ### UI & Styling
 
-- **Production-ready UI** with [HeroUI Native](https://v3.heroui.com/docs/native/getting-started) (30+ components) and [Uniwind](https://docs.uniwind.dev/) for TailwindCSS styling.
-- **6 custom components** (Image, Text, Input, List, Modal, StatusBar) for specialized needs.
+- **Production-ready UI** with [HeroUI Native](https://heroui.com/en/docs/native/components) (30+ components) and [Uniwind](https://docs.uniwind.dev/) for TailwindCSS styling.
+- Shared components include form inputs, text, images, lists and a TrueSheet-backed Modal.
 - **Dark mode support** with system preference detection.
 
 ### State Management & Data
 
 - **Zustand** for global client state with selectors pattern for optimal performance.
 - [React Query v5](https://tanstack.com/query/latest) with [react-query-kit](https://github.com/liaoliao666/react-query-kit) for type-safe server state management.
-- [MMKV](https://github.com/mrousavy/react-native-mmkv) for fast, encrypted storage (30x faster than AsyncStorage).
+- [MMKV](https://github.com/mrousavy/react-native-mmkv) for local accounts, session and preferences.
 - Robust form handling with [react-hook-form](https://react-hook-form.com/) and [zod](https://zod.dev/) validation.
 
 ### Development Experience
@@ -62,14 +62,14 @@ When creating this starter kit, we had several guiding principles in mind:
 - Clean project structure with **absolute imports** (`@/`) for easier navigation.
 - **VSCode** recommended extensions, settings, and snippets for enhanced productivity.
 - **Husky** for Git Hooks to automate code quality checks.
-- **Lint-staged**: Run ESLint and TypeScript checks on staged files only.
+- **Lint-staged**: Run ESLint on staged source files and type-check the app before committing.
 - **pnpm** enforced for fast, disk-efficient package management.
 
 ### Testing & Quality
 
 - **Unit testing** with [Jest](https://jestjs.io/) and [React Native Testing Library](https://testing-library.com/docs/react-native-testing-library/intro/).
 - **E2E testing** with [Maestro](https://maestro.mobile.dev/) (3 workflow variants included).
-- **14 GitHub Actions workflows** for automated building, releasing, testing, and quality checks.
+- **GitHub Actions workflows** for automated building, releasing, testing, and quality checks.
 - **Expo Doctor** integration for health checks and dependency validation.
 
 ### Internationalization & Accessibility
@@ -121,6 +121,8 @@ We value the feedback and contributions of our users, and we encourage you to le
 
 ## Libraries Used
 
+The root `package.json` declares the template dependencies. Its `pnpm-lock.yaml` records the resolved versions for the same checkout.
+
 ### Core Framework
 
 - [React](https://react.dev/) 19.3.0 with [React Compiler](https://react.dev/learn/react-compiler)
@@ -134,7 +136,7 @@ We value the feedback and contributions of our users, and we encourage you to le
 
 ### UI & Styling
 
-- [HeroUI Native](https://v3.heroui.com/docs/native/getting-started) 1.0.11 (30+ components)
+- [HeroUI Native](https://heroui.com/en/docs/native/components) 1.1.1 with TrueSheet 4.1.2
 - [Uniwind](https://docs.uniwind.dev/) 1.13.0 (TailwindCSS for React Native)
 - [Tailwind Variants](https://www.tailwind-variants.org/)
 - [React Native Svg](https://github.com/software-mansion/react-native-svg)

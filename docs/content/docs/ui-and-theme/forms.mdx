@@ -29,7 +29,7 @@ The starter provides `ControlledInput` — a wrapper around HeroUI Native's `Tex
 **Key features:**
 - Uses `useController` hook from react-hook-form
 - Automatically displays validation errors
-- Supports all TextField props from HeroUI Native
+- Accepts a label, a test ID, selected text-input props and an optional password toggle
 - Type-safe with TypeScript
 
 **Import:**
@@ -82,7 +82,7 @@ import * as z from 'zod';
 
 import { Button } from 'heroui-native';
 import { ControlledInput, View } from '@/components/ui';
-import { useAuth } from '@/lib/auth';
+import { loginWithEmail } from '@/lib/auth';
 
 const schema = z.object({
   email: z.string().email('Invalid email'),
@@ -92,16 +92,11 @@ const schema = z.object({
 type FormType = z.infer<typeof schema>;
 
 export function LoginForm() {
-  const { signIn } = useAuth();
-
   const { handleSubmit, control } = useForm<FormType>({
     resolver: zodResolver(schema),
   });
 
-  const onSubmit: SubmitHandler<FormType> = (data) => {
-    console.log(data);
-    signIn({ access: 'access-token', refresh: 'refresh-token' });
-  };
+  const onSubmit: SubmitHandler<FormType> = loginWithEmail;
 
   return (
     <KeyboardAvoidingView
@@ -126,14 +121,13 @@ export function LoginForm() {
           name="password"
           label="Password"
           placeholder="Enter your password"
-          secureTextEntry
+          isPassword
           testID="password-input"
         />
 
         <Button
           onPress={handleSubmit(onSubmit)}
-          variant="solid"
-          color="primary"
+          variant="primary"
           testID="login-button"
         >
           Login
@@ -161,7 +155,7 @@ import { KeyboardAvoidingView } from 'react-native-keyboard-controller';
 **Button Usage:**
 ```tsx
 // Correct — HeroUI Native Button
-<Button onPress={handleSubmit(onSubmit)} variant="solid">
+<Button onPress={handleSubmit(onSubmit)} variant="primary">
   Login
 </Button>
 
@@ -230,6 +224,7 @@ export function RegistrationForm() {
             <ControlledInput
               control={control}
               name="firstName"
+              testID="firstName-input"
               label="First Name"
               placeholder="John"
             />
@@ -237,6 +232,7 @@ export function RegistrationForm() {
             <ControlledInput
               control={control}
               name="lastName"
+              testID="lastName-input"
               label="Last Name"
               placeholder="Doe"
             />
@@ -244,6 +240,7 @@ export function RegistrationForm() {
             <ControlledInput
               control={control}
               name="email"
+              testID="email-input"
               label="Email"
               placeholder="john.doe@example.com"
               keyboardType="email-address"
@@ -257,6 +254,7 @@ export function RegistrationForm() {
             <ControlledInput
               control={control}
               name="username"
+              testID="username-input"
               label="Username"
               placeholder="johndoe"
               autoCapitalize="none"
@@ -265,21 +263,23 @@ export function RegistrationForm() {
             <ControlledInput
               control={control}
               name="password"
+              testID="password-input"
               label="Password"
               placeholder="Enter password"
-              secureTextEntry
+              isPassword
             />
 
             <ControlledInput
               control={control}
               name="confirmPassword"
+              testID="confirmPassword-input"
               label="Confirm Password"
               placeholder="Re-enter password"
-              secureTextEntry
+              isPassword
             />
           </View>
 
-          <Button onPress={handleSubmit(onSubmit)} variant="solid">
+          <Button onPress={handleSubmit(onSubmit)} variant="primary">
             Create Account
           </Button>
         </View>
@@ -319,7 +319,7 @@ const schema = z.object({
 type FormType = z.infer<typeof schema>;
 
 export function NotificationSettingsForm() {
-  const { control, handleSubmit } = useForm<FormType>({
+  const { control, handleSubmit, setValue } = useForm<FormType>({
     resolver: zodResolver(schema),
     defaultValues: {
       enableNotifications: false,
@@ -341,8 +341,8 @@ export function NotificationSettingsForm() {
         <Text className="text-lg">Enable Notifications</Text>
         <Switch
           isSelected={enableNotifications}
-          onValueChange={(value) => {
-            control._formValues.enableNotifications = value;
+          onSelectedChange={(value) => {
+            setValue('enableNotifications', value);
           }}
         />
       </View>
@@ -352,6 +352,7 @@ export function NotificationSettingsForm() {
           <ControlledInput
             control={control}
             name="email"
+            testID="email-input"
             label="Email (Optional)"
             placeholder="notifications@example.com"
             keyboardType="email-address"
@@ -360,6 +361,7 @@ export function NotificationSettingsForm() {
           <ControlledInput
             control={control}
             name="phone"
+            testID="phone-input"
             label="Phone (Optional)"
             placeholder="+1 234 567 8900"
             keyboardType="phone-pad"
@@ -423,25 +425,24 @@ export function ContactForm() {
       <ControlledInput
         control={control}
         name="email"
+        testID="email-input"
         label="Email"
         placeholder="your@email.com"
         keyboardType="email-address"
-        isDisabled={isSubmitting}
+
       />
 
       <ControlledInput
         control={control}
         name="message"
+        testID="message-input"
         label="Message"
         placeholder="Your message here..."
-        multiline
-        numberOfLines={4}
-        isDisabled={isSubmitting}
+
       />
 
       <Button
         onPress={handleSubmit(onSubmit)}
-        isLoading={isSubmitting}
         isDisabled={isSubmitting}
       >
         Send Message
@@ -607,7 +608,7 @@ import type { SwitchProps } from 'heroui-native';
 type ControlledSwitchProps<T extends FieldValues> = {
   control: Control<T>;
   name: Path<T>;
-} & Omit<SwitchProps, 'isSelected' | 'onValueChange'>;
+} & Omit<SwitchProps, 'isSelected' | 'onSelectedChange'>;
 
 export function ControlledSwitch<T extends FieldValues>({
   control,
@@ -619,7 +620,7 @@ export function ControlledSwitch<T extends FieldValues>({
   return (
     <Switch
       isSelected={field.value}
-      onValueChange={field.onChange}
+      onSelectedChange={field.onChange}
       {...switchProps}
     />
   );
@@ -638,7 +639,7 @@ type ControlledCheckboxProps<T extends FieldValues> = {
   control: Control<T>;
   name: Path<T>;
   label?: string;
-} & Omit<CheckboxProps, 'isSelected' | 'onChange'>;
+} & Omit<CheckboxProps, 'isSelected' | 'onSelectedChange'>;
 
 export function ControlledCheckbox<T extends FieldValues>({
   control,
@@ -651,7 +652,7 @@ export function ControlledCheckbox<T extends FieldValues>({
   return (
     <Checkbox
       isSelected={field.value}
-      onChange={field.onChange}
+      onSelectedChange={field.onChange}
       {...checkboxProps}
     >
       {label}
@@ -672,7 +673,7 @@ export function ControlledCheckbox<T extends FieldValues>({
 - Provide `defaultValues` — prevents uncontrolled-to-controlled warnings
 - Use proper keyboard types — `email-address`, `phone-pad`, `numeric`, etc.
 - Disable `autoCapitalize` for emails/usernames — better UX
-- Show loading states — use `isLoading` prop on Button
+- Disable the submit button with `isDisabled={formState.isSubmitting}` while the request runs
 - Reset form after successful submission — use `reset()` from `useForm`
 - Handle errors gracefully — show user-friendly error messages
 
@@ -691,15 +692,7 @@ export function ControlledCheckbox<T extends FieldValues>({
 
 ### Form values not updating
 
-**Cause:** Using wrong prop names (HeroUI Native uses `isDisabled` not `disabled`)
-
-```tsx
-// Correct
-<ControlledInput control={control} name="email" isDisabled={loading} />
-
-// Wrong
-<ControlledInput control={control} name="email" disabled={loading} />
-```
+Pass the same `control` returned by `useForm` to each `ControlledInput`. Its `name` must match a field in the schema. See `src/components/auth/login-form.tsx` for a working example.
 
 ### Keyboard covering inputs
 
@@ -731,41 +724,11 @@ export function ControlledCheckbox<T extends FieldValues>({
 
 ## Testing Forms
 
-```tsx
-import { render, fireEvent, waitFor } from '@testing-library/react-native';
-import { LoginForm } from './login-form';
+The sign-in and registration tests render the actual form components with the app’s providers. They enter text, submit, and check validation messages and authentication calls. Run them from the repository root.
 
-describe('LoginForm', () => {
-  it('validates email format', async () => {
-    const { getByTestId, getByText } = await render(<LoginForm />);
-
-    const emailInput = getByTestId('email-input');
-    const submitButton = getByTestId('login-button');
-
-    await fireEvent.changeText(emailInput, 'invalid-email');
-    await fireEvent.press(submitButton);
-
-    await waitFor(() => {
-      expect(getByText('Invalid email')).toBeTruthy();
-    });
-  });
-
-  it('submits valid form', async () => {
-    const mockSignIn = jest.fn();
-    const { getByTestId } = await render(<LoginForm onSignIn={mockSignIn} />);
-
-    await fireEvent.changeText(getByTestId('email-input'), 'test@example.com');
-    await fireEvent.changeText(getByTestId('password-input'), 'password123');
-    await fireEvent.press(getByTestId('login-button'));
-
-    await waitFor(() => {
-      expect(mockSignIn).toHaveBeenCalled();
-    });
-  });
-});
+```sh
+pnpm test --runInBand src/components/auth
 ```
-
----
 
 ## Resources
 

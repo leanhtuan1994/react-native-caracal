@@ -13,26 +13,7 @@ The wrapper at `src/lib/storage.tsx` exports three helpers:
 - `setItem<T>(key, value)` — JSON-serializes and writes a value
 - `removeItem(key)` — deletes a key
 
-These are used throughout Caracal for token persistence, user preferences, and language selection.
-
-```typescript title="src/lib/storage.tsx"
-import { MMKV } from 'react-native-mmkv';
-
-export const storage = new MMKV();
-
-export function getItem<T>(key: string): T | null {
-  const value = storage.getString(key);
-  return value ? (JSON.parse(value) as T) : null;
-}
-
-export function setItem<T>(key: string, value: T): void {
-  storage.set(key, JSON.stringify(value));
-}
-
-export function removeItem(key: string): void {
-  storage.delete(key);
-}
-```
+The shared instance is created with `createMMKV()` and uses the default unencrypted storage. The helpers persist the demo session and accounts. Preference hooks also use MMKV directly.
 
 ## Keys used by the starter
 
@@ -49,8 +30,6 @@ Passwords are only ever stored as a salted SHA-256 hash, never in plain text.
 ## Why MMKV?
 
 - **Synchronous**: No `async`/`await` needed — reads and writes are instant
-- **Fast**: Roughly 30× faster than AsyncStorage
-- **Encrypted**: Supports AES encryption for sensitive data
 - **Hook support**: `react-native-mmkv` exposes reactive hooks for live value subscriptions
 
 See the [official MMKV docs](https://github.com/mrousavy/react-native-mmkv) for encryption setup, hooks, and advanced configuration.

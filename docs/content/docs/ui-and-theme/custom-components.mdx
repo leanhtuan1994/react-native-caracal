@@ -11,12 +11,12 @@ While most UI components come from [HeroUI Native](/docs/ui-and-theme/heroui-nat
 
 ## Custom Components Overview
 
-Located in `src/components/ui/`, the starter provides **6 custom components**:
+Located in `src/components/ui/`, these are some of the starter’s shared components:
 
 1. **Image** - Expo Image wrapper with Uniwind support
-2. **Text** - i18n-enabled text component with RTL support
+2. **Text** - React Native text with template typography
 3. **ControlledInput** - Form input with react-hook-form integration
-4. **List** - FlashList wrapper with empty state support
+4. **List** - FlashList re-export
 5. **Modal** - Bottom sheet modal wrapper
 6. **FocusAwareStatusBar** - Status bar that updates on screen focus
 
@@ -45,7 +45,6 @@ export function ProfilePicture() {
       className="h-24 w-24 rounded-full"
       source={{ uri: 'https://example.com/avatar.jpg' }}
       contentFit="cover"
-      placeholder={require('@assets/images/placeholder.png')}
     />
   );
 }
@@ -70,65 +69,12 @@ export function ProfilePicture() {
 
 ## Text Component
 
-A custom Text component with built-in internationalization (i18n) support and right-to-left (RTL) language handling.
-
-### Why a custom Text?
-
-- **i18n Integration:** Use translation keys directly with the `tx` prop
-- **RTL Support:** Automatically handles text direction for Arabic, Hebrew, etc.
-- **Consistent Styling:** Supports Uniwind `className` prop
-
-**Props:**
-- All React Native `Text` props are supported
-- `className` - Uniwind class names
-- `tx` - Translation key for i18next
-
-**Example with Translation:**
+`Text` sets the template’s default font and forwards React Native text props. Use the translation hook for localized copy.
 
 ```tsx
-import { Text, View } from '@/components/ui';
-
-export function WelcomeScreen() {
-  return (
-    <View className="flex-1 items-center justify-center">
-      <Text className="text-2xl font-bold" tx="welcome.title" />
-      <Text className="text-base text-gray-600" tx="welcome.subtitle" />
-    </View>
-  );
-}
+const { t } = useTranslation();
+return <Text className="font-bold">{t('settings.language')}</Text>;
 ```
-
-**Example with Regular Text:**
-
-```tsx
-import { Text } from '@/components/ui';
-
-export function Greeting({ name }: { name: string }) {
-  return (
-    <Text className="text-lg">
-      Hello, {name}!
-    </Text>
-  );
-}
-```
-
-**RTL Support:**
-
-The component automatically detects the current locale and applies proper text direction:
-
-```tsx
-// English: left-to-right
-<Text tx="welcome" /> // "Welcome" →
-
-// Arabic: right-to-left
-<Text tx="welcome" /> // ← "مرحبا"
-```
-
-<Callout type="info">
-Use the `t` snippet in VSCode to quickly create a Text component with a default className.
-</Callout>
-
----
 
 ## ControlledInput Component
 
@@ -207,59 +153,7 @@ export function LoginForm({ onSubmit }: { onSubmit: (data: FormData) => void }) 
 
 ## List Component
 
-A wrapper around `@shopify/flash-list` with an integrated empty state component.
-
-### Why a custom List?
-
-- **Performance:** FlashList is significantly faster than FlatList for large lists
-- **Empty State:** Built-in `EmptyList` component for better UX
-- **Consistent API:** Familiar FlatList-like API
-
-**Props:**
-- All `@shopify/flash-list` props are supported
-
-**Example:**
-
-```tsx
-import { List, EmptyList, Text, View } from '@/components/ui';
-
-type Post = {
-  id: string;
-  title: string;
-  body: string;
-};
-
-export function PostsList({ posts }: { posts: Post[] }) {
-  return (
-    <List
-      data={posts}
-      renderItem={({ item }) => (
-        <View className="border-b border-gray-200 p-4">
-          <Text className="text-lg font-bold">{item.title}</Text>
-          <Text className="text-gray-600">{item.body}</Text>
-        </View>
-      )}
-      estimatedItemSize={100}
-      ListEmptyComponent={<EmptyList message="No posts yet" />}
-    />
-  );
-}
-```
-
-**EmptyList Component:**
-
-```tsx
-import { EmptyList } from '@/components/ui';
-
-<EmptyList message="No items found" />
-```
-
-**Performance Tips:**
-- Always provide `estimatedItemSize` for best performance
-- Use `keyExtractor` for stable item keys
-- Memoize `renderItem` if items contain complex components
-
----
+`List` re-exports FlashList from `@shopify/flash-list`. Supply a `ListEmptyComponent` when the screen needs its own empty state. The feed’s empty-state component lives in `src/components/home/post-empty-state.tsx`.
 
 ## Modal Component
 
@@ -329,24 +223,24 @@ import {
   ActivityIndicator, // React Native ActivityIndicator
   Pressable,         // React Native Pressable
   TouchableOpacity,  // React Native TouchableOpacity
-  SafeAreaView,      // react-native-safe-area-context
+  StyledSafeAreaView,      // react-native-safe-area-context
 } from '@/components/ui';
 ```
 
 **Usage:**
 
 ```tsx
-import { View, ScrollView, SafeAreaView } from '@/components/ui';
+import { View, ScrollView, StyledSafeAreaView } from '@/components/ui';
 
 export function MyScreen() {
   return (
-    <SafeAreaView className="flex-1">
+    <StyledSafeAreaView className="flex-1">
       <ScrollView className="flex-1">
         <View className="p-4">
           {/* Content */}
         </View>
       </ScrollView>
-    </SafeAreaView>
+    </StyledSafeAreaView>
   );
 }
 ```
@@ -357,7 +251,7 @@ export function MyScreen() {
 
 Create a custom component when:
 
-1. **HeroUI Native doesn't provide it** — like the i18n-enabled Text component
+1. **HeroUI Native doesn't provide it** — for example, the template’s default typography
 2. **Specific integration needed** — like ControlledInput for react-hook-form
 3. **Performance optimization required** — like List wrapping FlashList
 4. **Platform-specific behavior** — like FocusAwareStatusBar for Expo Router
@@ -365,7 +259,7 @@ Create a custom component when:
 **Don't create custom components for:**
 - Buttons, inputs, cards, dialogs → use HeroUI Native
 - Standard layouts → use View, ScrollView from `@/components/ui`
-- Icons → create SVG components in `src/components/ui/icons/`
+- Icons → create SVG components alongside the component that owns them
 
 ---
 
@@ -474,7 +368,7 @@ import Animated from 'react-native-reanimated';
 ## Resources
 
 - **HeroUI Native Components:** See [HeroUI Native Guide](/docs/ui-and-theme/heroui-native)
-- **Component Showcases:** See [Component Showcase Guide](/docs/ui-and-theme/component-showcase)
+- **Component examples:** See [examples from the app](/docs/ui-and-theme/component-showcase)
 - **Forms Integration:** See [Forms Documentation](/docs/ui-and-theme/forms)
 - **Styling Guide:** See [UI & Theming](/docs/ui-and-theme/ui-theming)
 - **Uniwind Documentation:** [https://docs.uniwind.dev/](https://docs.uniwind.dev/)
@@ -490,7 +384,7 @@ import Animated from 'react-native-reanimated';
 
 **Use Custom Components for:**
 - Image (Uniwind support)
-- Text (i18n support)
+- Text (template typography)
 - ControlledInput (form integration)
 - List (FlashList wrapper)
 - Modal (bottom sheet)

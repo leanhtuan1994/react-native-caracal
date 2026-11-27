@@ -30,7 +30,7 @@ Each workflow file includes:
 | **Building** | EAS Build QA, EAS Build Prod | 2 |
 | **Releasing** | New App Version, New GitHub Release | 2 |
 | **Maintenance** | Compress Images, Stale Issues/PRs | 2 |
-| **Documentation** | Deploy Docs to GitHub Pages | 1 |
+| **Documentation** | Deploy Docs to Vercel | 1 |
 | **TOTAL** | | **14** |
 
 ## Custom Actions (Reusable)
@@ -132,7 +132,7 @@ Custom actions encapsulate common tasks and can be reused across multiple workfl
 
 **Fix linting issues:**
 ```bash
-pnpm lint:fix
+pnpm lint --fix
 ```
 
 ---
@@ -205,7 +205,7 @@ pnpm doctor
 ```bash
 pnpm test              # Run all tests
 pnpm test:watch        # Watch mode
-pnpm test:coverage     # With coverage report
+pnpm test:ci     # With coverage report
 ```
 
 ---
@@ -436,45 +436,27 @@ Production builds use release configuration and may require additional setup:
 
 ## Documentation Workflow
 
-### Deploy Docs to GitHub Pages
+### Deploy Docs to Vercel
 
-**File:** `.github/workflows/deploy-docs.yml`
+`.github/workflows/deploy-docs.yml` calls the Vercel deploy hook when a GitHub release is published or when the workflow runs manually. It uses the `VERCEL_DEPLOY_HOOK` Actions secret. Vercel builds the Next.js site from the `docs/` directory using `docs/vercel.json`.
 
-**Triggers:**
-- Push to `master` branch with changes in `docs/**`
-- Manual via `workflow_dispatch`
+To build the same site locally, run these commands from the repository root.
 
-**What it does:**
-1. Builds the documentation site
-2. Uploads to GitHub Pages
-3. Deploys to configured URL
-4. Automatically updates live docs
-
-**Secrets:** None required (uses built-in `GITHUB_TOKEN`)
-
-**Setup GitHub Pages:**
-1. Go to Settings → Pages
-2. Source: GitHub Actions
-3. Push to `docs/` folder
-4. Docs deploy automatically
-
-**Local development:**
 ```bash
 cd docs
-pnpm install
-pnpm dev        # Start dev server
-pnpm build      # Build for production
+pnpm install --ignore-workspace --frozen-lockfile
+pnpm build
 ```
 
----
 
 ## Workflow Triggers Reference
 
 | Trigger | Description | Example Workflows |
 |---------|-------------|-------------------|
-| **push** | On push to specific branches | lint-ts, type-check, test, deploy-docs |
+| **push** | On push to specific branches | lint-ts, type-check, test |
 | **pull_request** | On PR to specific branches | lint-ts, type-check, test, expo-doctor |
 | **workflow_dispatch** | Manual trigger from Actions tab | eas-build-qa, eas-build-prod, new-app-version |
+| **release (published)** | On a published GitHub release | deploy-docs |
 | **schedule** | Cron-based schedule | stale (daily) |
 | **push (tags)** | On new tag creation | new-github-release |
 
