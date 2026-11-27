@@ -56,7 +56,7 @@ const getLatestTemplateRef = async () => {
       .sort(compareVersions)[0];
 
     return latestTag || DEFAULT_BRANCH;
-  } catch (error) {
+  } catch {
     console.warn(
       `Failed to retrieve the latest template tag; will use the ${DEFAULT_BRANCH} branch instead`
     );

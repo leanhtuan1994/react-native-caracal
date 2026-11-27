@@ -1,4 +1,3 @@
-const React = require('react');
 const { View, Text, Image, ScrollView, Pressable } = require('react-native');
 
 const mockSharedValue = (initial) => {
@@ -139,7 +138,7 @@ const Reanimated = {
       withInitialValues: jest.fn().mockReturnThis(),
       mass: jest.fn().mockReturnThis(),
     },
-    Keyframe: jest.fn().mockImplementation((config) => ({
+    Keyframe: jest.fn().mockImplementation(() => ({
       duration: jest.fn().mockReturnThis(),
       delay: jest.fn().mockReturnThis(),
       withCallback: jest.fn().mockReturnThis(),
