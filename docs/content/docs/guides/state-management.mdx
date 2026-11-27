@@ -11,7 +11,7 @@ Caracal follows a clear separation of concerns for state management:
 
 - **Zustand**: Global client state (auth, user preferences, UI state)
 - **React Query**: Server state (API data, caching, synchronization)
-- **MMKV**: Persistent storage (tokens, settings, cached data)
+- **MMKV**: Persistent storage (session, settings, cached data)
 
 <Callout type="info">
 **Why This Approach?**
@@ -48,18 +48,18 @@ Pass a selector function directly to the store hook. Zustand subscribes the comp
 **Without selectors (inefficient):**
 ```tsx
 // ❌ Component re-renders on ANY state change
-const { token, status, signIn, signOut } = useAuth();
+const { userId, status, signIn, signOut } = useAuth();
 
-// Only using token, but re-renders when status changes too
-return <Text>{token?.access}</Text>;
+// Only using userId, but re-renders when status changes too
+return <Text>{userId}</Text>;
 ```
 
 **With selectors (optimized):**
 ```tsx
-// ✅ Component re-renders ONLY when token changes
-const token = useAuth((state) => state.token);
+// ✅ Component re-renders ONLY when userId changes
+const userId = useAuth((state) => state.userId);
 
-return <Text>{token?.access}</Text>;
+return <Text>{userId}</Text>;
 ```
 
 ### Performance Impact
@@ -67,8 +67,8 @@ return <Text>{token?.access}</Text>;
 ```tsx
 // Example: 3 components using auth state
 
-// Component A: Only needs token
-const token = useAuth((state) => state.token); // Re-renders only when token changes
+// Component A: Only needs userId
+const userId = useAuth((state) => state.userId); // Re-renders only when userId changes
 
 // Component B: Only needs status
 const status = useAuth((state) => state.status); // Re-renders only when status changes
@@ -86,7 +86,7 @@ Zustand 5 compares selector results with `Object.is`. Prefer one primitive, obje
 When a component needs several fields, separate selectors are the simplest default:
 
 ```tsx
-const token = useAuth((state) => state.token);
+const userId = useAuth((state) => state.userId);
 const status = useAuth((state) => state.status);
 ```
 
@@ -95,9 +95,9 @@ If grouping fields makes the component clearer, wrap the selector with `useShall
 ```tsx
 import { useShallow } from 'zustand/react/shallow';
 
-const { token, status } = useAuth(
+const { userId, status } = useAuth(
   useShallow((state) => ({
-    token: state.token,
+    userId: state.userId,
     status: state.status,
   }))
 );
@@ -107,7 +107,7 @@ Derive simple values in selectors instead of duplicating them in the store:
 
 ```tsx
 const isSignedIn = useAuth(
-  (state) => state.status === 'signIn' && state.token !== null
+  (state) => state.status === 'signIn' && state.userId !== null
 );
 ```
 
@@ -117,68 +117,15 @@ Never return a fresh object, array, or fallback function from a selector unless 
 
 ## Auth Store Example
 
-Caracal includes a production-ready authentication store (`src/lib/auth/index.tsx`) demonstrating all key patterns.
+Caracal includes a production-ready authentication store (`src/lib/auth/store.ts`) demonstrating all key patterns.
 
-### Key Features
-
-**1. Type-safe state:**
-```typescript
-interface AuthState {
-  token: TokenType | null;
-  status: 'idle' | 'signOut' | 'signIn';
-  signIn: (data: TokenType) => void;
-  signOut: () => void;
-  hydrate: () => void;
-}
-```
-
-**2. Actions with side effects:**
-```typescript
-signIn: (token) => {
-  setToken(token);           // Persist to MMKV
-  set({ status: 'signIn', token }); // Update state
-}
-```
-
-**3. Hydration from storage:**
-```typescript
-hydrate: () => {
-  const userToken = getToken();  // Load from MMKV
-  if (userToken !== null) {
-    get().signIn(userToken);     // Restore session
-  }
-}
-```
-
-**4. Exported actions:**
-```typescript
-// Call outside components (e.g., API interceptor)
-export const signOut = () => useAuth.getState().signOut();
-export const signIn = (token: TokenType) => useAuth.getState().signIn(token);
-```
+The auth store in `src/lib/auth/store.ts` exposes `status`, `userId`, `signIn(userId)`, `signOut()` and `hydrate()`. The sign-in form calls `loginWithEmail` to verify credentials before updating the store. Hydration checks that the saved session points to an existing account. See [Authentication](/docs/guides/authentication).
 
 ### Using the Auth Store
 
-**In components:**
 ```tsx
-import { useAuth } from '@/lib/auth';
-
-export function ProfileScreen() {
-  const token = useAuth((state) => state.token);
-  const status = useAuth((state) => state.status);
-  const signOut = useAuth((state) => state.signOut);
-
-  if (status === 'idle') {
-    return <LoadingSpinner />;
-  }
-
-  return (
-    <View>
-      <Text>Access Token: {token?.access}</Text>
-      <Button onPress={signOut}>Sign Out</Button>
-    </View>
-  );
-}
+const userId = useAuth((state) => state.userId);
+const signOut = useAuth((state) => state.signOut);
 ```
 
 **Outside components:**
@@ -199,16 +146,7 @@ axios.interceptors.response.use(
 
 ## MMKV Persistence
 
-Caracal integrates Zustand with **MMKV** for fast, synchronous, encrypted storage.
-
-The storage utilities live in `src/lib/storage.tsx`.
-
-**Features:**
-- **Synchronous**: No async/await needed
-- **Type-safe**: Generic `getItem<T>` and `setItem<T>`
-- **Encrypted**: Secure storage by default
-- **Fast**: 30x faster than AsyncStorage
-- **JSON serialization**: Automatic object serialization
+The starter persists its session and preferences in MMKV. The instance in `src/lib/storage.tsx` uses `createMMKV()` with no encryption key. See the [storage guide](/docs/guides/storage) for the keys and their owners.
 
 ### Persisting Store State
 
@@ -249,15 +187,12 @@ export const useSettings = create<State>()(
     {
       name: 'settings-storage',
       storage: createJSONStorage(() => ({
-        getItem: (key) => {
-          const value = storage.getString(key);
-          return value ? JSON.parse(value) : null;
-        },
+        getItem: (key) => storage.getString(key) ?? null,
         setItem: (key, value) => {
-          storage.set(key, JSON.stringify(value));
+          storage.set(key, value);
         },
         removeItem: (key) => {
-          storage.delete(key);
+          storage.remove(key);
         },
       })),
     }
@@ -581,11 +516,11 @@ const useGlobalStore = create(...); // Everything in one store
 
 ```tsx
 // ✅ Good: Selective subscriptions
-const token = useAuth((state) => state.token);
+const userId = useAuth((state) => state.userId);
 const status = useAuth((state) => state.status);
 
 // ❌ Bad: Full store subscription
-const { token, status, signIn, signOut } = useAuth();
+const { userId, status, signIn, signOut } = useAuth();
 ```
 
 Performance checklist:
@@ -625,31 +560,9 @@ const useStore = create<State>()((set) => ({
 }));
 ```
 
-### 5. Persist Sensitive Data Securely
+### Persistence and startup
 
-```tsx
-// ✅ Good: MMKV is encrypted by default
-setItem('token', { access: '...', refresh: '...' });
-
-// ✅ Even better: Use expo-secure-store for tokens
-import * as SecureStore from 'expo-secure-store';
-await SecureStore.setItemAsync('token', JSON.stringify(token));
-```
-
-### 6. Initialize on App Start
-
-```tsx
-// src/app/_layout.tsx
-import { hydrateAuth } from '@/lib/auth';
-
-export default function RootLayout() {
-  useEffect(() => {
-    hydrateAuth(); // Load persisted state
-  }, []);
-
-  return <Stack />;
-}
-```
+The local demo stores a user ID in the session. If you add a backend, choose storage for its credentials separately. The root layout calls `hydrateAuth()` at module scope before evaluating the route guards.
 
 ## Testing Stores
 
@@ -706,10 +619,10 @@ describe('Preferences Store', () => {
 
 ```tsx
 // ✅ Correct
-const token = useAuth((state) => state.token);
+const userId = useAuth((state) => state.userId);
 
 // ❌ Wrong: accessing property directly — no subscription
-const token = useAuth.getState().token;
+const userId = useAuth.getState().userId;
 ```
 
 ### Re-rendering Too Often
@@ -718,8 +631,8 @@ const token = useAuth.getState().token;
 // ❌ Bad: subscribes to entire store
 const store = useAuth();
 
-// ✅ Good: subscribes only to token
-const token = useAuth((state) => state.token);
+// ✅ Good: subscribes only to userId
+const userId = useAuth((state) => state.userId);
 ```
 
 ### Persisted State Not Loading
@@ -777,4 +690,4 @@ increment: () => {
 8. **Hydrate on app start** to restore persisted state
 9. **Type everything** for safety and autocomplete
 
-The auth store (`src/lib/auth/index.tsx`) serves as a complete example demonstrating all these patterns in production.
+The auth store (`src/lib/auth/store.ts`) serves as a complete example demonstrating all these patterns in production.

@@ -16,14 +16,14 @@ const execShellCommand = (cmd) => {
 
 const runCommand = async (
   command,
-  { loading = 'loading ....', success = 'success', error = 'error' }
+  { loading = 'loading ....', success = 'success', error }
 ) => {
   consola.start(loading);
   try {
     await execShellCommand(command);
     consola.success(success);
   } catch (err) {
-    consola.error(`Failed to execute ${command}`, err);
+    consola.error(error ?? `Failed to execute ${command}`, err);
     process.exit(1);
   }
 };

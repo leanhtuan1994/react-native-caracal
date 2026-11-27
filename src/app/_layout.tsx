@@ -11,7 +11,6 @@ import { SpaceGrotesk_400Regular } from '@expo-google-fonts/space-grotesk/400Reg
 import { SpaceGrotesk_500Medium } from '@expo-google-fonts/space-grotesk/500Medium';
 import { SpaceGrotesk_600SemiBold } from '@expo-google-fonts/space-grotesk/600SemiBold';
 import { SpaceGrotesk_700Bold } from '@expo-google-fonts/space-grotesk/700Bold';
-import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import { useFonts } from 'expo-font';
 import { Stack } from 'expo-router';
 import { HeroUINativeProvider } from 'heroui-native';
@@ -124,9 +123,7 @@ const Providers: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                 },
               }}
             >
-              <APIProvider>
-                <BottomSheetModalProvider>{children}</BottomSheetModalProvider>
-              </APIProvider>
+              <APIProvider>{children}</APIProvider>
             </HeroUINativeProvider>
           </AppThemeProvider>
         </KeyboardProvider>

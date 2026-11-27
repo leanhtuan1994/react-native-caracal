@@ -1,0 +1,8 @@
+version: 1
+steps:
+  - echo: Open the signed-in development app in English with Metro running.
+  - launch: com.caracal.development
+  - await: { visible: { id: home-notifications } }
+  - await: { idle: true }
+  - tap: { id: home-notifications }
+  - await: { visible: { text: Coming soon } }

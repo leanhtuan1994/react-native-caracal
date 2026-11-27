@@ -27,9 +27,9 @@ For the login form component, we will test the following:
 
 - The form renders correctly.
 - Shows the correct error messages on invalid or missing data.
-- Submits the form with valid data and makes sure that the `onSubmit` function is called with the correct data.
+- Calls `loginWithEmail` with the submitted credentials and displays a form error if authentication fails.
 
-Create a new file called `login-form.test.tsx` in the same directory as your component, then add your test cases using `@testing-library/react-native` imports.
+See `src/components/auth/login-form.test.tsx` for the working tests and their use of the shared test helpers.
 
 The starter provides a `@/lib/test-utils` module that exports everything from `@testing-library/react-native` and overrides the `render` function to wrap components with all required providers. This means you don't have to import providers in every test file.
 

@@ -111,7 +111,7 @@ import { router } from 'expo-router';
 
 // ✅ Type-safe navigation (autocomplete works)
 router.push('/(home)/settings');
-router.push('/(components)/button');
+router.push('/(home)/profile');
 router.navigate('/onboarding');
 
 // ❌ Compile error: route doesn't exist
@@ -119,8 +119,8 @@ router.push('/non-existent-route'); // TypeScript error
 
 // Dynamic routes with params
 router.push({
-  pathname: '/(components)/[id]',
-  params: { id: 'button' }
+  pathname: '/posts/[id]',
+  params: { id: '1' }
 });
 ```
 
@@ -138,11 +138,11 @@ export function MyComponent() {
       {/* With params */}
       <Link
         href={{
-          pathname: '/(components)/[id]',
-          params: { id: 'button' }
+          pathname: '/posts/[id]',
+          params: { id: '1' }
         }}
       >
-        View Button Showcase
+        Read post
       </Link>
 
       {/* Replace instead of push */}
@@ -208,7 +208,7 @@ import { usePathname } from 'expo-router';
 export function MyComponent() {
   const pathname = usePathname();
 
-  console.log(pathname); // "/(home)/settings" or "/components/button"
+  console.log(pathname); // "/settings" or "/posts/1"
 
   return <Text>Current path: {pathname}</Text>;
 }
@@ -224,11 +224,11 @@ import { useSegments } from 'expo-router';
 export function MyComponent() {
   const segments = useSegments();
 
-  console.log(segments); // ["(home)", "settings"] or ["(components)", "button"]
+  console.log(segments); // ["(home)", "settings"] or ["posts", "[id]"]
 
-  const isComponentShowcase = segments[0] === '(components)';
+  const isPost = segments[0] === 'posts';
 
-  return <Text>Is Showcase: {isComponentShowcase}</Text>;
+  return <Text>Section: {isPost ? 'Posts' : 'App'}</Text>;
 }
 ```
 
@@ -239,7 +239,7 @@ Access route parameters.
 ```tsx
 import { useLocalSearchParams, useGlobalSearchParams } from 'expo-router';
 
-export function ComponentShowcase() {
+export function PostDetails() {
   // Local params (from this route only)
   const local = useLocalSearchParams<{ id: string }>();
 
@@ -248,7 +248,7 @@ export function ComponentShowcase() {
 
   return (
     <View>
-      <Text>Component ID: {local.id}</Text>
+      <Text>Post ID: {local.id}</Text>
       <Text>Theme: {global.theme || 'default'}</Text>
     </View>
   );
@@ -286,36 +286,7 @@ Every route in Expo Router is automatically deep-linkable. No configuration requ
 
 ### URL Schemes
 
-Caracal is configured with URL schemes in `app.config.ts`:
-
-```typescript
-// app.config.ts
-export default {
-  scheme: 'caracal',
-  // ...
-}
-```
-
-**Available schemes:**
-- `caracalApp://` — Custom scheme (all environments)
-- `exp+caracalapp://` — Expo Go scheme (development)
-- `https://yourapp.com/` — Universal links (production)
-
-### Deep Link Examples
-
-```bash
-# Open settings screen
-caracalApp://settings
-
-# Open component showcase
-caracalApp://components/button
-
-# With query parameters
-caracalApp://settings?theme=dark
-
-# Universal link (production)
-https://yourapp.com/components/text-field
-```
+The app’s custom scheme comes from `Env.SCHEME` in `app.config.ts`. With the template configuration, open `caracalApp://settings` for Settings or `caracalApp://posts/1` for the first post. Both require a signed-in account.
 
 ### Testing Deep Links
 
@@ -329,11 +300,7 @@ xcrun simctl openurl booted "caracalApp://settings"
 adb shell am start -W -a android.intent.action.VIEW -d "caracalApp://settings"
 ```
 
-**Expo Go:**
-```bash
-npx uri-scheme open "exp+caracalapp://components/button" --ios
-npx uri-scheme open "exp+caracalapp://components/button" --android
-```
+Run these commands against an installed development build.
 
 ### Handling Deep Links
 
@@ -455,6 +422,7 @@ export default function RootLayout() {
       </Stack.Protected>
       <Stack.Protected guard={guards.canSeeApp} redirectTo={guards.redirectTo}>
         <Stack.Screen name="(home)" />
+        <Stack.Screen name="posts/[id]" />
       </Stack.Protected>
     </Stack>
   );
@@ -503,19 +471,13 @@ router.replace('/(home)/');
 
 ### Passing Data Between Screens
 
-**Via URL params (recommended for simple data):**
-```tsx
-// Navigate with params
-router.push({
-  pathname: '/(components)/button',
-  params: { variant: 'solid', color: 'primary' }
-});
+**Via URL params**
 
-// Access params
-const { variant, color } = useLocalSearchParams<{
-  variant: string;
-  color: string;
-}>();
+```tsx
+router.push({ pathname: '/posts/[id]', params: { id: '1' } });
+
+// Inside src/app/posts/[id].tsx
+const { id } = useLocalSearchParams<{ id: string }>();
 ```
 
 **Via global state (for complex data):**
@@ -531,36 +493,7 @@ function handleNavigate(item: Item) {
 
 ## Tab Bar Customization
 
-```tsx
-<Tabs
-  screenOptions={{
-    tabBarActiveTintColor: '#000',
-    tabBarInactiveTintColor: '#666',
-    tabBarStyle: {
-      backgroundColor: '#fff',
-      borderTopColor: '#e5e5e5',
-    },
-    tabBarLabelStyle: {
-      fontSize: 12,
-      fontFamily: 'Inter',
-    },
-    headerShown: false,
-  }}
->
-  {/* tabs */}
-</Tabs>
-```
-
-### Hide Tab Bar on Specific Screens
-
-```tsx
-<Stack.Screen
-  name="details"
-  options={{
-    tabBarStyle: { display: 'none' },
-  }}
-/>
-```
+The three tab labels and icons are configured on `NativeTabs.Trigger` in `src/app/(home)/_layout.tsx`. To open a detail screen outside the tab bar, follow the signed-in `posts/[id]` route in the root stack.
 
 ## Header Customization
 
@@ -656,14 +589,3 @@ function handleNavigate(item: Item) {
 - [Typed Routes](https://docs.expo.dev/router/reference/typed-routes/)
 - [Deep Linking Guide](https://docs.expo.dev/guides/linking/)
 - [React Navigation (underlying library)](https://reactnavigation.org/)
-
-## Component Showcase Routes
-
-Caracal includes 30 component showcase routes in the `(components)` group — interactive examples demonstrating HeroUI Native components.
-
-**View the showcase:**
-- Navigate to Settings → Component Showcase
-- Or use deep link: `caracalApp://components`
-- Or see [Component Showcase documentation](/docs/ui-and-theme/component-showcase)
-
-All showcase routes are listed in [Project Structure](/docs/getting-started/project-structure).

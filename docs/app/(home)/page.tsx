@@ -20,17 +20,17 @@ import { About } from '@/components/about';
 
 const features = [
   {
-    title: 'Latest Expo SDK + Dev Client',
+    title: 'Expo SDK + Dev Client',
     icon: Boxes,
-    body: 'We use the most recent Expo SDK and React Native, plus a custom development client, so you can install any package and keep full control of your app.',
+    body: 'Build the development client to run the template with its native modules, including MMKV and TrueSheet.',
   },
   {
     title: 'Expo Router',
     icon: Compass,
-    body: 'The latest Expo Router comes pre-installed with examples that demonstrate comprehensive, type-safe navigation across your app.',
+    body: 'Typed routes connect onboarding, sign-in, the Home, Profile and Settings tabs, and individual posts.',
   },
   {
-    title: '10+ GitHub Workflows',
+    title: 'GitHub Actions',
     icon: Workflow,
     body: 'Type checks, tests, lint, formatting, version bumps, and EAS Build — all configured and ready to go.',
   },
@@ -62,7 +62,7 @@ const features = [
   {
     title: 'Auth Flow',
     icon: KeyRound,
-    body: 'A complete authentication flow using Zustand for state and react-native-mmkv for fast, secure token storage.',
+    body: 'Sign up and sign in on this device. Zustand tracks the active user and MMKV persists local accounts and the session.',
   },
   {
     title: 'React Query + Axios',

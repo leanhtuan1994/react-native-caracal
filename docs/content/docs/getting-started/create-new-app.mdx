@@ -30,7 +30,7 @@ Start your project using `create-caracal-app` command:
 npx create-caracal-app@latest MyApp
 ```
 
-The command will create an expo app named `MyApp` and install all the dependencies added by the starter.
+The CLI selects the highest stable version tag and installs its dependencies in `MyApp`. It falls back to `main` when it cannot resolve a release. Check the generated app’s `package.json` for its exact versions; a release can lag behind the source checkout described here.
 
 <Callout type="info">
 Because we're using the Expo custom dev client to support native dependencies with the starter, The Expo Go app is not an option to consider here. Instead, you need to create the app and install it on your simulator or device to start using it.

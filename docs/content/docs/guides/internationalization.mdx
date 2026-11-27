@@ -3,23 +3,23 @@ title: Internationalization
 description: How to add internationalization to your app.
 ---
 
-Caracal ships with a basic internationalization (i18n) setup using [expo-localization](https://docs.expo.dev/guides/localization/) and [i18next](https://www.i18next.com/). Everything i18n-related lives in `src/lib/i18n/`.
+Caracal ships with a basic internationalization (i18n) setup using [i18next](https://www.i18next.com/). Everything i18n-related lives in `src/lib/i18n/`.
 
 ## Adding a New Language
 
-The demo app supports English and Arabic (RTL) out of the box. To add another language:
+The demo app supports English and Vietnamese out of the box. To add another language:
 
 1. Create a new translation JSON file in `src/translations/`.
 2. Register it in `src/lib/i18n/resources.ts`.
 
 ```typescript title="src/lib/i18n/resources.ts"
 import en from '@/translations/en.json';
-import ar from '@/translations/ar.json';
+import vi from '@/translations/vi.json';
 // import fr from '@/translations/fr.json';
 
 export const resources = {
   en: { translation: en },
-  ar: { translation: ar },
+  vi: { translation: vi },
   // fr: { translation: fr },
 };
 ```
@@ -45,27 +45,9 @@ export const Foo = () => {
 };
 ```
 
-### `tx` prop shorthand
+### Changing the language
 
-The `Text` component from `@/components/ui` accepts a `tx` prop as a shorthand, so you can skip importing `useTranslation` for simple cases:
-
-```tsx
-import React from 'react';
-import { Text } from '@/components/ui';
-
-export const Foo = () => {
-  return <Text className="text-center" tx="settings.language" />;
-};
-```
-
-### `useSetLanguage` hook
-
-Use `useSetLanguage` from `src/lib/i18n/utils.tsx` to read and change the active language at runtime.
-
-This hook:
-- Returns the currently selected language and a setter function
-- Persists the selection to device storage via MMKV so the preference is restored on next launch
-- Applies extra RTL configuration for right-to-left languages when switching
+`useSelectedLanguage()` returns `{ language, setLanguage }`. Call `setLanguage('vi')` or `setLanguage('en')` to switch immediately and persist the choice in MMKV. On first launch the fallback is English. When adding a language, update the language controls in `src/components/auth/language-pill.tsx` and `src/components/settings/general-section.tsx` as well as the resources.
 
 ## Robust Translations
 

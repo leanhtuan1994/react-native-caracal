@@ -1,7 +1,9 @@
-const React = require('react');
+const { View } = require('react-native');
 const mock = require('react-native-gesture-handler/jestSetup');
 
-// Mock State enum for bottom sheet
+mock.GestureHandlerRootView = View;
+
+// Mock State enum
 mock.State = {
   UNDETERMINED: 0,
   FAILED: 1,

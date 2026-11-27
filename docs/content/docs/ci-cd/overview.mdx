@@ -7,13 +7,13 @@ CI/CD stands for Continuous Integration and Continuous Delivery/Deployment. It i
 
 Having a good CI/CD process in place is crucial for any project. It helps you save time and effort, ensures you are delivering a high-quality product to your users, avoids common mistakes and bugs, reduces time to market, and allows for faster updates.
 
-As most projects are hosted on GitHub, Caracal uses [GitHub Actions](https://github.com/features/actions) and [Expo EAS](https://expo.dev/eas) as the CI/CD solution. The starter kit comes with over 14 GitHub Actions workflows:
+As most projects are hosted on GitHub, Caracal uses [GitHub Actions](https://github.com/features/actions) and [Expo EAS](https://expo.dev/eas) as the CI/CD solution. The starter kit includes the following GitHub Actions workflows:
 
-- `.github/workflows/lint-ts.yml`: On PR and new commits on the master branch, run linting and formatting checks.
-- `.github/workflows/test.yml`: On PR and new commits on the master branch, run unit tests.
-- `.github/workflows/type-check.yml`: On PR and new commits on the master branch, run type checking.
-- `.github/workflows/compress-images.yml`: On new commits to the master branch, when adding images, open a pull request with the compressed images.
-- `.github/workflows/expo-doctor.yml`: On PR and new commits to the master branch, check whether dependencies are aligned with the Expo SDK version.
+- `.github/workflows/lint-ts.yml`: On PR and new commits on the main or master branch, run linting and formatting checks.
+- `.github/workflows/test.yml`: On PR and new commits on the main or master branch, run unit tests.
+- `.github/workflows/type-check.yml`: On PR and new commits on the main or master branch, run type checking.
+- `.github/workflows/compress-images.yml`: On new commits to the main or master branch, when adding images, open a pull request with the compressed images.
+- `.github/workflows/expo-doctor.yml`: On PR and new commits to the main or master branch, check whether dependencies are aligned with the Expo SDK version.
 - `.github/workflows/new-app-version.yml`: A workflow to manually trigger and update the app version, and publish a tag.
 
 You can check the full list of workflows in the [Workflows Reference](/docs/ci-cd/workflows-references).

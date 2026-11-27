@@ -18,16 +18,13 @@ src/
 │   ├── index.tsx
 │   └── types.ts
 ├── app/                          # Expo Router routes (file-based routing)
-│   ├── (components)/             # 30 component showcase routes
-│   │   ├── _layout.tsx
-│   │   ├── accordion.tsx
-│   │   ├── button.tsx
-│   │   ├── card.tsx
-│   │   ├── component-list.tsx
-│   │   └── ...
+│   ├── onboarding.tsx            # First launch
+│   ├── (auth)/                   # Sign in and create account
+│   ├── posts/[id].tsx            # Post details
 │   ├── (home)/                   # Main app routes
 │   │   ├── _layout.tsx
 │   │   ├── index.tsx
+│   │   ├── profile.tsx
 │   │   └── settings.tsx
 │   ├── _layout.tsx               # Root layout with providers
 │   ├── +html.tsx
@@ -37,14 +34,13 @@ src/
 │   │   ├── focus-aware-status-bar.tsx
 │   │   ├── image.tsx
 │   │   ├── index.tsx
-│   │   ├── input.tsx             # ControlledInput
+│   │   ├── controlled-input.tsx  # React Hook Form field
 │   │   ├── list.tsx              # FlashList wrapper
 │   │   ├── modal.tsx
-│   │   ├── text.tsx              # i18n-enabled Text
-│   │   ├── utils.tsx
-│   │   └── icons/
+│   │   ├── text.tsx              # App typography
+│   │   └── utils.tsx
 │   ├── theme-toggle.tsx
-│   └── logo.tsx
+│   └── glass/
 ├── lib/                          # Core utilities and configuration
 │   ├── auth/
 │   │   ├── index.tsx
@@ -66,7 +62,7 @@ src/
 ├── themes/                       # Uniwind theme tokens (CSS)
 │   └── sky.css
 ├── translations/                 # i18n resource files
-│   ├── ar.json
+│   ├── vi.json
 │   └── en.json
 └── types/                        # Global TypeScript types
     ├── index.ts
@@ -99,51 +95,41 @@ Contains the primary app screens with **native tab navigation**:
 
 - `_layout.tsx` - Tab navigator using `expo-router/native-tabs`
 - `index.tsx` - Home/Feed screen (main landing page)
+- `profile.tsx` - Signed-in account
 - `settings.tsx` - Settings screen
 
 **Navigation:** These appear as tabs at the bottom of the app.
 
-##### `(components)` - Component Showcase Routes
+##### `(auth)` - Sign in and create account
 
-Contains **30 interactive component examples** demonstrating HeroUI Native components:
-
-- `_layout.tsx` - Stack navigator for component screens
-- 29 component showcase screens (accordion, button, card, etc.)
-- `component-list.tsx` - Navigation hub for all showcases
-
-**Purpose:** Educational resource and reference implementation for developers learning HeroUI Native components.
-
-<Callout type="info">
-The `(components)` route group serves as a **living documentation** system. Run the app and explore these screens to see HeroUI Native components in action with real code examples.
-</Callout>
+The root layout selects onboarding, signed-out or signed-in routes. The signed-in guard covers both the tabs and `posts/[id]`. See [Navigation](/docs/guides/navigation).
 
 #### Root Layout (`_layout.tsx`)
 
 The root layout establishes the **provider hierarchy** critical for the app to function:
 
 ```tsx
-// Provider order (inside to outside):
+// Provider order (outside to inside):
 // 1. GestureHandlerRootView - Gesture support
 // 2. KeyboardProvider - Keyboard handling
 // 3. AppThemeProvider - Theme management (light/dark)
 // 4. HeroUINativeProvider - UI component context
 // 5. APIProvider - React Query setup
-// 6. BottomSheetModalProvider - Bottom sheet support
 ```
 
 ### `src/components/` - Reusable Components
 
 #### `components/ui/` - Custom UI Components
 
-Contains **6 custom components** designed for specific needs:
+Examples from the UI barrel:
 
 | Component | Purpose | File |
 |-----------|---------|------|
 | **Image** | expo-image with Uniwind support | `image.tsx` |
-| **Text** | i18n-enabled with RTL support | `text.tsx` |
-| **ControlledInput** | Form input with react-hook-form | `input.tsx` |
-| **List** | FlashList wrapper with EmptyList | `list.tsx` |
-| **Modal** | Bottom sheet modal wrapper | `modal.tsx` |
+| **Text** | Template typography for React Native Text | `text.tsx` |
+| **ControlledInput** | Form input with react-hook-form | `controlled-input.tsx` |
+| **List** | FlashList re-export | `list.tsx` |
+| **Modal** | HeroUI Native BottomSheet wrapper | `modal.tsx` |
 | **FocusAwareStatusBar** | Route-aware StatusBar | `focus-aware-status-bar.tsx` |
 
 **Important:** For buttons, cards, dialogs, and other standard UI, use [HeroUI Native components](https://v3.heroui.com/native/llms-full.txt) instead.
@@ -180,22 +166,7 @@ The `lib/` directory contains framework-agnostic utilities that can be shared ac
 
 #### `lib/auth/` - Authentication State
 
-Zustand-based auth state with MMKV persistence:
-
-```tsx
-// src/lib/auth/index.tsx
-type AuthState = {
-  token: TokenType | null;
-  status: 'idle' | 'signOut' | 'signIn';
-  signIn: (data: TokenType) => void;
-  signOut: () => void;
-  hydrate: () => void;
-};
-
-// Subscribe only to the state each component needs
-const token = useAuth((state) => state.token);
-const signIn = useAuth((state) => state.signIn);
-```
+The Zustand store in `src/lib/auth/store.ts` holds the signed-in user ID and session status. `accounts.ts` handles local credentials; `utils.tsx` persists the session in MMKV.
 
 See [Authentication guide](/docs/guides/authentication) for details.
 
@@ -261,7 +232,7 @@ JSON files for each supported locale:
 ```
 translations/
 ├── en.json  # English translations
-└── ar.json  # Arabic translations
+└── vi.json  # Vietnamese translations
 ```
 
 **Format:**
@@ -334,7 +305,7 @@ The New Architecture is always enabled on Expo SDK 55+ and has no config flag.
 
 ### `global.css` - Uniwind Configuration
 
-Uniwind v1.10.0 uses TailwindCSS v4, which is configured in CSS rather than a `tailwind.config.js` file. `global.css` is the entry point:
+Uniwind uses TailwindCSS v4, which is configured in CSS rather than a `tailwind.config.js` file. `global.css` is the entry point:
 
 ```css
 @import "tailwindcss";
@@ -375,8 +346,8 @@ Route groups organize routes without affecting URLs:
 app/
 ├── (home)/        # Tab navigation
 │   └── index.tsx  # URL: /
-└── (components)/  # Stack navigation
-    └── button.tsx # URL: /button (not /components/button)
+└── (auth)/        # Stack navigation
+    └── login.tsx  # URL: /login
 ```
 
 ### 2. Absolute Imports
@@ -387,7 +358,6 @@ All imports use `@/` prefix for cleaner code:
 // ✅ Good
 import { Image, Text } from '@/components/ui';
 import { useAuth } from '@/lib/auth';
-import { usePosts } from '@/api';
 
 // ❌ Avoid
 import { Image } from '../../../components/ui';
@@ -405,8 +375,7 @@ GestureHandlerRootView
       └─ AppThemeProvider
           └─ HeroUINativeProvider
               └─ APIProvider (React Query)
-                  └─ BottomSheetModalProvider
-                      └─ App Content
+                  └─ App Content
 ```
 
 **Why this order?**
@@ -414,23 +383,8 @@ GestureHandlerRootView
 - Keyboard handling before UI
 - Theme before styled components
 - API provider before data-fetching components
-- Bottom sheet last for modals to overlay everything
 
-### 4. Component Showcase System
-
-The `(components)` route group provides:
-- **30 interactive examples** of HeroUI Native components
-- **Live demonstrations** with code patterns
-- **Learning resource** for developers
-- **Reference implementation** for component usage
-
-**How to use:**
-1. Run the app: `pnpm start`
-2. Navigate to Components section
-3. Explore each component showcase
-4. View source code in `src/app/(components)/`
-
-### 5. Separation of Concerns
+### 4. Separation of Concerns
 
 | Directory | Purpose | Import From |
 |-----------|---------|-------------|
@@ -491,9 +445,8 @@ The structure follows these principles:
 1. **Production-ready:** Organized for scale and maintainability
 2. **Clear separation:** Each directory has a single responsibility
 3. **Reusability:** Lib utilities are framework-agnostic
-4. **Living documentation:** Component showcases as learning tool
-5. **Type safety:** TypeScript throughout with strict mode
-6. **Minimal dependencies:** Only essential, well-maintained libraries
+4. **Type safety:** TypeScript throughout with strict mode
+5. **Minimal dependencies:** Only essential, well-maintained libraries
 
 <Callout type="info">
 **Opinionated but flexible:** This structure represents best practices for React Native development. Feel free to adapt it to your project's needs, but the core organization principles should remain.
@@ -515,6 +468,6 @@ Now that you understand the project structure, explore:
 # View file tree in terminal
 tree -L 3 -I 'node_modules|.expo|android|ios|dist'
 
-# Count component showcases
-ls src/app/\(components\)/*.tsx | wc -l  # 30 files
+# List the routes included in this checkout
+rg --files src/app
 ```

@@ -1,6 +1,9 @@
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 
+import { dependencies } from '../../package.json';
+
+const expoSdk = dependencies.expo.split('.')[0];
 const REPO = 'https://github.com/leanhtuan1994/react-native-caracal';
 
 function GithubMark({ className }: { className?: string }) {
@@ -19,7 +22,7 @@ export function Hero() {
       <div className="brand-grid absolute inset-0 -z-10" aria-hidden />
       <div className="mx-auto flex max-w-4xl flex-col items-center gap-7 px-6 py-24 text-center sm:py-32">
         <span className="inline-flex items-center gap-2 rounded-full border border-fd-border bg-fd-card/60 px-4 py-1.5 text-xs font-medium text-fd-muted-foreground">
-          Expo SDK 57 · React Native 0.86 · New Architecture
+          {`Expo SDK ${expoSdk} · React Native ${dependencies['react-native']} · New Architecture`}
         </span>
         <h1 className="text-balance text-5xl font-bold tracking-tight sm:text-7xl">
           Perfect React Native
