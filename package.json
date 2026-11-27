@@ -69,7 +69,7 @@
     "expo-status-bar": "~58.0.5",
     "expo-symbols": "~58.0.5",
     "expo-system-ui": "~58.0.7",
-    "heroui-native": "1.0.11",
+    "heroui-native": "1.1.1",
     "i18next": "^23.14.0",
     "react": "19.3.0",
     "react-dom": "19.3.0",

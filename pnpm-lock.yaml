@@ -90,8 +90,8 @@ importers:
         specifier: ~58.0.7
         version: 58.0.7(expo@58.1.0)(react-native-web@0.21.4(react-dom@19.3.0(react@19.3.0))(react@19.3.0))(react-native@0.88.1(@babel/core@7.29.7)(@react-native/metro-config@0.88.1(@babel/core@7.29.7))(@types/react@19.3.0)(react@19.3.0))
       heroui-native:
-        specifier: 1.0.11
-        version: 1.0.11(fa51b78e1ad86ba8874b93db47ccb07f)
+        specifier: 1.1.1
+        version: 1.1.1(8283a58621b9a61b8e9e5156e856065f)
       i18next:
         specifier: ^23.14.0
         version: 23.16.8
@@ -4362,10 +4362,10 @@ packages:
   hermes-parser@0.36.1:
     resolution: {integrity: sha512-GApNk4zLHi2UWoWZZkx7LNCOSzLSc5lB55pZ/PhK7ycFeg7u5LcF88p/WbpIi1XUDtE0MpHE3uRR3u3KB7TjSQ==}
 
-  heroui-native@1.0.11:
-    resolution: {integrity: sha512-JC7aLZPQKqyaqlkzYx/VzAygj7pNr6mBO8/8QtbUwD6lgR5KjlMSs7ImHjDIIr0H/9nF5hixxq/sqrXM5sW63A==}
+  heroui-native@1.1.1:
+    resolution: {integrity: sha512-1ZyBH6ZBs1TjqPFCM/CckF1g58lt9rLR7yI33Lwsj3sdZB4Rm+RCwyG8RZzYzvVEGMuLtTk84o0Sx0XY8PWYdQ==}
     peerDependencies:
-      '@gorhom/bottom-sheet': ^5.2.9
+      '@lodev09/react-native-true-sheet': ^4.1.0
       expo-blur: '>=14.0.0'
       react: '>=19.0.0'
       react-native: '>=0.81.0'
@@ -4378,7 +4378,7 @@ packages:
       tailwind-merge: ^3.4.0
       tailwind-variants: ^3.2.2
     peerDependenciesMeta:
-      '@gorhom/bottom-sheet':
+      '@lodev09/react-native-true-sheet':
         optional: true
       expo-blur:
         optional: true
@@ -12163,7 +12163,7 @@ snapshots:
     dependencies:
       hermes-estree: 0.36.1
 
-  heroui-native@1.0.11(fa51b78e1ad86ba8874b93db47ccb07f):
+  heroui-native@1.1.1(8283a58621b9a61b8e9e5156e856065f):
     dependencies:
       react: 19.3.0
       react-native: 0.88.1(@babel/core@7.29.7)(@react-native/metro-config@0.88.1(@babel/core@7.29.7))(@types/react@19.3.0)(react@19.3.0)
@@ -12175,7 +12175,6 @@ snapshots:
       tailwind-merge: 3.6.0
       tailwind-variants: 3.2.2(tailwind-merge@3.6.0)(tailwindcss@4.3.0)
     optionalDependencies:
-      '@gorhom/bottom-sheet': 5.2.14(@types/react@19.3.0)(react-native-gesture-handler@3.3.0(react-native@0.88.1(@babel/core@7.29.7)(@react-native/metro-config@0.88.1(@babel/core@7.29.7))(@types/react@19.3.0)(react@19.3.0))(react@19.3.0))(react-native-reanimated@4.8.0(react-native-worklets@0.14.0(@babel/core@7.29.7)(@react-native/metro-config@0.88.1(@babel/core@7.29.7))(react-native@0.88.1(@babel/core@7.29.7)(@react-native/metro-config@0.88.1(@babel/core@7.29.7))(@types/react@19.3.0)(react@19.3.0))(react@19.3.0))(react-native@0.88.1(@babel/core@7.29.7)(@react-native/metro-config@0.88.1(@babel/core@7.29.7))(@types/react@19.3.0)(react@19.3.0))(react@19.3.0))(react-native@0.88.1(@babel/core@7.29.7)(@react-native/metro-config@0.88.1(@babel/core@7.29.7))(@types/react@19.3.0)(react@19.3.0))(react@19.3.0)
       expo-blur: 58.0.6(expo@58.1.0)(react-native@0.88.1(@babel/core@7.29.7)(@react-native/metro-config@0.88.1(@babel/core@7.29.7))(@types/react@19.3.0)(react@19.3.0))(react@19.3.0)
       react-native-screens: 4.30.1(react-native@0.88.1(@babel/core@7.29.7)(@react-native/metro-config@0.88.1(@babel/core@7.29.7))(@types/react@19.3.0)(react@19.3.0))(react@19.3.0)
 
