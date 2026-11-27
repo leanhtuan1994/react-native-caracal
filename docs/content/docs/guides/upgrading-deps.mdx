@@ -39,6 +39,8 @@ If your starter version does not include `osMetadata.initVersion`, skip that ste
 
 ## Upgrade Expo
 
+The SDK 58 development build uses Reanimated 4.8.0 with Worklets 0.14.0 for the [shared element transition demo](/docs/guides/navigation#stack-navigation). Rebuild the native client with `pnpm ios` or `pnpm android` after installing. Expo Go for SDK 58 bundles an older native pair. The version-specific entries in `expo.install.exclude` keep `expo install --fix` from restoring that pair. Recheck these entries when upgrading the SDK.
+
 Check [npmjs.com/package/expo](https://www.npmjs.com/package/expo) for the latest Expo version, then run:
 
 ```bash
