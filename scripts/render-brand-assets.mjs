@@ -2,9 +2,9 @@
  * Renders every raster brand asset from the SVG sources in assets/brand/.
  *
  * Run with `pnpm brand:assets`. Output is deterministic — running twice produces
- * byte-identical files, which the Phase 6 verification relies on.
+ * byte-identical files with the same renderer.
  *
- * See assets/brand/README.md for the degradation ladder that decides which mark
+ * See assets/brand/README.md for the size guidance that decides which mark
  * variant each size uses.
  */
 import { readFileSync, writeFileSync } from 'node:fs';
@@ -21,12 +21,8 @@ const INK = '#0A0D11';
 /**
  * Render a mark SVG centred on a square canvas.
  *
- * The mark's artwork sits high inside its 128×128 viewBox, so it is trimmed to
- * its own content bounds first — otherwise the empty lower band in the viewBox
- * pushes the mark visibly above centre. After trimming, `coverage` means what it
- * says: the fraction of the canvas the *artwork* spans. Android masks adaptive
- * icons to a circle and crops up to a third of each edge, so that output stays
- * well inside the 66% safe zone.
+ * Trim transparent margins so coverage describes the artwork itself. The
+ * adaptive foreground uses extra padding for launcher masks.
  */
 async function renderMark({ source, size, coverage, background, out }) {
   const inner = Math.round(size * coverage);
@@ -64,11 +60,11 @@ const targets = [
     background: INK,
     out: 'assets/icon.png',
   },
-  // Android adaptive foreground — transparent, 60% keeps the ears inside the mask.
+  // Android adaptive foreground — transparent, padded to fit the circular safe zone.
   {
     source: 'caracal-mark.svg',
     size: 1024,
-    coverage: 0.6,
+    coverage: 0.47,
     out: 'assets/adaptive-icon.png',
   },
   // Splash — transparent; app.config.ts sets the Ink backgroundColor and a 150px width.
@@ -78,7 +74,7 @@ const targets = [
     coverage: 0.8,
     out: 'assets/splash-icon.png',
   },
-  // Expo web favicon — compact variant, the orbit is illegible at 48px.
+  // Expo web favicon — compact variant, fewer facets at small sizes.
   {
     source: 'caracal-mark-compact.svg',
     size: 48,

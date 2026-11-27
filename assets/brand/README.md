@@ -12,48 +12,31 @@ your own mark and re-run the command above.
 
 ## The mark
 
-"Caracal in Orbit" — one closed caracal-head silhouette path, one rotated orbit ellipse, two eye
-dots. All variants share the identical silhouette path data; only stroke weights and which
-elements survive differ.
+The right-facing profile combines swept ear tips, a curved cheek and a short angular muzzle.
+Flat, editable vector faces run diagonally from the cheek to the brow. Keep this orientation
+when pairing the symbol with the outlined Caracal wordmark.
 
-| File                            | Contents                  | Use                             |
-| ------------------------------- | ------------------------- | ------------------------------- |
-| `caracal-mark.svg`              | orbit + silhouette + eyes | Dark backgrounds, ≥48px         |
-| `caracal-mark-light.svg`        | same, light palette       | Sand backgrounds, ≥48px         |
-| `caracal-mark-compact.svg`      | silhouette + eyes         | 32–47px                         |
-| `caracal-mark-micro.svg`        | silhouette only           | ≤20px                           |
-| `caracal-lockup-horizontal.svg` | mark + wordmark           | Nav bars, headers               |
-| `og-card.svg`                   | 1200×630 social card      | Source for `docs/public/og.jpg` |
+| File                            | Use                                                   |
+| ------------------------------- | ----------------------------------------------------- |
+| `caracal-mark.svg`              | Full-color mark on Ink, 48px and above                |
+| `caracal-mark-light.svg`        | Richer orange and sand facets on light surfaces       |
+| `caracal-mark-compact.svg`      | Simplified facets for navigation and favicons         |
+| `caracal-mark-micro.svg`        | Single-color silhouette for the smallest placements   |
+| `caracal-lockup-horizontal.svg` | Full mark and outlined wordmark on dark backgrounds   |
+| `og-card.svg`                   | 1200×630 social card, source for `docs/public/og.jpg` |
 
-## Degradation ladder
-
-Non-negotiable — the mark stops being legible otherwise:
-
-- **Orbit drops below 48px.** The ellipse stroke collapses into the silhouette.
-- **Eyes drop below 32px.** They merge into a single smudge.
-- **The silhouette never changes.** It is the mark at every size.
+The compact drawing retains the slanted eye and combines adjoining facets. The micro
+drawing uses only the outer contour. Use the SVG paths directly for editing in Illustrator.
 
 ## Palette
 
-| Token      | Dark      | Light     | Role                                    |
-| ---------- | --------- | --------- | --------------------------------------- |
-| Caracal    | `#C8763C` | `#B0642F` | Fur / silhouette stroke, primary accent |
-| Orbit      | `#7DD3E8` | `#1B7E97` | Orbit ellipse, links, secondary accent  |
-| Ink        | `#0A0D11` | —         | Background                              |
-| Sand       | `#F5F1EA` | —         | Light surface                           |
-| Foreground | `#E8EDF2` | `#171C22` | Eye dots, body text                     |
-
-The light values are not decorative alternates — `#C8763C` and `#7DD3E8` both fail 4.5:1 against
-Sand. Use the light column on any light surface.
+The mark uses tangerine (`#FF8443`) for the head, fired clay (`#CC4B30`) for the cheek
+and pale sand (`#FFE2AF`) for the muzzle. The app icon sits on Ink (`#0A0D11`).
+Use the project's existing Caracal orange and Orbit cyan tokens for interface text and controls.
 
 ### Text-safe light variants
 
-The brand sheet states that `#B0642F` and `#1B7E97` hold 4.5:1 against Sand. **Measured, they do
-not** — they reach 3.96:1 and 4.17:1. That clears the 3:1 bar for a mark or other non-text
-graphic, but not the 4.5:1 bar for body text or links.
-
-So light mode carries two steps: the mark colors above, and darker variants for anything that
-renders as text or as a filled control.
+Use the following interface colors for text and controls on Sand (`#F5F1EA`).
 
 | Role                  | Light value | Contrast on Sand | Foreground on it   |
 | --------------------- | ----------- | ---------------- | ------------------ |
