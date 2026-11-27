@@ -3,7 +3,7 @@ import { router } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import { withUniwind } from 'uniwind';
 
-import { AuthScreen, SignUpForm } from '@/components/auth';
+import { AuthBrandMark, AuthScreen, SignUpForm } from '@/components/auth';
 import { GlassButton } from '@/components/glass';
 import { Text, View } from '@/components/ui';
 
@@ -17,19 +17,22 @@ export default function SignUpScreen() {
 
   return (
     <AuthScreen testID="sign-up-screen">
-      <GlassButton
-        testID="sign-up-back"
-        isIconOnly
-        accessibilityLabel={t('common.back')}
-        className="size-11 self-start"
-        onPress={goBack}
-      >
-        <StyledIonicons
-          name="chevron-back"
-          size={20}
-          className="text-foreground"
-        />
-      </GlassButton>
+      <View className="flex-row items-center justify-between">
+        <GlassButton
+          testID="sign-up-back"
+          isIconOnly
+          accessibilityLabel={t('common.back')}
+          className="size-11"
+          onPress={goBack}
+        >
+          <StyledIonicons
+            name="chevron-back"
+            size={20}
+            className="text-foreground"
+          />
+        </GlassButton>
+        <AuthBrandMark showName />
+      </View>
       <View className="my-[22px] gap-2">
         <Text className="font-bold text-[32px] tracking-tight text-foreground">
           {t('auth.sign_up.title')}
